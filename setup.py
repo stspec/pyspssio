@@ -48,7 +48,8 @@ setup(
     author_email='stspec.dev@gmail.com',
     url='https://github.com/stspec/pyspssio',
     license='MIT',
-    install_requires=['pandas'],
+    python_requires='>=3.6',
+    install_requires=['pandas','psutil'],
     packages=['pyspssio'],
     package_data=package_data
 )
