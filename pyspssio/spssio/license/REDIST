@@ -1,0 +1,69 @@
+The following list is a list of files available with the IBM I/O Modules for IBM SPSS Statistics Data Files Program for redistribution subject to the terms of the IBM International License Agreement for Non-Warranted Programs.  
+Complete license information can be found in the "license" folder identified below.
+
+Folder PATH listing
+
+<STATISTICS_IO_MODULE_26 Installation Location>
+
++---document
++---include
++---license
++---lin64
+|   \---gskit
+|       +---C
+|       |   \---icc
+|       |       +---icclib
+|       |       \---osslib
+|       \---N
+|           \---icc
+|               +---icclib
+|               \---osslib
++---macos
+|   \---gskit
+|       \---N
+|           \---icc
+|               +---icclib
+|               \---osslib
++---plinux64
+|   \---gskit
+|       +---C
+|       |   \---icc
+|       |       +---icclib
+|       |       \---osslib
+|       \---N
+|           \---icc
+|               +---icclib
+|               \---osslib
++---win32
+|   +---C
+|   |   \---icc
+|   |       +---icclib
+|   |       \---osslib
+|   \---N
+|       \---icc
+|           +---icclib
+|           \---osslib
++---win64
+|   +---C
+|   |   \---icc
+|   |       +---icclib
+|   |       \---osslib
+|   \---N
+|       \---icc
+|           +---icclib
+|           \---osslib
+\---zlinux64
+    \---gskit
+        +---C
+        |   \---icc
+        |       +---icclib
+        |       \---osslib
+        \---N
+            \---icc
+                +---icclib
+                \---osslib
+
+
+L/N:  L-CZAA-B9QQ2J
+D/N:  L-CZAA-B9QQ2J
+P/N:  L-CZAA-B9QQ2J
