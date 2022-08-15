@@ -40,7 +40,7 @@ package_data['pyspssio'].append('spssio/zlin64/*.*')
 
 setup(
     name='pyspssio',
-    version='0.1.0-a1',
+    version='0.1.0-a2',
 	description='Read and write SPSS (.sav and .zsav) files to/from pandas dataframes',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
