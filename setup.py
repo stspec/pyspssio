@@ -30,22 +30,13 @@ package_data = {'pyspssio': ['README.*',
 pf_system = platform.system().lower()
 
 # Windows 64
-if pf_system.startswith('win'):
-    package_data['pyspssio'].append('spssio/win64/*.*')
+package_data['pyspssio'].append('spssio/win64/*.*')
 # MacOS
-elif pf_system.startswith('darwin'):
-    package_data['pyspssio'].append('spssio/macos/*.*')   
+package_data['pyspssio'].append('spssio/macos/*.*')
 # Linux
-elif pf_system.startswith('lin'):
-    package_data['pyspssio'].append('spssio/lin64/*.*')
-# system not found
-else:
-    package_data['pyspssio'].append('spssio/win64/*.*')
-    package_data['pyspssio'].append('spssio/macos/*.*') 
-    package_data['pyspssio'].append('spssio/lin64/*.*')
-    package_data['pyspssio'].append('spssio/plin64/*.*')
-    package_data['pyspssio'].append('spssio/zlin64/*.*')
-
+package_data['pyspssio'].append('spssio/lin64/*.*')
+package_data['pyspssio'].append('spssio/plin64/*.*')
+package_data['pyspssio'].append('spssio/zlin64/*.*')
 
 setup(
     name='pyspssio',
