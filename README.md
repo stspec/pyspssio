@@ -6,7 +6,7 @@ Python package for reading and writing SPSS (.sav and .zsav) files to/from panda
 
 This package uses the I/O Module for SPSS Statistics v27 available at https://www.ibm.com/.
 
-**WARNING**: This is a pre-release build with limited testing. Use with caution.
+**WARNING**: This is an early release with limited testing. Use with caution.
 
 Motivation  
 ========================  
@@ -27,15 +27,18 @@ Main reason for creating this package is to fill gaps by other similar packages.
 Basic Usage  
 ========================  
 
+
+Installation
+
+```  
+pip install pyspssio  
+```  
+
 Import  
 
 ```  
 import pyspssio  
 ```  
-
-Notes:  
- * function/argument naming convention is fairly similar to pyreadstat.  
- * metadata attribute naming convention mostly follows the official SPSS I/O documentation.  
 
 
 Reading  
@@ -52,10 +55,6 @@ Read metadata only
 ```
 meta = pyspssio.read_metadata('spss_file.sav')
 ```
-
-```  
-_, meta = pyspssio.read_sav('spss_file.sav', row_limit=0)  
-```  
 
 Read data in chunks of `chunksize` (number of rows/records)  
 
@@ -78,6 +77,7 @@ Optional arguments:
 
 Note: Datetime conversions only convert the raw SPSS value, which is always a full datetime. If only certain portions are needed (e.g., date, time, year, month, day, etc.), use the `.dt` accessor on that column. The `varFormats` or `varFormatsTuple` metadata attributes can be used to see the original SPSS formats.  
 
+
 Writing  
 ------------------------   
 
@@ -93,6 +93,7 @@ Optional arguments:
  * **metadata** - dictionary of metadata properties and their values (e.g., varLabels, varValueLabels, multRespDefs, etc.)  
  * **kwargs** - can pass metadata properties as separate arguments; these take precedence over those passed through the metadata argument  
 
+
 Appending  
 ------------------------   
 
@@ -106,6 +107,7 @@ Optional arguments:
  * **set_locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode   
   
 Note: Cannot modify metadata when appending new records. Be careful with strings that might be longer than the allowed width. 
+
 
 I/O Module Procedures  
 ========================  
