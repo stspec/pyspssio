@@ -177,7 +177,11 @@ measure_levels = {'unknown': 0,
                   'ordinal': 2,
                   'scale': 3}
 
+measure_levels_str = {v:k for k,v in measure_levels.items()}
+
 alignments = {'left': 0, 'right': 1, 'center': 2}
+
+alignments_str = {v:k for k,v in alignments.items()}
 
 roles = {'input': 0,
          'target': 1,
@@ -187,3 +191,5 @@ roles = {'input': 0,
          'split': 5,
          'frequency': 6,
          'recordid': 7}
+
+roles_str = {v:k for k,v in roles.items()}

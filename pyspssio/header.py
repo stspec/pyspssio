@@ -33,8 +33,11 @@ from constants import (retcodes,
                        missing_value_types,
                        missing_value_types_rev,
                        measure_levels,
+                       measure_levels_str,
                        alignments,
-                       roles)
+                       alignments_str,
+                       roles,
+                       roles_str)
 
 from spssfile import SpssFile
 
@@ -46,7 +49,7 @@ def varFormat_to_varFormatTuple(varFormat):
     if isinstance(varFormat, (tuple, list)):
         return varFormat
 
-    varFormat += '.0'
+    varFormat = varFormat.upper() + '.0'
 
     loc = -1
     for i, ch in enumerate(varFormat):
@@ -309,7 +312,7 @@ class Header(SpssFile):
             retcode = func(self.fh, varName.encode(self.encoding), level)
             if retcode > 0:
                 raise Exception(retcodes.get(retcode))
-            varLevels[varName] = level.value
+            varLevels[varName] = measure_levels_str[level.value]
         return varLevels
         
     @varMeasureLevels.setter
@@ -320,7 +323,7 @@ class Header(SpssFile):
         func.argtypes = [c_int, c_char_p, c_int]
         
         for varName, measureLevel in varMeasureLevels.items():
-            measureLevel = measure_levels.get(measureLevel, measureLevel)
+            measureLevel = measure_levels.get(str(measureLevel).lower(), measureLevel)
             if varName in varNames:
                 retcode = func(self.fh, varName.encode(self.encoding), c_int(measureLevel))
                 if retcode > 0:
@@ -344,7 +347,7 @@ class Header(SpssFile):
             retcode = func(self.fh, varName.encode(self.encoding), alignment)
             if retcode > 0:
                 raise Exception(retcodes.get(retcode))
-            alignments[varName] = alignment.value
+            alignments[varName] = alignments_str[alignment.value]
         return alignments
     
     @varAlignments.setter
@@ -355,7 +358,7 @@ class Header(SpssFile):
         func.argtypes = [c_int, c_char_p, c_int]
         
         for varName, alignment in varAlignments.items():
-            alignment = alignments.get(alignment, alignment)
+            alignment = alignments.get(str(alignment).lower(), alignment)
             if varName in varNames:
                 retcode = func(self.fh, varName.encode(self.encoding), alignment)
                 if retcode > 0:
@@ -449,7 +452,7 @@ class Header(SpssFile):
             if retcode > 0:
                 raise Exception(retcodes.get(retcode))
             else:
-                varRoles[varName] = role.value
+                varRoles[varName] = roles_str[role.value]
                 
         return varRoles
             
@@ -460,7 +463,7 @@ class Header(SpssFile):
         func.argtypes = [c_int, c_char_p, c_int]
         
         for varName, role in varRoles.items():
-            role = roles.get(role, role)
+            role = roles.get(str(role).lower(), role)
             if varName in varNames:
                 retcode = func(self.fh, varName.encode(self.encoding), role)
                 if retcode > 0:
