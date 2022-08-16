@@ -35,8 +35,8 @@ package_data['pyspssio'].append('spssio/win64/*.*')
 package_data['pyspssio'].append('spssio/macos/*.*')
 # Linux
 package_data['pyspssio'].append('spssio/lin64/*.*')
-package_data['pyspssio'].append('spssio/plinux64/*.*')
-package_data['pyspssio'].append('spssio/zlinux64/*.*')
+#package_data['pyspssio'].append('spssio/plinux64/*.*')
+#package_data['pyspssio'].append('spssio/zlinux64/*.*')
 
 setup(
     name='pyspssio',
