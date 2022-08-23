@@ -131,7 +131,7 @@ class Writer(Header):
                     failed_to_set[attr] = e
                     
         if failed_to_set:
-            print('WARNING! Errors occurred while settings attribtues...')
+            print('WARNING! Errors occurred while setting attributes...')
             for attr, error in failed_to_set.items():
                 print('\n\t' + attr + ':', error, '\n')
                     
