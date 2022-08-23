@@ -23,20 +23,9 @@ from pandas.api.types import is_numeric_dtype, is_string_dtype, is_object_dtype,
 from ctypes import c_int, c_double, c_char_p
 
 from constants import (retcodes,
-                       spss_formats,
-                       spss_formats_rev,
-                       spss_formats_simple,
-                       spss_formats_simple_rev,
                        spss_string_formats,
-                       spss_date_formats,
-                       spss_time_formats,
-                       spss_datetime_formats,
-                       spss_datetime_formats_to_convert,
-                       spss_origin_offset,
-                       s_to_ns,
-                       max_lengths,
-                       missing_value_types,
-                       missing_value_types_rev)
+                       SPSS_ORIGIN_OFFSET,
+                       SPSS_MAX_LONGSTRING)
 
 import config
 from header import Header, varFormat_to_varFormatTuple
@@ -110,7 +99,7 @@ class Writer(Header):
         # setup varTypes, formats, levels
         for col, dtype in dtypes.items():           
             if metadata['varTypes'].get(col) or is_string_dtype(dtypes.get(col)) or is_object_dtype(dtypes.get(col)):
-                varType = min(max_lengths['SPSS_MAX_LONGSTRING'],
+                varType = min(SPSS_MAX_LONGSTRING,
                               max(metadata['varTypes'].get(col, 1),
                                   df[col].fillna('').apply(lambda x: (x if hasattr(x, 'decode') else len(str(x).encode(encoding)))).max()))
                 varTypes[col] = varType
@@ -179,7 +168,7 @@ class Writer(Header):
                         
                     # datetime
                     elif is_datetime64_any_dtype(dtypes[col]):
-                        value = (value - pd_origin).total_seconds() + spss_origin_offset
+                        value = (value - pd_origin).total_seconds() + SPSS_ORIGIN_OFFSET
                         retcode = writeN(self.fh, varHandles[col], value)
                         if retcode > 0:
                             raise Exception(retcodes.get(retcode))
@@ -228,7 +217,7 @@ class Writer(Header):
                         b'' if pd.isna(x) else x.encode(encoding))
                     ).ljust(bufferSize, string_padder))
             elif is_datetime64_any_dtype(dtypes[col.name]):
-                return np.nan_to_num((col - pd_origin).dt.total_seconds() + spss_origin_offset, nan=sysmis)
+                return np.nan_to_num((col - pd_origin).dt.total_seconds() + SPSS_ORIGIN_OFFSET, nan=sysmis)
             else:
                 return np.nan_to_num(col, nan=sysmis)
                             

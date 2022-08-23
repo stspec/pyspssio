@@ -24,21 +24,12 @@ from ctypes import (Structure,
                     c_char, c_char_p)
 
 from constants import (retcodes,
-                       spss_formats,
-                       spss_formats_rev,
-                       spss_formats_simple,
-                       spss_formats_simple_rev,
-                       spss_date_formats,
-                       spss_time_formats,
-                       spss_datetime_formats,
                        spss_datetime_formats_to_convert,
-                       spss_origin_offset,
-                       s_to_ns,
-                       max_lengths,
-                       missing_value_types,
-                       missing_value_types_rev)
+                       SPSS_ORIGIN_OFFSET,
+                       S_TO_NS)
 
 from header import Header
+
 
 
 
@@ -88,8 +79,7 @@ class Reader(Header):
        
         if row_offset:
             self._seekNextCase(row_offset)
-            
-           
+                      
     def __iter__(self):            
         return self
    
@@ -104,8 +94,6 @@ class Reader(Header):
             del self.spssio
             raise StopIteration()
 
-       
-     
     def _seekNextCase(self, caseNumber):
         self.spssio.spssSeekNextCase(self.fh, c_long(caseNumber))
        
@@ -216,7 +204,6 @@ class Reader(Header):
                             numeric_slices.append(s)                                        
             offset += nbytes          
         
-
         dtype_double = np.dtype('d')
         
         # endianness adjustments
@@ -227,9 +214,7 @@ class Reader(Header):
             
         return dtype_double, numeric_names, numeric_slices, datetime_names, datetime_slices, string_names, string_slices
             
-        
-    
-    def readData(self, row_limit=None, convert_datetimes=True, include_user_missing=True):
+    def read_data(self, row_limit=None, convert_datetimes=True, include_user_missing=True):
                                          
         def load_strings(case):
             return tuple(str(case[self.string_slices[idx]], self.encoding).rstrip()
@@ -251,7 +236,7 @@ class Reader(Header):
             return np.where(arr == self.sysmis, np.nan, arr)
                 
         def convert_dt(arr):                    
-            return ((arr - spss_origin_offset) * s_to_ns).astype('datetime64[ns]', copy=False)             
+            return ((arr - SPSS_ORIGIN_OFFSET) * S_TO_NS).astype('datetime64[ns]', copy=False)             
 
         # create empty arrays
         n_arr = np.empty(shape=(row_limit, len(self.numeric_names)), dtype=self.dtype_double)
@@ -274,34 +259,31 @@ class Reader(Header):
         if convert_datetimes and len(d_arr):
             d_arr = convert_dt(d_arr)
                      
-        def create_final_df():
-            all_cols = {col: None for col in self.usecols}
-            for idx, col in enumerate(self.datetime_names):
-                all_cols[col] = d_arr[:, idx]
-            for idx, col in enumerate(self.string_names):
-                all_cols[col] = s_arr[: ,idx]
-            for idx, col in enumerate(self.numeric_names):
-                all_cols[col] = n_arr[:, idx]
-            return pd.DataFrame(all_cols, copy=False)
-            
-        # create dataframe
-        df = create_final_df()
+        # create final dataframe
+        all_cols = {col: None for col in self.usecols}
 
-        def drop_user_missing():
-            # drop missing values if specified
+        for idx, col in enumerate(self.datetime_names):
+            all_cols[col] = d_arr[:, idx]
+
+        for idx, col in enumerate(self.string_names):
+            all_cols[col] = s_arr[: ,idx]
+
+        for idx, col in enumerate(self.numeric_names):
+            all_cols[col] = n_arr[:, idx]
+
+        df = pd.DataFrame(all_cols, copy=False)
+
+        # drop user missing values if specified
+        if not include_user_missing:            
             varTypes = self.varTypes
             for col, missing in self.varMissingValues.items():
                 if col in df.columns:
                     df.loc[df[col].isin(missing.get('values', [])), col] = '' if varTypes[col] else np.nan
-                    high = missing.get('high')
-                    low = missing.get('low')
+                    high = missing.get('hi')
+                    low = missing.get('lo')
                     if high is not None and low is not None:
                         df.loc[df[col].between(low, high, inclusive='both'), col] = np.nan
         
-        # drop user missing
-        if not include_user_missing:
-            drop_user_missing()
-
         # use user-defined string nan value
         if self.string_nan != '':
             df = df.replace('', self.string_nan, regex=False)

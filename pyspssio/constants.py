@@ -13,6 +13,31 @@
 # is available in the LICENSE document.
 # =============================================================================
 
+# max string lengths
+SPSS_MAX_VARNAME        = 64
+SPSS_MAX_SHORTVARNAME   = 8
+SPSS_MAX_SHORTSTRING    = 8
+SPSS_MAX_IDSTRING       = 64
+SPSS_MAX_LONGSTRING     = 32767
+SPSS_MAX_VALLABEL       = 120
+SPSS_MAX_VARLABEL       = 256
+SPSS_MAX_ENCODING       = 64
+SPSS_MAX_7SUBTYPE       = 40
+SPSS_MAX_PASSWORD       = 10
+
+# user missing value types
+SPSS_NO_MISSVAL         = 0
+SPSS_ONE_MISSVAL        = 1
+SPSS_TWO_MISSVAL        = 2
+SPSS_THREE_MISSVAL      = 3
+SPSS_MISS_RANGE         = -2
+SPSS_MISS_RANGEANDVAL   = -3
+
+# datetime constants for conversions
+SPSS_ORIGIN_OFFSET = 12219379200
+S_TO_NS = 10 ** 9
+
+# return codes
 retcodes = {
     0: 'SPSS_OK',
     1: 'SPSS_FILE_OERROR',
@@ -91,7 +116,6 @@ retcodes = {
     -15: 'SPSS_EMPTY_DEW'
     }
 
-
 spss_formats = {
     1: 'SPSS_FMT_A',            # Alphanumeric
     2: 'SPSS_FMT_AHEX',         # Alphanumeric hexadecimal
@@ -133,7 +157,6 @@ spss_formats = {
     }
 
 spss_formats_rev = {v:k for k,v in spss_formats.items()}
-
 spss_formats_simple = {k:v.split('_', 2)[-1] for k,v in spss_formats.items()}
 spss_formats_simple_rev = {v:k for k,v in spss_formats_simple.items()}
 
@@ -144,9 +167,6 @@ spss_time_formats = [21,85]
 spss_datetime_formats = [22,86]
 
 spss_datetime_formats_to_convert = spss_date_formats + spss_time_formats + spss_datetime_formats
-
-spss_origin_offset = 12219379200
-s_to_ns = 10**9
 
 max_lengths = {
     'SPSS_MAX_VARNAME':            64,     # Variable name 

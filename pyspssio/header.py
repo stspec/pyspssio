@@ -22,16 +22,9 @@ from ctypes import (Structure,
                     c_char, c_char_p)
 
 from constants import (retcodes,
-                       spss_formats,
-                       spss_formats_rev,
                        spss_formats_simple,
                        spss_formats_simple_rev,
-                       spss_date_formats,
-                       spss_time_formats,
-                       spss_datetime_formats,
                        max_lengths,
-                       missing_value_types,
-                       missing_value_types_rev,
                        measure_levels,
                        measure_levels_str,
                        alignments,
@@ -39,8 +32,7 @@ from constants import (retcodes,
                        roles,
                        roles_str)
 
-from spssfile import SpssFile
-
+from spssfile import SPSSFile
 
   
 
@@ -67,7 +59,7 @@ def varFormat_to_varFormatTuple(varFormat):
 
 
 
-class Header(SpssFile):
+class Header(SPSSFile):
         
     def __init__(self, *args, **kwargs):
        super().__init__(*args, **kwargs)
@@ -809,7 +801,6 @@ class Header(SpssFile):
                 if retcode > 0:
                     raise Exception(retcodes.get(retcode)) 
                                  
-
     def commitHeader(self):
         retcode = self.spssio.spssCommitHeader(self.fh)
         if retcode:

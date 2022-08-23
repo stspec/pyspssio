@@ -21,10 +21,10 @@ module_path = os.path.dirname(__file__)
 sys.path.insert(0, module_path)
 
 #from constants import *
-from spssfile import *
-from header import *
-from reader import *
-from writer import *
+#from spssfile import *
+#from header import *
+from reader import Reader
+from writer import Writer
 from user_functions import *
 
 import config

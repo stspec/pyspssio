@@ -102,7 +102,7 @@ def read_sav(spss_file, row_offset=0, row_limit=None, usecols=None,
                     include_user_missing=include_user_missing,
                     set_locale=set_locale, string_nan=string_nan) as sav:
             metadata = sav.metadata
-            df = sav.readData(sav.total_rows, convert_datetimes, include_user_missing)
+            df = sav.read_data(sav.total_rows, convert_datetimes, include_user_missing)
         return df, metadata
 
 

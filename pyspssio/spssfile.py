@@ -18,16 +18,17 @@ import os
 import platform
 import locale
 import warnings
+import re
 
 from ctypes import *
 
 import config
-from constants import retcodes, max_lengths
+from constants import retcodes, SPSS_MAX_ENCODING
 
 
 
 
-class SpssFile(object):
+class SPSSFile(object):
         
     def __init__(self, spss_file, mode='rb', unicode=True, set_locale=None):
         if config.spssio_module is None:
@@ -37,35 +38,36 @@ class SpssFile(object):
         self.filename = spss_file
         self.mode = mode[0] + 'b'   # always open/close in byte mode        
               
-        # load module        
-        def load_libs(libs, loader):
-            loaded_libs = []
-            for lib in libs:
-                try:
-                    loaded_libs.append(loader(lib))
-                except:
-                    pass
-            return loaded_libs
-        
-        loader = WinDLL if platform.system().lower().startswith('win') else CDLL
+        # load I/O module      
+        pf = platform.system().lower()
+
+        if pf.startswith('win'):
+            loader = WinDLL
+            lib_pat = r'.*\.dll.*'
+        elif pf.startswith('darwin'):
+            loader = CDLL
+            lib_pat = r'.*\.dylib.*'
+        else:
+            loader = CDLL
+            lib_pat = r'.*\.so.*'
+
         path = os.path.dirname(config.spssio_module)
         libs = [os.path.join(path, lib) for lib in sorted(os.listdir(path))]
-        loaded_libs = load_libs(libs, loader)
-        loaded_libs = load_libs(libs, loader)
-        self.spssio = loader(config.spssio_module)
-        
-        """ 
-        modes
-        ------
-        write copy not implemented, but write function allows passing metadata object
-        append mode does not allow modifying data dictionary, so be careful with string variables as width cannot be changed
-        """        
-        self._modes = {'rb': {'open': self.spssio.spssOpenReadU8, 'close': self.spssio.spssCloseRead},        # read
-                       'wb': {'open': self.spssio.spssOpenWriteU8, 'close': self.spssio.spssCloseWrite},      # write
-                       'ab': {'open': self.spssio.spssOpenAppendU8, 'close': self.spssio.spssCloseAppend}     # append
+        libs = [lib for lib in libs if re.fullmatch(lib_pat, lib, re.I)]
+
+        if pf.startswith('win'):
+            loaded_libs = self._load_libs(libs, loader)
+            self.spssio = loader(config.spssio_module)
+        else:
+            loaded_libs = self._load_libs(libs, loader)
+            self.spssio = loader(config.spssio_module)
+      
+        # functions for opening and closing 
+        self._modes = {'rb': {'open': self.spssio.spssOpenRead, 'close': self.spssio.spssCloseRead},        # read
+                       'wb': {'open': self.spssio.spssOpenWrite, 'close': self.spssio.spssCloseWrite},      # write
+                       'ab': {'open': self.spssio.spssOpenAppend, 'close': self.spssio.spssCloseAppend}     # append
                        }         
-        
-                
+                       
         # initialize in unicode or codepage mode       
         self.interfaceEncoding = unicode
         
@@ -75,14 +77,14 @@ class SpssFile(object):
         # file handle and encoding
         if self.mode in ['rb','ab']:
             self.mode = 'rb'
-            self.fh = self.openSPSS()    
+            self.fh = self.spssOpen()    
             self.encoding = self.fileEncoding
-            self.closeSPSS()
+            self.spssClose()
             self.interfaceEncoding = (self.encoding.lower() in ['utf-8', 'utf8'])
                     
         # open file with proper interface encoding and specified mode
         self.mode = mode[0] + 'b'
-        self.fh = self.openSPSS()
+        self.fh = self.spssOpen()
         self.encoding = self.fileEncoding
         
         # test encoding compatibility
@@ -97,9 +99,32 @@ class SpssFile(object):
         return self
     
     def __exit__(self, exception_type, exception_value, exception_traceback):
-        self.closeSPSS()
+        self.spssClose()
         self.setLocale(self.system_locale)
         del self.spssio
+
+    def _load_libs(self, libs, loader):
+        lib_status = {}
+        lib_errors = {}
+
+        try_num = 0
+        success = False
+
+        while not success and try_num < len(libs):
+            for lib in libs:
+                try:
+                    loader(lib)
+                    status = True
+                except Exception as e:
+                    status = False
+                    lib_errors[lib] = e
+                finally:
+                    lib_status[lib] = status
+
+            success = all(lib_status.values())
+            try_num += 1
+
+        return {os.path.basename(lib): (status if status else lib_errors[lib]) for lib, status in lib_status.items()}
         
     def _hostSysmisVal(self):
         func = self.spssio.spssHostSysmisVal
@@ -130,7 +155,7 @@ class SpssFile(object):
     @property
     def fileEncoding(self):
         func = self.spssio.spssGetFileEncoding
-        pszEncoding = create_string_buffer(max_lengths['SPSS_MAX_ENCODING'] + 1)
+        pszEncoding = create_string_buffer(SPSS_MAX_ENCODING + 1)
         retcode = func(self.fh, pszEncoding)
         if retcode > 0:
             raise Exception(retcodes.get(retcode))
@@ -155,7 +180,7 @@ class SpssFile(object):
         bCompatible = c_int()
         return func(self.fh, bCompatible)
     
-    def openSPSS(self):
+    def spssOpen(self):
         with open(self.filename, self.mode) as f:
             fh = c_int(f.fileno())
         filename_adjusted = os.path.expanduser(os.path.abspath(self.filename)).encode('utf-8')
@@ -165,7 +190,7 @@ class SpssFile(object):
             raise Exception(retcodes.get(retcode))
         return fh           
     
-    def closeSPSS(self):
+    def spssClose(self):
         func = self._modes[self.mode]['close']
         retcode = func(self.fh)
         if retcode > 0:
