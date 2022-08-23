@@ -122,16 +122,18 @@ class Writer(Header):
         attr_to_ignore = ['caseCount', 'varNames', 'varTypes', 'varFormatsTuple']
         attrs = [attr for attr in dir(self) if attr[0] != '_' and attr not in attr_to_ignore]
         
-        failed_to_set = []
+        failed_to_set = {}
         for attr, v in metadata.items():
-            if attr in attrs:
+            if attr in attrs and v:
                 try:
                     setattr(self, attr, v)
-                except:
-                    failed_to_set.append(attr)
+                except Exception as e:
+                    failed_to_set[attr] = e
                     
         if failed_to_set:
-            print('WARNING! Failed to set the following attributes: \n\t' + '\n\t'.join(failed_to_set))
+            print('WARNING! Errors occurred while settings attribtues...')
+            for attr, error in failed_to_set.items():
+                print('\n\t' + attr + ':', error, '\n')
                     
         # commit header
         self.commitHeader()

@@ -750,8 +750,8 @@ class Header(SPSSFile):
             elif missingFormat > 0:
                 varMissingValues[varName] = {'values': missingValues[:missingFormat]}
             elif missingFormat < 0:
-                varMissingValues[varName] = {'hi': missingValues[0],
-                                             'lo': missingValues[1],
+                varMissingValues[varName] = {'lo': missingValues[0],
+                                             'hi': missingValues[1],
                                              'values': missingValues[2:][:abs(missingFormat)-2]}
               
         return {k:v for k,v in varMissingValues.items() if v}
@@ -779,14 +779,14 @@ class Header(SPSSFile):
                     raise Exception(retcodes.get(retcode)) 
             elif varTypes.get(varName) == 0:
                 func = self.spssio.spssSetVarNMissingValues
-                func.argtypes = [c_int, c_char_p, c_int, c_double, c_double, c_double]                
-                high = missingValues.get('hi')
-                low = missingValues.get('lo')                
+                func.argtypes = [c_int, c_char_p, c_int, c_double, c_double, c_double] 
+                low = missingValues.get('lo') 
+                high = missingValues.get('hi')                               
                 discrete_values = missingValues.get('values', [])
                 if high is not None and low is not None:
                     missingFormat = max(-3, -2 - len(discrete_values))
-                    val_1 = high
-                    val_2 = low  
+                    val_1 = low
+                    val_2 = high 
                     val_3 = self.sysmis if missingFormat == -2 else discrete_values[0]                     
                 else:
                     missingFormat = len(discrete_values)

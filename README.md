@@ -121,7 +121,7 @@ For example, instead of calling `spssSetVarLabel` manually for each variable, us
 All of the I/O module procedures can be accessed directly with `self.spssio.[procedure]`.  
 
 
-SpssFile  
+SPSSFile  
 ------------------------  
 
 spssOpenRead    
