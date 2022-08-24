@@ -98,10 +98,13 @@ class SPSSFile(object):
     def __enter__(self):
         return self
     
-    def __exit__(self, exception_type, exception_value, exception_traceback):
+    def _exit_cleanup(self):
         self.spssClose()
         self.setLocale(self.system_locale)
         del self.spssio
+                       
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        self._exit_cleanup()        
 
     def _load_libs(self, libs, loader):
         lib_status = {}

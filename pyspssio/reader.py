@@ -84,15 +84,17 @@ class Reader(Header):
         return self
    
     def __next__(self):
-        if self.chunk < self.total_rows:
-            row_limit = min(self.chunksize, self.total_rows - self.chunk)
-            df = self.readData(row_limit, self.convert_datetimes, self.include_user_missing)
-            self.chunk += self.chunksize
-            return df
-        else:
-            self.closeSPSS()
-            del self.spssio
-            raise StopIteration()
+        try:
+            if self.chunk < self.total_rows:
+                row_limit = min(self.chunksize, self.total_rows - self.chunk)
+                df = self.read_data(row_limit, self.convert_datetimes, self.include_user_missing)
+                self.chunk += self.chunksize
+                return df  
+            else:
+                raise StopIteration()
+        except Exception:
+            self._exit_cleanup()
+            raise
 
     def _seekNextCase(self, caseNumber):
         self.spssio.spssSeekNextCase(self.fh, c_long(caseNumber))
