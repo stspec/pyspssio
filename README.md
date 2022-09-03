@@ -1,370 +1,371 @@
 
 pyspssio
-========================  
+========================
 
-Python package for reading and writing SPSS (.sav and .zsav) files to/from pandas dataframes.  
+Python package for reading and writing SPSS (.sav and .zsav) files to/from pandas dataframes.
 
 This package uses the I/O Module for SPSS Statistics v27 available at https://www.ibm.com/.
 
 **WARNING**: This is an early release with limited testing. Use with caution.
 
-Motivation  
-========================  
+Motivation
+========================
 
-Main reason for creating this package is to fill gaps by other similar packages.  
+Main reason for creating this package is to fill gaps by other similar packages.
 
-`savReaderWriter`  
- * doesn't support python > 3.5  
-   
-`pyreadstat`   
- * doesn't read or write multiple response set definitions  
- * datetime conversion quirks  
- * issues reading/writing long string variables (https://github.com/Roche/pyreadstat/issues/119)  
+`savReaderWriter`
+ * doesn't support python > 3.5
+ * not very user friendly
 
-`pyspssio` supports recent versions of python and can read/write most SPSS file metadata properties. The `usecols` argument when reading files also accepts a callable for more flexible variable selection.  
+`pyreadstat`
+ * doesn't read or write multi response set definitions
+ * datetime conversion quirks
+ * issues reading/writing long string variables (https://github.com/Roche/pyreadstat/issues/119)
+
+`pyspssio` supports recent versions of python and can read/write most SPSS file metadata properties. The `usecols` argument when reading files also accepts a callable for more flexible variable selection.
 
 
-Basic Usage  
-========================  
+Basic Usage
+========================
 
 
 Installation
 
-```  
-pip install pyspssio  
-```  
+```
+pip install pyspssio
+```
 
-Import  
+Import
 
-```  
-import pyspssio  
-```  
+```
+import pyspssio
+```
 
 
-Reading  
-------------------------  
+Reading
+------------------------
 
-Read data and metadata  
+Read data and metadata
 
-```  
-df, meta = pyspssio.read_sav('spss_file.sav')  
-```  
+```
+df, meta = pyspssio.read_sav('spss_file.sav')
+```
 
-Read metadata only  
+Read metadata only
 
 ```
 meta = pyspssio.read_metadata('spss_file.sav')
 ```
 
-Read data in chunks of `chunksize` (number of rows/records)  
+Read data in chunks of `chunksize` (number of rows/records)
 
-```  
-for df in pyspssio.read_sav('spss_file.sav', chunksize=1000):  
-#   do something   
-```  
+```
+for df in pyspssio.read_sav('spss_file.sav', chunksize=1000):
+#   do something
+```
 
-Note: metadata is not returned when reading in chunks  
+Note: metadata is not returned when reading in chunks
 
-Optional arguments:  
- * **row_offset** - row number to start at (0-indexed)  
- * **row_limit** - maximum number of rows to return  
- * **usecols** - columns/variables to read (str, tuple, list, callable)  
- * **convert_datetimes** - (True - default) to convert SPSS date, time, datetime variables to python/pandas datetime (default True)  
- * **include_user_missing** - (True - default) keep user missing values in the dataframe or (False) replace with '' (strings) or NaN (numeric)  
- * **chunksize** - chunksize to read in chunks (if defined returns generator object)  
- * **set_locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode 
- * **string_nan** - define how empty strings should be returned  
+Optional arguments:
+ * **row_offset** - row number to start at (0-indexed)
+ * **row_limit** - maximum number of rows to return
+ * **usecols** - columns/variables to read (str, tuple, list, callable)
+ * **convert_datetimes** - (True - default) to convert SPSS date, time, datetime variables to python/pandas datetime (default True)
+ * **include_user_missing** - (True - default) keep user missing values in the dataframe or (False) replace with '' (strings) or NaN (numeric)
+ * **chunksize** - chunksize to read in chunks (if defined returns generator object)
+ * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
+ * **string_nan** - define how empty strings should be returned
 
-Note: Datetime conversions only convert the raw SPSS value, which is always a full datetime. If only certain portions are needed (e.g., date, time, year, month, day, etc.), use the `.dt` accessor on that column. The `varFormats` or `varFormatsTuple` metadata attributes can be used to see the original SPSS formats.  
-
-
-Writing  
-------------------------   
-
-Write dataframe to file.  
-
-```  
-pyspssio.write_sav(`spss_file.sav`, df)  
-```  
-
-Optional arguments:  
- * **unicode** - (True - default) for 'UTF-8' or (False) for codepage mode  
- * **set_locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode  
- * **metadata** - dictionary of metadata properties and their values (e.g., varLabels, varValueLabels, multRespDefs, etc.)  
- * **kwargs** - can pass metadata properties as separate arguments; these take precedence over those passed through the metadata argument  
+Note: Datetime conversions only convert the raw SPSS value, which is always a full datetime. If only certain portions are needed (e.g., date, time, year, month, day, etc.), use the `.dt` accessor on that column. The `var_formats` or `var_formats_tuple` metadata attributes can be used to see the original SPSS formats.
 
 
-Appending  
-------------------------   
+Writing
+------------------------
+
+Write dataframe to file.
+
+```
+pyspssio.write_sav(`spss_file.sav`, df)
+```
+
+Optional arguments:
+ * **unicode** - (True - default) for 'UTF-8' or (False) for codepage mode
+ * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
+ * **metadata** - dictionary of metadata properties and their values (e.g., varLabels, varValueLabels, multRespDefs, etc.)
+ * **kwargs** - can pass metadata properties as separate arguments; these take precedence over those passed through the metadata argument
+
+
+Appending
+------------------------
 
 Append existing SPSS file with new records.
 
-```  
-pyspssio.write_sav(`spss_file.sav`, df)  
-```  
+```
+pyspssio.write_sav(`spss_file.sav`, df)
+```
 
-Optional arguments:  
- * **set_locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode   
-  
-Note: Cannot modify metadata when appending new records. Be careful with strings that might be longer than the allowed width. 
+Optional arguments:
+ * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
 
+Note: Cannot modify metadata when appending new records. Be careful with strings that might be longer than the allowed width.
 
-I/O Module Procedures  
-========================  
 
-List of available I/O module procedures and class for which they fall under. See official documentation for details on each one.  
+I/O Module Procedures
+========================
 
-Some of these procedures are implemented as hidden methods referenced within a more generalized function/property.  
+List of available I/O module procedures and class for which they fall under. See official documentation for details on each one.
 
-For example, instead of calling `spssSetVarLabel` manually for each variable, users should assign all variable labels at once by setting `self.varLabels = {var1: label1, var2: label2, ...}`.   
+Some of these procedures are implemented as hidden methods referenced within a more generalized function/property.
 
-All of the I/O module procedures can be accessed directly with `self.spssio.[procedure]`.  
+For example, instead of calling `spssSetVarLabel` manually for each variable, users should assign all variable labels at once by setting `self.var_labels = {var1: label1, var2: label2, ...}`.
 
+All I/O module procedures can be accessed directly with `self.spssio.[procedure]`.
 
-SPSSFile  
-------------------------  
 
-spssOpenRead    
+SPSSFile
+------------------------
 
-spssCloseRead    
+spssOpenRead
 
-spssOpenWrite   
- 
-spssCloseWrite    
+spssCloseRead
 
-spssOpenAppend   
- 
-spssCloseAppend    
+spssOpenWrite
 
-spssHostSysmisVal    
+spssCloseWrite
 
-spssSetLocale 
+spssOpenAppend
 
-spssGetInterfaceEncoding  
-  
-spssSetInterfaceEncoding    
+spssCloseAppend
 
-spssGetFileEncoding    
+spssHostSysmisVal
 
-spssIsCompatibleEncoding    
+spssSetLocale
 
-spssGetCompression    
+spssGetInterfaceEncoding
 
-spssSetCompression    
+spssSetInterfaceEncoding
 
-spssGetReleaseInfo    
+spssGetFileEncoding
 
-spssGetNumberofCases    
+spssIsCompatibleEncoding
 
-spssGetNumberofVariables    
+spssGetCompression
 
+spssSetCompression
 
-Header  
-------------------------  
+spssGetReleaseInfo
 
-spssGetFileAttributes  
+spssGetNumberofCases
 
-spssSetFileAttributes  
+spssGetNumberofVariables
 
-spssGetVarNames  
 
-spssSetVarName  
+Header
+------------------------
 
-spssGetVarHandle  
+spssGetFileAttributes
 
-spssGetVarPrintFormat  
+spssSetFileAttributes
 
-spssSetVarPrintFormat  
+spssGetVarNames
 
-spssSetVarWriteFormat  
+spssSetVarName
 
-spssGetVarMeasureLevel  
+spssGetVarHandle
 
-spssSetVarMeasureLevel  
+spssGetVarPrintFormat
 
-spssGetVarAlignment  
+spssSetVarPrintFormat
 
-spssSetVarAlignment  
+spssSetVarWriteFormat
 
-spssGetVarColumnWidth  
+spssGetVarMeasureLevel
 
-spssSetVarColumnWidth  
+spssSetVarMeasureLevel
 
-spssGetVarLabelLong  
+spssGetVarAlignment
 
-spssSetVarLabel  
+spssSetVarAlignment
 
-spssGetVarRole  
+spssGetVarColumnWidth
 
-spssSetVarRole  
+spssSetVarColumnWidth
 
-spssGetVarCValueLabels  
+spssGetVarLabelLong
 
-spssSetVarCValueLabel  
+spssSetVarLabel
 
-spssGetVarNValueLabels  
+spssGetVarRole
 
-spssSetVarNValueLabel  
+spssSetVarRole
 
-spssGetVarCMissingValues  
+spssGetVarCValueLabels
 
-spssSetVarCMissingValues  
+spssSetVarCValueLabel
 
-spssGetVarNMissingValues  
+spssGetVarNValueLabels
 
-spssSetVarNMissingValues  
+spssSetVarNValueLabel
 
-spssGetMultRespDefs  
+spssGetVarCMissingValues
 
-spssSetMultRespDefs  
+spssSetVarCMissingValues
 
-spssGetCaseSize  
+spssGetVarNMissingValues
 
-spssGetCaseWeightVar  
+spssSetVarNMissingValues
 
-spssSetCaseWeightVar  
+spssGetMultRespDefs
 
-spssCommitHeader  
+spssSetMultRespDefs
 
+spssGetCaseSize
 
-Reader  
-------------------------  
+spssGetCaseWeightVar
 
-spssSeekNextCase  
+spssSetCaseWeightVar
 
-spssWholeCaseIn  
+spssCommitHeader
 
 
-Writer  
-------------------------  
+Reader
+------------------------
 
-spssWholeCaseOut  
+spssSeekNextCase
 
-spssSetValueChar   
+spssWholeCaseIn
 
-spssSetValueNumeric   
 
-spssCommitCaseRecord   
+Writer
+------------------------
 
+spssWholeCaseOut
 
-Not Implemented (yet)  
-------------------------  
+spssSetValueChar
 
-spssAddMultRespDefC  
+spssSetValueNumeric
 
-spssAddMultRespDefExt  
+spssCommitCaseRecord
 
-spssAddMultRespDefN  
 
-spssGetMultRespCount  
+Not Implemented (yet)
+------------------------
 
-spssGetMultRespDefByIndex  
+spssAddMultRespDefC
 
-spssGetMultRespDefsEx  
+spssAddMultRespDefExt
 
-spssConvertDate - manual conversion instead  
+spssAddMultRespDefN
 
-spssConvertSPSSDate - manual conversion instead  
+spssGetMultRespCount
 
-spssConvertSPSSTime - manual conversion instead  
+spssGetMultRespDefByIndex
 
-spssConvertTime - manual conversion instead  
+spssGetMultRespDefsEx
 
-spssCopyDocuments  
+spssConvertDate - manual conversion instead
 
-spssGetDEWFirst  
+spssConvertSPSSDate - manual conversion instead
 
-spssGetDEWGUID  
+spssConvertSPSSTime - manual conversion instead
 
-spssGetDewInfo  
+spssConvertTime - manual conversion instead
 
-spssGetDEWNext  
+spssCopyDocuments
 
-spssSetDEWFirst  
+spssGetDEWFirst
 
-spssSetDEWGUID  
+spssGetDEWGUID
 
-spssSetDEWNext  
+spssGetDewInfo
 
-spssGetDateVariables  
+spssGetDEWNext
 
-spssGetEstimatedNofCases  
+spssSetDEWFirst
 
-spssGetFileAttribute - uses spssGetFileAttributes instead  
+spssSetDEWGUID
 
-spssGetFileCodePage  
+spssSetDEWNext
 
-spssGetIdString  
+spssGetDateVariables
 
-spssGetSystemString  
+spssGetEstimatedNofCases
 
-spssGetTextInfo  
+spssGetFileAttribute - uses spssGetFileAttributes instead
 
-spssGetTimeStamp  
+spssGetFileCodePage
 
-spssGetValueChar - uses spssWholeCaseIn instead  
+spssGetIdString
 
-spssGetValueNumeric - uses spssWholeCaseIn instead  
+spssGetSystemString
 
-spssAddVarAttribute  
+spssGetTextInfo
 
-spssGetVarAttributes  
+spssGetTimeStamp
 
-spssGetVarCompatName  
+spssGetValueChar - uses spssWholeCaseIn instead
 
-spssGetVarCValueLabel - uses spssGetVarCValueLabels instead  
+spssGetValueNumeric - uses spssWholeCaseIn instead
 
-spssGetVarCValueLabelLong - uses spssGetVarCValueLabels instead  
+spssAddVarAttribute
 
-spssGetVariableSets  
+spssGetVarAttributes
 
-spssGetVarInfo  
+spssGetVarCompatName
 
-spssGetVarLabel - uses spssGetVarLabelLong instead  
+spssGetVarCValueLabel - uses spssGetVarCValueLabels instead
 
-spssGetVarNValueLabel - uses spssGetVarNValueLabels instead  
+spssGetVarCValueLabelLong - uses spssGetVarCValueLabels instead
 
-spssGetVarNValueLabelLong - uses spssGetVarNValueLabels instead  
+spssGetVariableSets
 
-spssGetVarWriteFormat - uses spssGetVarPrintFormat instead (print/write formats tied together)  
+spssGetVarInfo
 
-spssLowHighVal  
+spssGetVarLabel - uses spssGetVarLabelLong instead
 
-spssOpenAppendEx  
+spssGetVarNValueLabel - uses spssGetVarNValueLabels instead
 
-spssOpenReadEx  
+spssGetVarNValueLabelLong - uses spssGetVarNValueLabels instead
 
-spssOpenWriteCopy  
+spssGetVarWriteFormat - uses spssGetVarPrintFormat instead (print/write formats tied together)
 
-spssOpenWriteCopyEx  
+spssLowHighVal
 
-spssOpenWriteCopyExDict  
+spssOpenAppendEx
 
-spssOpenWriteCopyExFile  
+spssOpenReadEx
 
-spssOpenWriteEx  
+spssOpenWriteCopy
 
-spssQueryType7  
+spssOpenWriteCopyEx
 
-spssReadCaseRecord - uses spssWholeCaseIn instead  
+spssOpenWriteCopyExDict
 
-spssSetDateVariables  
+spssOpenWriteCopyExFile
 
-spssSetIdString   
+spssOpenWriteEx
 
-spssSetTempDir  
+spssQueryType7
 
-spssSetTextInfo  
+spssReadCaseRecord - uses spssWholeCaseIn instead
 
-spssSetVarAttributes  
+spssSetDateVariables
 
-spssSetVarCValueLabels - uses spssSetVarCValueLabel instead  
+spssSetIdString
 
-spssSetVariableSets  
+spssSetTempDir
 
-spssSetVarNValueLabels - uses spssSetVarNValueLabel instead  
+spssSetTextInfo
 
-spssSysmisVal - uses spssHostSysmisVal instead  
+spssSetVarAttributes
 
-spssValidateVarname  
+spssSetVarCValueLabels - uses spssSetVarCValueLabel instead
+
+spssSetVariableSets
+
+spssSetVarNValueLabels - uses spssSetVarNValueLabel instead
+
+spssSysmisVal - uses spssHostSysmisVal instead
+
+spssValidateVarname
 
