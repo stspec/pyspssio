@@ -17,6 +17,7 @@ import os
 import platform
 import warnings
 
+from .errors import SPSSError, SPSSWarning
 from .spssfile import SPSSFile
 from .header import Header
 from .reader import Reader

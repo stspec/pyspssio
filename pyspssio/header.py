@@ -17,8 +17,9 @@ import re
 
 from ctypes import *
 
-from .errors import SPSSError, warn_or_raise
+from .errors import warn_or_raise
 from .constants import *
+from .constants_map import *
 from .spssfile import SPSSFile
 
 
@@ -784,7 +785,12 @@ class Header(SPSSFile):
 
     @property
     def var_missing_values(self):
-        """Get or set missing values"""
+        """Get or set missing values
+
+        For missing ranges, the following keywords can be used inplace of numeric values:
+            - low: -inf, lo, low, lowest
+            - high: inf, hi, high, highest
+        """
 
         var_missing_values = {}
         for var_name, var_type in self.var_types.items():
@@ -798,14 +804,13 @@ class Header(SPSSFile):
                 var_missing_values[var_name] = None
             elif missing_format in [SPSS_ONE_MISSVAL, SPSS_TWO_MISSVAL, SPSS_THREE_MISSVAL]:
                 var_missing_values[var_name] = {"values": missing_values[:missing_format]}
-            elif missing_format == SPSS_MISS_RANGE:
-                var_missing_values[var_name] = {"lo": missing_values[0], "hi": missing_values[1]}
-            elif missing_format == SPSS_MISS_RANGEANDVAL:
-                var_missing_values[var_name] = {
-                    "lo": missing_values[0],
-                    "hi": missing_values[1],
-                    "values": missing_values[2:3],
-                }
+            elif missing_format in [SPSS_MISS_RANGE, SPSS_MISS_RANGEANDVAL]:
+                low, high = missing_values[:2]
+                low = float("-inf") if low <= self.low_value else low
+                high = float("inf") if high >= self.high_value else high
+                var_missing_values[var_name] = {"lo": low, "hi": high}
+                if missing_format == SPSS_MISS_RANGEANDVAL:
+                    var_missing_values[var_name]["values"] = missing_values[2:3]
 
         return {k: v for k, v in var_missing_values.items() if v}
 
@@ -839,12 +844,23 @@ class Header(SPSSFile):
             elif var_type == 0:
                 func = self.spssio.spssSetVarNMissingValues
                 func.argtypes = [c_int, c_char_p, c_int, c_double, c_double, c_double]
+
                 low = missing_values.get("lo")
                 high = missing_values.get("hi")
+
                 discrete_values = missing_values.get("values", [])
-                if high is not None and low is not None:
+
+                if low is not None and high is not None:
+
+                    if str(low) in ["-inf", "lo", "low", "lowest"] or low <= self.low_value:
+                        low = self.low_value
+
+                    if str(high) in ["inf", "hi", "high", "highest"] or high >= self.high_value:
+                        high = self.high_value
+
                     val_1 = low
                     val_2 = high
+
                     if len(discrete_values):
                         missing_format = SPSS_MISS_RANGEANDVAL
                         val_3 = discrete_values[0]
@@ -969,48 +985,97 @@ class Header(SPSSFile):
             )
             warn_or_raise(retcode, func, var_name)
 
+    def _get_var_compat_name(self, var_name):
+        "Returns 8 byte compatible variable name"
+
+        func = self.spssio.spssGetVarCompatName
+        func.argtypes = [c_int, c_char_p, c_char_p]
+
+        var_compat_name = create_string_buffer(SPSS_MAX_SHORTVARNAME + 1)
+        retcode = func(self.fh, var_name.encode(self.encoding), var_compat_name)
+        warn_or_raise(retcode, func, var_name)
+
+        return var_compat_name.value.decode(self.encoding).strip()
+
+    @property
+    def var_compat_names(self):
+        """Returns dictionary of variable names with their compatible 8 byte name counterparts"""
+
+        var_compat_names = {}
+        for var_name in self.var_names:
+            var_compat_names[var_name] = self._get_var_compat_name(var_name)
+
+        return var_compat_names
+
     @property
     def var_sets(self):
         """Get or set variable sets
 
-        DO NOT USE - Not working yet
+        SPSS apparently may use the 8 byte compatible variable names for this property.
+        It's currently not possible to obtain the auto-generated compatible names
+        until the dictionary is committed, which means setting this property potentially
+        requires first comitting a dictionary with all variables, and then rewriting it
+        after obtaining the compatible variable names.
+
+        Set names when created in the normal SPSS application allow spaces and special characters.
+        However, The I/O module returns an SPSS_INVALID_VARSETDEF error when these are included.
+        When an "=" sign is included in the set name, the set name is truncated (same behavior).
         """
+
+        short_to_long_var_names = {
+            var_compat_name: var_name
+            for var_name, var_compat_name in self.var_compat_names.items()
+        }
 
         func = self.spssio.spssGetVariableSets
         clean = self.spssio.spssFreeVariableSets
 
         func.argtypes = [c_int, POINTER(c_char_p)]
-        var_sets = c_char_p()
+        var_sets_string = c_char_p()
 
-        retcode = func(self.fh, var_sets)
+        retcode = func(self.fh, var_sets_string)
         warn_or_raise(retcode, func)
 
         var_sets_dict = {}
 
-        if retcode == SPSS_NO_VARSETS:
-            return var_sets_dict
-        else:
-            var_sets = var_sets.value.decode(self.encoding)  # pylint: disable=no-member
-            for var_set in var_sets.split("\n"):
-                set_name, var_list = var_set.rsplit("=", maxsplit=1)
-                var_sets_dict[set_name] = var_list.split()
+        if retcode not in [SPSS_NO_VARSETS, SPSS_EMPTY_VARSETS]:
+            var_sets = var_sets_string.value.decode(self.encoding)  # pylint: disable=no-member
+            var_sets = var_sets.strip().split("\n")
 
-        retcode = clean(var_sets)
-        warn_or_raise(retcode, func)
+            for var_set in var_sets:
+                try:
+                    set_name, var_list = var_set.split("=", maxsplit=1)
+                except ValueError:
+                    pass
+                else:
+                    var_list = var_list.strip().split()
+                    var_sets_dict[set_name] = [
+                        short_to_long_var_names.get(var, var) for var in var_list
+                    ]
+
+        retcode = clean(var_sets_string)
+        warn_or_raise(retcode, clean)
 
         return var_sets_dict
 
     @var_sets.setter
     def var_sets(self, var_sets):
+        if not var_sets:
+            return
 
         func = self.spssio.spssSetVariableSets
         func.argtypes = [c_int, c_char_p]
 
-        var_sets = "\n".join(
-            ("=".join((set_name, " ".join(var_list)))) for set_name, var_list in var_sets.items()
-        )
+        var_set_defs = []
 
-        retcode = func(self.fh, var_sets.encode(self.encoding))
+        for set_name, var_list in var_sets.items():
+            set_name_fixed = set_name if "=" not in set_name else set_name[: set_name.find("=")]
+            var_list_string = " ".join(var_list)
+            var_set_defs.append(f"{set_name_fixed}= {var_list_string}")
+
+        var_sets_string = "\n".join(var_set_defs)
+
+        retcode = func(self.fh, var_sets_string.encode(self.encoding))
         warn_or_raise(retcode, func)
 
     def commit_header(self):

@@ -14,10 +14,10 @@
 # =============================================================================
 
 import os
-import pandas as pd
-import numpy as np
-import psutil
 import warnings
+import psutil
+import numpy as np
+import pandas as pd
 
 from pandas.api.types import (
     is_numeric_dtype,
@@ -140,8 +140,15 @@ class Writer(Header):
         for col in df.columns:
             self._add_var(col, var_types[col])
 
-        # set header attributes
-        attr_to_ignore = ["case_count", "encoding", "var_names", "var_types", "var_formats_tuple"]
+        # set optional header attributes
+        attr_to_ignore = [
+            "case_count",
+            "encoding",
+            "var_names",
+            "var_types",
+            "var_formats_tuple",
+            "var_compat_names",
+        ]
         attrs = [attr for attr in dir(self) if attr[0] != "_" and attr not in attr_to_ignore]
 
         failed_to_set = {}
@@ -165,7 +172,7 @@ class Writer(Header):
         # commit header
         self.commit_header()
 
-    def write_data_by_val(self, df, **kwargs):
+    def write_data_by_val(self, df):
         """Write data by variable/value
 
         Slower than whole_case_out

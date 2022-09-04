@@ -22,6 +22,7 @@ from ctypes import *
 from .errors import warn_or_raise
 from . import config
 from .constants import *
+from .constants_map import *
 from .header import Header
 
 
@@ -111,9 +112,9 @@ class Reader(Header):
         warn_or_raise(retcode, func, case_number)
 
     def _whole_case_in(self, case_record):
-        """caseRec is a string buffer of caseSize
+        """caseRec is a string buffer of case_size
 
-        see caseSize in Header class
+        see case_size in Header class
         """
 
         func = self.spssio.spssWholeCaseIn
@@ -139,6 +140,7 @@ class Reader(Header):
             "var_missing_values",
             "var_value_labels",
             "var_attributes",
+            "var_compat_names",
         ]
 
         # trim mrsets

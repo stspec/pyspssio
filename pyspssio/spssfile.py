@@ -96,7 +96,10 @@ class SPSSFile(object):
             UnicodeWarning("File encoding may not be compatible with SPSS I/O interface encoding")
 
         # system missing value for reference to replace with null types
-        self.sysmis = self._host_sysmis_val()
+        self.sysmis = self._host_sysmis_val
+
+        # lowest and highest values for missing value ranges
+        self.low_value, self.high_value = self._low_high_val
 
     def __enter__(self):
         return self
@@ -135,6 +138,16 @@ class SPSSFile(object):
             for lib, status in lib_status.items()
         }
 
+    @property
+    def _low_high_val(self):
+        func = self.spssio.spssLowHighVal
+        func.argtypes = [POINTER(c_double), POINTER(c_double)]
+        lowest = c_double()
+        highest = c_double()
+        func(lowest, highest)
+        return lowest.value, highest.value
+
+    @property
     def _host_sysmis_val(self):
         func = self.spssio.spssHostSysmisVal
         func.argtypes = [POINTER(c_double)]

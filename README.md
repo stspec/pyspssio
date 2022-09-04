@@ -139,6 +139,8 @@ spssCloseAppend
 
 spssHostSysmisVal
 
+spssLowHighVal
+
 spssSetLocale
 
 spssGetInterfaceEncoding
@@ -229,6 +231,12 @@ spssGetVarAttributes
 
 spssSetVarAttributes
 
+spssGetVarCompatName
+
+spssGetVariableSets
+
+spssSetVariableSets
+
 spssCommitHeader
 
 
@@ -311,15 +319,11 @@ spssGetValueChar - uses spssWholeCaseIn instead
 
 spssGetValueNumeric - uses spssWholeCaseIn instead
 
-spssAddVarAttribute
-
-spssGetVarCompatName
+spssAddVarAttribute - uses spssSetVarAttributes instead
 
 spssGetVarCValueLabel - uses spssGetVarCValueLabels instead
 
 spssGetVarCValueLabelLong - uses spssGetVarCValueLabels instead
-
-spssGetVariableSets
 
 spssGetVarInfo
 
@@ -330,8 +334,6 @@ spssGetVarNValueLabel - uses spssGetVarNValueLabels instead
 spssGetVarNValueLabelLong - uses spssGetVarNValueLabels instead
 
 spssGetVarWriteFormat - uses spssGetVarPrintFormat instead (print/write formats tied together)
-
-spssLowHighVal
 
 spssOpenAppendEx
 
@@ -360,8 +362,6 @@ spssSetTempDir
 spssSetTextInfo
 
 spssSetVarCValueLabels - uses spssSetVarCValueLabel instead
-
-spssSetVariableSets
 
 spssSetVarNValueLabels - uses spssSetVarNValueLabel instead
 
