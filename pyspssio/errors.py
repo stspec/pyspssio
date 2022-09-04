@@ -14,7 +14,7 @@
 # =============================================================================
 
 import warnings
-from .config import show_warnings
+from . import config
 from .constants import *
 
 # fmt: off
@@ -118,7 +118,7 @@ def warn_or_raise(retcode, func, *args):
 
     warn_error = retcode_type(message)
 
-    if isinstance(warn_error, SPSSWarning) and show_warnings:
+    if isinstance(warn_error, SPSSWarning) and config.show_warnings:
         warnings.warn(warn_error, stacklevel=2)
     elif isinstance(warn_error, SPSSError):
         raise warn_error

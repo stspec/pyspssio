@@ -138,6 +138,7 @@ class Reader(Header):
             "var_roles",
             "var_missing_values",
             "var_value_labels",
+            "var_attributes",
         ]
 
         # trim mrsets

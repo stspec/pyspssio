@@ -17,7 +17,7 @@ import re
 
 from ctypes import *
 
-from .errors import warn_or_raise
+from .errors import SPSSError, warn_or_raise
 from .constants import *
 from .spssfile import SPSSFile
 
@@ -874,8 +874,147 @@ class Header(SPSSFile):
 
                 warn_or_raise(retcode, func, var_name)
 
+    def _get_var_attributes(self, var_name):
+        """Get attributes for a single variable"""
+
+        func = self.spssio.spssGetVarAttributes
+        clean = self.spssio.spssFreeAttributes
+
+        def func_config(array_size=0):
+            argtypes = [
+                c_int,
+                c_char_p,
+                POINTER(POINTER(c_char_p * array_size)),
+                POINTER(POINTER(c_char_p * array_size)),
+                POINTER(c_int),
+            ]
+            attr_names = POINTER(c_char_p * array_size)()
+            attr_text = POINTER(c_char_p * array_size)()
+            num_attributes = c_int()
+            return argtypes, attr_names, attr_text, num_attributes
+
+        # first get initial size
+        argtypes, attr_names, attr_text, num_attributes = func_config()
+        func.argtypes = argtypes
+        retcode = func(
+            self.fh, var_name.encode(self.encoding), attr_names, attr_text, num_attributes
+        )
+        warn_or_raise(retcode, func)
+
+        # get actual array size and clean
+        array_size = num_attributes.value
+        retcode = clean(attr_names, attr_text, num_attributes)
+        warn_or_raise(retcode, clean)
+
+        if array_size == 0:
+            return {}
+
+        else:
+            # get attributes
+            argtypes, attr_names, attr_text, num_attributes = func_config(array_size)
+            func.argtypes = argtypes
+            retcode = func(
+                self.fh, var_name.encode(self.encoding), attr_names, attr_text, num_attributes
+            )
+            warn_or_raise(retcode, func)
+
+            # clean
+            retcode = clean(attr_names, attr_text, num_attributes)
+            warn_or_raise(retcode, clean)
+
+            attr_names = (x.decode(self.encoding) for x in attr_names[0])
+            attr_text = (x.decode(self.encoding) for x in attr_text[0])
+
+            return dict(zip(attr_names, attr_text))
+
+    @property
+    def var_attributes(self):
+        """Get and set arbitrary variable properties"""
+
+        var_attributes = {}
+        for var_name in self.var_names:
+            attributes = self._get_var_attributes(var_name)
+            if attributes:
+                var_attributes[var_name] = attributes
+
+        return var_attributes
+
+    @var_attributes.setter
+    def var_attributes(self, var_attributes):
+
+        func = self.spssio.spssSetVarAttributes
+
+        for var_name, attributes in var_attributes.items():
+            array_size = len(attributes)
+            attr_names = []
+            attr_text = []
+
+            for name, text in attributes.items():
+                attr_names.append(str(name).encode(self.encoding))
+                attr_text.append(str(text).encode(self.encoding))
+
+            attr_names = (c_char_p * array_size)(*attr_names)
+            attr_text = (c_char_p * array_size)(*attr_text)
+
+            func.argtypes = [
+                c_int,
+                c_char_p,
+                POINTER(c_char_p * array_size),
+                POINTER(c_char_p * array_size),
+                c_int,
+            ]
+
+            retcode = func(
+                self.fh, var_name.encode(self.encoding), attr_names, attr_text, array_size
+            )
+            warn_or_raise(retcode, func, var_name)
+
+    @property
+    def var_sets(self):
+        """Get or set variable sets
+
+        DO NOT USE - Not working yet
+        """
+
+        func = self.spssio.spssGetVariableSets
+        clean = self.spssio.spssFreeVariableSets
+
+        func.argtypes = [c_int, POINTER(c_char_p)]
+        var_sets = c_char_p()
+
+        retcode = func(self.fh, var_sets)
+        warn_or_raise(retcode, func)
+
+        var_sets_dict = {}
+
+        if retcode == SPSS_NO_VARSETS:
+            return var_sets_dict
+        else:
+            var_sets = var_sets.value.decode(self.encoding)  # pylint: disable=no-member
+            for var_set in var_sets.split("\n"):
+                set_name, var_list = var_set.rsplit("=", maxsplit=1)
+                var_sets_dict[set_name] = var_list.split()
+
+        retcode = clean(var_sets)
+        warn_or_raise(retcode, func)
+
+        return var_sets_dict
+
+    @var_sets.setter
+    def var_sets(self, var_sets):
+
+        func = self.spssio.spssSetVariableSets
+        func.argtypes = [c_int, c_char_p]
+
+        var_sets = "\n".join(
+            ("=".join((set_name, " ".join(var_list)))) for set_name, var_list in var_sets.items()
+        )
+
+        retcode = func(self.fh, var_sets.encode(self.encoding))
+        warn_or_raise(retcode, func)
+
     def commit_header(self):
-        """Functino to finalize metadata before writing data values
+        """Function to finalize metadata before writing data values
 
         Once this function is called, no further metadata modification is allowed
         """

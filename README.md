@@ -15,7 +15,7 @@ Main reason for creating this package is to fill gaps by other similar packages.
 
 `savReaderWriter`
  * doesn't support python > 3.5
- * not very user friendly
+ * not particularly user friendly
 
 `pyreadstat`
  * doesn't read or write multi response set definitions
@@ -225,6 +225,10 @@ spssGetCaseWeightVar
 
 spssSetCaseWeightVar
 
+spssGetVarAttributes
+
+spssSetVarAttributes
+
 spssCommitHeader
 
 
@@ -309,8 +313,6 @@ spssGetValueNumeric - uses spssWholeCaseIn instead
 
 spssAddVarAttribute
 
-spssGetVarAttributes
-
 spssGetVarCompatName
 
 spssGetVarCValueLabel - uses spssGetVarCValueLabels instead
@@ -356,8 +358,6 @@ spssSetIdString
 spssSetTempDir
 
 spssSetTextInfo
-
-spssSetVarAttributes
 
 spssSetVarCValueLabels - uses spssSetVarCValueLabel instead
 
