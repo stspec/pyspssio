@@ -17,6 +17,7 @@ import os
 import pandas as pd
 import numpy as np
 import psutil
+import warnings
 
 from pandas.api.types import (
     is_numeric_dtype,
@@ -27,6 +28,7 @@ from pandas.api.types import (
 
 from ctypes import *
 
+from .errors import SPSSWarning, SPSSError, warn_or_raise
 from . import config
 from .constants import *
 from .header import Header, varformat_to_tuple
@@ -44,24 +46,21 @@ class Writer(Header):
         func = self.spssio.spssWholeCaseOut
         func.argtypes = [c_int, c_char_p]
         retcode = func(self.fh, case_record)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
 
     def _set_value_char(self, var_name, value):
         var_handle = self._get_var_handle(var_name.encode(self.encoding))
         func = self.spssio.spssSetValueChar
         func.argtypes = [c_int, c_double, c_char_p]
         retcode = func(self.fh, var_handle, value)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name, value)
 
     def _set_value_numeric(self, var_name, value):
         var_handle = self._get_var_handle(var_name.encode(self.encoding))
         func = self.spssio.spssSetValueNumeric
         func.argtypes = [c_int, c_double, c_double]
         retcode = func(self.fh, var_handle, value)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name, value)
 
     def commit_case_record(self):
         """Commit case record
@@ -69,9 +68,9 @@ class Writer(Header):
         Call function after setting values with set_value
         Do not use with whole_case_out"""
 
-        retcode = self.spssio.spssCommitCaseRecord(self.fh)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        func = self.spssio.spssCommitCaseRecord
+        retcode = func(self.fh)
+        warn_or_raise(retcode, func)
 
     def write_header(self, df, metadata=None, **kwargs):
         """Write metadata properties"""
@@ -150,13 +149,18 @@ class Writer(Header):
             if attr in attrs and v:
                 try:
                     setattr(self, attr, v)
-                except Exception as e:
+                except SPSSError as e:
                     failed_to_set[attr] = e
 
         if failed_to_set:
-            print("WARNING! Errors occurred while setting attributes...")
-            for attr, error in failed_to_set.items():
-                print("\n\t" + attr + ":", error, "\n")
+            warnings.warn(
+                SPSSWarning(
+                    "Errors occurred while writing header attributes:\n\n"
+                    + "\n\n".join((f"{attr}: {error}" for attr, error in failed_to_set.items()))
+                    + "\n"
+                ),
+                stacklevel=2,
+            )
 
         # commit header
         self.commit_header()
@@ -191,21 +195,18 @@ class Writer(Header):
                     if var_types[col]:
                         value = value.encode(self.encoding)
                         retcode = write_c(self.fh, var_handles[col], value)
-                        if retcode > 0:
-                            raise Exception(retcodes.get(retcode))
+                        warn_or_raise(retcode, write_c, col, value)
 
                     # datetime
                     elif is_datetime64_any_dtype(dtypes[col]):
                         value = (value - pd_origin).total_seconds() + SPSS_ORIGIN_OFFSET
                         retcode = write_n(self.fh, var_handles[col], value)
-                        if retcode > 0:
-                            raise Exception(retcodes.get(retcode))
+                        warn_or_raise(retcode, write_n, col, value)
 
                     # numeric
                     else:
                         retcode = write_n(self.fh, var_handles[col], value)
-                        if retcode > 0:
-                            raise Exception(retcodes.get(retcode))
+                        warn_or_raise(retcode, write_n, col, value)
 
             self.commit_case_record()
 

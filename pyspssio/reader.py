@@ -19,6 +19,7 @@ import numpy as np
 
 from ctypes import *
 
+from .errors import warn_or_raise
 from . import config
 from .constants import *
 from .header import Header
@@ -105,7 +106,9 @@ class Reader(Header):
             raise
 
     def _seek_next_case(self, case_number):
-        self.spssio.spssSeekNextCase(self.fh, c_long(case_number))
+        func = self.spssio.spssSeekNextCase
+        retcode = func(self.fh, c_long(case_number))
+        warn_or_raise(retcode, func, case_number)
 
     def _whole_case_in(self, case_record):
         """caseRec is a string buffer of caseSize
@@ -115,8 +118,7 @@ class Reader(Header):
 
         func = self.spssio.spssWholeCaseIn
         retcode = func(self.fh, case_record)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
         return case_record
 
     @property

@@ -22,6 +22,7 @@ import locale as lc
 
 from ctypes import *
 
+from .errors import warn_or_raise
 from . import config
 from .constants import retcodes, SPSS_MAX_ENCODING
 
@@ -90,7 +91,7 @@ class SPSSFile(object):
         self.encoding = self.file_encoding
 
         # test encoding compatibility
-        compatible = retcodes.get(self.is_compatible_encoding())
+        compatible = self.is_compatible_encoding()
         if not compatible:
             UnicodeWarning("File encoding may not be compatible with SPSS I/O interface encoding")
 
@@ -156,8 +157,7 @@ class SPSSFile(object):
         func = self.spssio.spssSetInterfaceEncoding
         func.argtypes = [c_int]
         retcode = func(c_int(int(unicode)))
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
         return
 
     @property
@@ -167,8 +167,7 @@ class SPSSFile(object):
         func = self.spssio.spssGetFileEncoding
         psz_encoding = create_string_buffer(SPSS_MAX_ENCODING + 1)
         retcode = func(self.fh, psz_encoding)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
         return psz_encoding.value.decode("utf-8")
 
     def set_locale(self, locale):
@@ -197,7 +196,9 @@ class SPSSFile(object):
         func = self.spssio.spssIsCompatibleEncoding
         func.argtypes = [c_int, POINTER(c_int)]
         b_compatible = c_int()
-        return func(self.fh, b_compatible)
+        retcode = func(self.fh, b_compatible)
+        warn_or_raise(retcode, func)
+        return b_compatible.value
 
     def open(self):
         """Open file"""
@@ -207,8 +208,7 @@ class SPSSFile(object):
         filename_adjusted = os.path.expanduser(os.path.abspath(self.filename)).encode("utf-8")
         func = self._modes[self.mode]["open"]
         retcode = func(filename_adjusted, byref(fh))
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
         return fh
 
     def close(self):
@@ -216,8 +216,7 @@ class SPSSFile(object):
 
         func = self._modes[self.mode]["close"]
         retcode = func(self.fh)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
 
     @property
     def compression(self):
@@ -232,15 +231,14 @@ class SPSSFile(object):
         func.argtypes = [c_int, POINTER(c_int)]
         comp_switch = c_int()
         retcode = func(self.fh, comp_switch)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
         return comp_switch.value
 
     @compression.setter
     def compression(self, comp_switch=1):
-        retcode = self.spssio.spssSetCompression(self.fh, c_int(comp_switch))
-        if retcode > 0:
-            raise ValueError(retcodes.get(retcode))
+        func = self.spssio.spssSetCompression
+        retcode = func(self.fh, c_int(comp_switch))
+        warn_or_raise(retcode, func)
 
     @property
     def release_info(self):
@@ -257,10 +255,9 @@ class SPSSFile(object):
             "character representation code",
         ]
         rel_info_arr = (c_int * len(fields))()
-        retcode = self.spssio.spssGetReleaseInfo(self.fh, rel_info_arr)
-        retcode = retcodes.get(retcode)
-        if retcode == "SPSS_INVALID_HANDLE":
-            raise Exception(retcode)
+        func = self.spssio.spssGetReleaseInfo
+        retcode = func(self.fh, rel_info_arr)
+        warn_or_raise(retcode, func)
         return dict([(item, rel_info_arr[i]) for i, item in enumerate(fields)])
 
     @property
@@ -271,10 +268,8 @@ class SPSSFile(object):
         func.argtypes = [c_int, POINTER(c_long)]
         num_vars = c_long()
         retcode = func(self.fh, num_vars)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
-        else:
-            return num_vars.value
+        warn_or_raise(retcode, func)
+        return num_vars.value
 
     @property
     def case_count(self):
@@ -284,7 +279,5 @@ class SPSSFile(object):
         func.argtypes = [c_int, POINTER(c_long)]
         num_cases = c_long()
         retcode = func(self.fh, num_cases)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
-        else:
-            return num_cases.value
+        warn_or_raise(retcode, func)
+        return num_cases.value

@@ -17,6 +17,7 @@ import re
 
 from ctypes import *
 
+from .errors import warn_or_raise
 from .constants import *
 from .spssfile import SPSSFile
 
@@ -64,8 +65,7 @@ class Header(SPSSFile):
         argtypes, attr_names, attr_text, num_attributes = func_config()
         func.argtypes = argtypes
         retcode = func(self.fh, attr_names, attr_text, num_attributes)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
 
         # get actual array size and clean
         array_size = num_attributes.value
@@ -79,8 +79,7 @@ class Header(SPSSFile):
             argtypes, attr_names, attr_text, num_attributes = func_config(array_size)
             func.argtypes = argtypes
             retcode = func(self.fh, attr_names, attr_text, num_attributes)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func)
 
             # clean
             self.spssio.spssFreeAttributes(attr_names, attr_text, num_attributes)
@@ -112,9 +111,7 @@ class Header(SPSSFile):
         ]
 
         retcode = func(self.fh, attr_names, attr_text, array_size)
-
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
 
     @property
     def var_names(self):
@@ -135,12 +132,10 @@ class Header(SPSSFile):
         var_types = POINTER(c_int * num_vars)()
 
         retcode = func(self.fh, _num_vars, var_names, var_types)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
-        else:
-            var_name_list = [var_names[0][i].decode(self.encoding) for i in range(num_vars)]
-            self.spssio.spssFreeVarNames(var_names, var_types, _num_vars)
-            return var_name_list
+        warn_or_raise(retcode, func)
+        var_name_list = [var_names[0][i].decode(self.encoding) for i in range(num_vars)]
+        self.spssio.spssFreeVarNames(var_names, var_types, _num_vars)
+        return var_name_list
 
     @property
     def var_types(self):
@@ -161,14 +156,12 @@ class Header(SPSSFile):
         var_types = POINTER(c_int * num_vars)()
 
         retcode = func(self.fh, _num_vars, var_names, var_types)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
-        else:
-            var_types_dict = {
-                var_names[0][i].decode(self.encoding): var_types[0][i] for i in range(num_vars)
-            }
-            self.spssio.spssFreeVarNames(var_names, var_types, _num_vars)
-            return var_types_dict
+        warn_or_raise(retcode, func)
+        var_types_dict = {
+            var_names[0][i].decode(self.encoding): var_types[0][i] for i in range(num_vars)
+        }
+        self.spssio.spssFreeVarNames(var_names, var_types, _num_vars)
+        return var_types_dict
 
     @var_types.setter
     def var_types(self, var_types):
@@ -179,8 +172,7 @@ class Header(SPSSFile):
         func = self.spssio.spssSetVarName
         func.argtypes = [c_int, c_char_p, c_int]
         retcode = func(self.fh, var_name.encode(self.encoding), c_int(var_type))
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name, var_type)
 
     def _get_var_handle(self, var_name):
         func = self.spssio.spssGetVarHandle
@@ -188,10 +180,8 @@ class Header(SPSSFile):
 
         var_handle = c_double()
         retcode = func(self.fh, var_name.encode(self.encoding), var_handle)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
-        else:
-            return var_handle
+        warn_or_raise(retcode, func, var_name)
+        return var_handle
 
     @property
     def var_handles(self):
@@ -204,10 +194,8 @@ class Header(SPSSFile):
         for var_name in self.var_names:
             var_handle = c_double()
             retcode = func(self.fh, var_name.encode(self.encoding), var_handle)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
-            else:
-                var_handles[var_name] = var_handle
+            warn_or_raise(retcode, func, var_name)
+            var_handles[var_name] = var_handle
 
         return var_handles
 
@@ -219,10 +207,8 @@ class Header(SPSSFile):
         f_dec = c_int()
         f_width = c_int()
         retcode = func(self.fh, var_name.encode(self.encoding), f_type, f_dec, f_width)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
-        else:
-            return (f_type.value, f_width.value, f_dec.value)
+        warn_or_raise(retcode, func, var_name)
+        return (f_type.value, f_width.value, f_dec.value)
 
     @property
     def var_formats_tuple(self):
@@ -286,10 +272,7 @@ class Header(SPSSFile):
                         c_int(f_width),
                     )
 
-                    if retcode > 0:
-                        raise Exception(
-                            str(retcodes.get(retcode)) + ": " + var_name + " - " + str(var_format)
-                        )
+                    warn_or_raise(retcode, func, var_name, var_format)
 
     @property
     def var_measure_levels(self):
@@ -308,8 +291,7 @@ class Header(SPSSFile):
         for var_name in self.var_names:
             level = c_int()
             retcode = func(self.fh, var_name.encode(self.encoding), level)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func, var_name)
             var_levels[var_name] = measure_levels_str[level.value]
         return var_levels
 
@@ -324,8 +306,7 @@ class Header(SPSSFile):
             measure_level = measure_levels.get(str(measure_level).lower(), measure_level)
             if var_name in var_names:
                 retcode = func(self.fh, var_name.encode(self.encoding), c_int(measure_level))
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name, measure_level)
 
     @property
     def var_alignments(self):
@@ -343,8 +324,7 @@ class Header(SPSSFile):
         for var_name in self.var_names:
             align = c_int()
             retcode = func(self.fh, var_name.encode(self.encoding), align)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func, var_name)
             var_alignments[var_name] = alignments_str[align.value]
         return var_alignments
 
@@ -359,8 +339,7 @@ class Header(SPSSFile):
             align = alignments.get(str(align).lower(), align)
             if var_name in var_names:
                 retcode = func(self.fh, var_name.encode(self.encoding), align)
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name, align)
 
     @property
     def var_column_widths(self):
@@ -376,8 +355,7 @@ class Header(SPSSFile):
         for var_name in self.var_names:
             column_width = c_int()
             retcode = func(self.fh, var_name.encode(self.encoding), column_width)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func, var_name)
             widths[var_name] = column_width.value
         return widths
 
@@ -391,8 +369,7 @@ class Header(SPSSFile):
         for var_name, column_width in var_column_widths.items():
             if var_name in var_names:
                 retcode = func(self.fh, var_name.encode(self.encoding), column_width)
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name, column_width)
 
     @property
     def var_labels(self):
@@ -408,10 +385,8 @@ class Header(SPSSFile):
         for var_name in self.var_names:
             len_label = c_int()
             retcode = func(self.fh, var_name.encode(self.encoding), buffer, len_buff, len_label)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
-            else:
-                var_labels[var_name] = buffer.value.decode(self.encoding)
+            warn_or_raise(retcode, func, var_name)
+            var_labels[var_name] = buffer.value.decode(self.encoding)
         return var_labels
 
     @var_labels.setter
@@ -428,8 +403,7 @@ class Header(SPSSFile):
                     self.fh, var_name.encode(self.encoding), var_label.encode(self.encoding)
                 )
 
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name, var_label)
 
     @property
     def var_roles(self):
@@ -452,10 +426,8 @@ class Header(SPSSFile):
         for var_name in self.var_names:
             role = c_int()
             retcode = func(self.fh, var_name.encode(self.encoding), role)
-            if retcode > 0:
-                raise Exception(retcodes.get(retcode))
-            else:
-                var_roles[var_name] = roles_str[role.value]
+            warn_or_raise(retcode, func, var_name)
+            var_roles[var_name] = roles_str[role.value]
 
         return var_roles
 
@@ -469,8 +441,7 @@ class Header(SPSSFile):
             role = roles.get(str(role).lower(), role)
             if var_name in var_names:
                 retcode = func(self.fh, var_name.encode(self.encoding), role)
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name, role)
 
     def _get_var_n_value_labels(self, var_name):
         func = self.spssio.spssGetVarNValueLabels
@@ -495,7 +466,7 @@ class Header(SPSSFile):
         retcode = func(self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels)
         if retcode > 0:
             self.spssio.spssFreeVarNValueLabels(values_arr, labels_arr, num_labels)
-            raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func, var_name)
         elif num_labels.value > 0:
             # if function call was successful and variable has value labels
             argtypes, var_name, values_arr, labels_arr, num_labels = func_config(
@@ -505,6 +476,7 @@ class Header(SPSSFile):
             retcode = func(
                 self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels
             )
+            warn_or_raise(retcode, func, var_name)
             value_labels = {
                 values_arr[0][i]: labels_arr[0][i].decode(self.encoding)
                 for i in range(num_labels.value)
@@ -537,7 +509,7 @@ class Header(SPSSFile):
         retcode = func(self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels)
         if retcode > 0:
             self.spssio.spssFreeVarCValueLabels(values_arr, labels_arr, num_labels)
-            raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func, var_name)
         elif num_labels.value > 0:
             # if function call was successful and variable has value labels
             argtypes, var_name, values_arr, labels_arr, num_labels = func_config(
@@ -547,6 +519,7 @@ class Header(SPSSFile):
             retcode = func(
                 self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels
             )
+            warn_or_raise(retcode, func, var_name)
             value_labels = {
                 values_arr[0][i]
                 .decode(self.encoding)
@@ -580,8 +553,7 @@ class Header(SPSSFile):
         retcode = func(
             self.fh, var_name.encode(self.encoding), c_double(value), label.encode(self.encoding)
         )
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name, value, label)
 
     def _set_var_c_value_label(self, var_name, value, label):
         func = self.spssio.spssSetVarCValueLabel
@@ -592,8 +564,7 @@ class Header(SPSSFile):
             value.encode(self.encoding),
             label.encode(self.encoding),
         )
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name, value, label)
 
     @var_value_labels.setter
     def var_value_labels(self, var_value_labels):
@@ -620,7 +591,7 @@ class Header(SPSSFile):
         retcode = func(self.fh, mrsets_string)
         if retcode > 0:
             self.spssio.spssFreeMultRespDefs(mrsets_string)
-            raise Exception(retcodes.get(retcode))
+            warn_or_raise(retcode, func)
         elif mrsets_string:
             mrsets = mrsets_string.value.decode(self.encoding)  # pylint: disable=no-member
             mrsets = mrsets.strip().split("\n")
@@ -654,6 +625,7 @@ class Header(SPSSFile):
 
         # clean
         self.spssio.spssFreeMultRespDefs(mrsets_string)
+        warn_or_raise(retcode, func)
 
         if len(mrsets_dict):
             var_types = self.var_types
@@ -732,8 +704,7 @@ class Header(SPSSFile):
         func = self.spssio.spssSetMultRespDefs
         func.argtypes = [c_int, c_char_p]
         retcode = func(self.fh, mrsets)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
 
     @property
     def case_size(self):
@@ -743,26 +714,25 @@ class Header(SPSSFile):
         func.argtypes = [c_int, POINTER(c_long)]
         case_size = c_long()
         retcode = func(self.fh, case_size)
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func)
         return case_size.value
 
     @property
     def case_weight_var(self):
         """Get or set case weight variable"""
 
+        func = self.spssio.spssGetCaseWeightVar
         case_weight_var = create_string_buffer(SPSS_MAX_VARNAME + 1)
-        retcode = self.spssio.spssGetCaseWeightVar(self.fh, case_weight_var)
-        if retcode <= 0:
-            return case_weight_var.value.decode(self.encoding)
+        retcode = func(self.fh, case_weight_var)
+        warn_or_raise(retcode, func)
+        return case_weight_var.value.decode(self.encoding)
 
     @case_weight_var.setter
     def case_weight_var(self, var_name):
         func = self.spssio.spssSetCaseWeightVar
         func.argtypes = [c_int, c_char_p]
         retcode = func(self.fh, var_name.encode(self.encoding))
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name)
 
     def _get_var_n_missing_values(self, var_name):
         func = self.spssio.spssGetVarNMissingValues
@@ -780,8 +750,7 @@ class Header(SPSSFile):
         retcode = func(
             self.fh, var_name.encode(self.encoding), missing_format, val_1, val_2, val_3
         )
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name)
 
         missing_format = missing_format.value
         missing_values = [val_1.value, val_2.value, val_3.value]
@@ -802,8 +771,7 @@ class Header(SPSSFile):
         retcode = func(
             self.fh, var_name.encode(self.encoding), missing_format, val_1, val_2, val_3
         )
-        if retcode > 0:
-            raise Exception(retcodes.get(retcode))
+        warn_or_raise(retcode, func, var_name)
 
         missing_format = missing_format.value
         missing_values = [
@@ -866,8 +834,7 @@ class Header(SPSSFile):
                     val_3.encode(self.encoding),
                 )
 
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name)
 
             elif var_type == 0:
                 func = self.spssio.spssSetVarNMissingValues
@@ -905,8 +872,7 @@ class Header(SPSSFile):
                     c_double(val_3),
                 )
 
-                if retcode > 0:
-                    raise Exception(retcodes.get(retcode))
+                warn_or_raise(retcode, func, var_name)
 
     def commit_header(self):
         """Functino to finalize metadata before writing data values
@@ -914,6 +880,6 @@ class Header(SPSSFile):
         Once this function is called, no further metadata modification is allowed
         """
 
-        retcode = self.spssio.spssCommitHeader(self.fh)
-        if retcode:
-            raise Exception(retcodes.get(retcode))
+        func = self.spssio.spssCommitHeader
+        retcode = func(self.fh)
+        warn_or_raise(retcode, func)

@@ -17,6 +17,8 @@ from .constants import *
 
 # fmt: off
 
+show_warnings = False
+
 # must set spssio filepath before using
 spssio_module = None
 

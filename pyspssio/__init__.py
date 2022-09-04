@@ -15,6 +15,7 @@
 
 import os
 import platform
+import warnings
 
 from .spssfile import SPSSFile
 from .header import Header
@@ -45,4 +46,4 @@ elif pf_system.startswith("lin"):
 try:
     config.spssio_module = os.path.join(module_path, "spssio", spssio_folder, spssio_module)
 except Exception as err:
-    print(err)
+    warnings.warn(err, stacklevel=2)
