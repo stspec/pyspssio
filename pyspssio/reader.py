@@ -66,6 +66,8 @@ class Reader(Header):
             self.numeric_slices,
             self.datetime_names,
             self.datetime_slices,
+            self.time_names,
+            self.time_slices,
             self.string_names,
             self.string_slices,
         ) = self._build_struct()
@@ -181,6 +183,12 @@ class Reader(Header):
         numeric_nbytes = []
         numeric_slices = [slice(0, 0)]
 
+        time_names = []
+        time_formats = []
+        time_offsets = []
+        time_nbytes = []
+        time_slices = [slice(0, 0)]
+
         datetime_names = []
         datetime_formats = []
         datetime_offsets = []
@@ -216,6 +224,17 @@ class Reader(Header):
                             datetime_slices[-1] = slice(s_prev.start, s.stop)
                         else:
                             datetime_slices.append(s)
+                    elif var_format[0] in config.spss_time_formats_to_convert:
+                        time_names.append(var_name)
+                        time_formats.append(sformat)
+                        time_offsets.append(offset)
+                        time_nbytes.append(nbytes)
+                        s = slice(offset, offset + nbytes)
+                        s_prev = time_slices[-1]
+                        if s.start == s_prev.stop:
+                            time_slices[-1] = slice(s_prev.start, s.stop)
+                        else:
+                            time_slices.append(s)
                     else:
                         numeric_names.append(var_name)
                         numeric_formats.append(sformat)
@@ -243,6 +262,8 @@ class Reader(Header):
             numeric_slices,
             datetime_names,
             datetime_slices,
+            time_names,
+            time_slices,
             string_names,
             string_slices,
         )
@@ -273,6 +294,12 @@ class Reader(Header):
                 b += case[s]
             return np.frombuffer(b, dtype=self.dtype_double)
 
+        def load_times(case):
+            b = bytearray()
+            for s in self.time_slices:
+                b += case[s]
+            return np.frombuffer(b, dtype=self.dtype_double)
+
         def load_datetimes(case):
             b = bytearray()
             for s in self.datetime_slices:
@@ -282,11 +309,15 @@ class Reader(Header):
         def replace_sysmis(arr):
             return np.where(arr == self.sysmis, np.nan, arr)
 
-        def convert_dt(arr):
+        def convert_datetime(arr):
             return ((arr - SPSS_ORIGIN_OFFSET) * S_TO_NS).astype("datetime64[ns]", copy=False)
+
+        def convert_time(arr):
+            return (arr * S_TO_NS).astype("timedelta64[ns]", copy=False)
 
         # create empty arrays
         n_arr = np.empty(shape=(row_limit, len(self.numeric_names)), dtype=self.dtype_double)
+        t_arr = np.empty(shape=(row_limit, len(self.time_names)), dtype=self.dtype_double)
         d_arr = np.empty(shape=(row_limit, len(self.datetime_names)), dtype=self.dtype_double)
         s_arr = np.empty(shape=(row_limit, len(self.string_names)), dtype="O")
 
@@ -295,22 +326,31 @@ class Reader(Header):
             case = memoryview(self._whole_case_in(self.case_record))
             # return (load_numerics(case), struct_names)
             n_arr[row] = load_numerics(case)
+            t_arr[row] = load_times(case)
             d_arr[row] = load_datetimes(case)
             s_arr[row] = load_strings(case)
 
         # replace system missing
         n_arr = replace_sysmis(n_arr)
+        t_arr = replace_sysmis(t_arr)
         d_arr = replace_sysmis(d_arr)
 
         # convert datetimes
         if convert_datetimes and len(d_arr):
-            d_arr = convert_dt(d_arr)
+            d_arr = convert_datetime(d_arr)
+
+        # convert times
+        if convert_datetimes and len(t_arr):
+            t_arr = convert_time(t_arr)
 
         # create final dataframe
         all_cols = {col: None for col in self.usecols}
 
         for idx, col in enumerate(self.datetime_names):
             all_cols[col] = d_arr[:, idx]
+
+        for idx, col in enumerate(self.time_names):
+            all_cols[col] = t_arr[:, idx]
 
         for idx, col in enumerate(self.string_names):
             all_cols[col] = s_arr[:, idx]

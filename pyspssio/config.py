@@ -29,4 +29,6 @@ default_date_format     = (20, 11, 0)       # DATE11
 default_time_format     = (21, 8, 0)        # TIME8
 default_datetime_format = (22, 20, 0)       # DATETIME20
 
-spss_datetime_formats_to_convert = spss_date_formats + spss_time_formats + spss_datetime_formats
+# date & datetime formats to convert
+spss_datetime_formats_to_convert = spss_date_formats + spss_datetime_formats
+spss_time_formats_to_convert = spss_time_formats

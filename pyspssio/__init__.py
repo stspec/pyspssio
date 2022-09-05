@@ -22,6 +22,7 @@ from .spssfile import SPSSFile
 from .header import Header
 from .reader import Reader
 from .writer import Writer
+from .constants import *
 from .user_functions import *
 from . import config
 

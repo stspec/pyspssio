@@ -24,6 +24,7 @@ from pandas.api.types import (
     is_string_dtype,
     is_object_dtype,
     is_datetime64_any_dtype,
+    is_timedelta64_dtype,
 )
 
 from ctypes import *
@@ -31,6 +32,7 @@ from ctypes import *
 from .errors import SPSSWarning, SPSSError, warn_or_raise
 from . import config
 from .constants import *
+from .constants_map import *
 from .header import Header, varformat_to_tuple
 
 
@@ -123,6 +125,12 @@ class Writer(Header):
                     var_type,
                     0,
                 )
+            elif is_timedelta64_dtype(dtype):
+                var_types[col] = 0
+                metadata["var_formats"][col] = metadata["var_formats"].get(
+                    col, config.default_time_format
+                )
+                metadata["var_measure_levels"][col] = metadata["var_measure_levels"].get(col, 3)
             elif is_datetime64_any_dtype(dtype):
                 var_types[col] = 0
                 metadata["var_formats"][col] = metadata["var_formats"].get(
@@ -204,6 +212,12 @@ class Writer(Header):
                         retcode = write_c(self.fh, var_handles[col], value)
                         warn_or_raise(retcode, write_c, col, value)
 
+                    # time
+                    elif is_timedelta64_dtype(dtypes[col]):
+                        value = value.total_seconds()
+                        retcode = write_n(self.fh, var_handles[col], value)
+                        warn_or_raise(retcode, write_n, col, value)
+
                     # datetime
                     elif is_datetime64_any_dtype(dtypes[col]):
                         value = (value - pd_origin).total_seconds() + SPSS_ORIGIN_OFFSET
@@ -256,6 +270,8 @@ class Writer(Header):
                         x if hasattr(x, "decode") else (b"" if pd.isna(x) else x.encode(encoding))
                     ).ljust(buffer_size, string_padder)
                 )
+            elif is_timedelta64_dtype(dtypes[col.name]):
+                return np.nan_to_num(col.dt.total_seconds(), nan=sysmis)
             elif is_datetime64_any_dtype(dtypes[col.name]):
                 return np.nan_to_num(
                     (col - pd_origin).dt.total_seconds() + SPSS_ORIGIN_OFFSET, nan=sysmis

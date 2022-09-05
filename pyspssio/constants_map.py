@@ -146,8 +146,6 @@ spss_date_formats = [
     SPSS_FMT_DATE,
     SPSS_FMT_ADATE,
     SPSS_FMT_JDATE,
-    SPSS_FMT_WKDAY,
-    SPSS_FMT_MONTH,
     SPSS_FMT_MOYR,
     SPSS_FMT_QYR,
     SPSS_FMT_WKYR,
@@ -157,11 +155,11 @@ spss_date_formats = [
 
 spss_time_formats = [
     SPSS_FMT_TIME,
+    SPSS_FMT_DTIME,
     SPSS_FMT_MTIME
     ]
 
 spss_datetime_formats = [
-    SPSS_FMT_DTIME,
     SPSS_FMT_DATETIME,
     SPSS_FMT_YMDHMS
     ]

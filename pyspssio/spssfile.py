@@ -24,7 +24,7 @@ from ctypes import *
 
 from .errors import warn_or_raise
 from . import config
-from .constants import retcodes, SPSS_MAX_ENCODING
+from .constants import SPSS_MAX_ENCODING
 
 
 class SPSSFile(object):
