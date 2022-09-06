@@ -1,0 +1,10 @@
+include VERSION
+include README.*
+include LICENSE.*
+
+graft spssio/document
+graft spssio/include
+graft spssio/license
+graft spssio/win64
+graft spssio/macos
+graft spssio/lin64
