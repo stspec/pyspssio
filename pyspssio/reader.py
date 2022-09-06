@@ -77,6 +77,11 @@ class Reader(Header):
 
         self.string_nan = string_nan
 
+        if row_offset is None:
+            row_offset = 0
+
+        self.row_offset = row_offset
+
         # adjust row_limit
         if row_limit is None:
             row_limit = self.case_count
@@ -84,6 +89,7 @@ class Reader(Header):
 
         self.total_rows = row_limit
 
+        # row offset
         if row_offset:
             self._seek_next_case(row_offset)
 
@@ -99,7 +105,9 @@ class Reader(Header):
                     convert_datetimes=self.convert_datetimes,
                     include_user_missing=self.include_user_missing,
                 )
-                df.index = pd.RangeIndex(self.chunk, self.chunk + row_limit)
+                df.index = pd.RangeIndex(
+                    self.row_offset + self.chunk, self.row_offset + self.chunk + row_limit
+                )
                 self.chunk += self.chunksize
                 return df
             else:
@@ -284,7 +292,7 @@ class Reader(Header):
 
         def load_strings(case):
             return tuple(
-                str(case[self.string_slices[idx]], self.encoding).rstrip()
+                str(case[self.string_slices[idx]], self.encoding).rstrip(" ")
                 for idx, var_name in enumerate(self.string_names)
             )
 
@@ -376,5 +384,9 @@ class Reader(Header):
         # use user-defined string nan value
         if self.string_nan != "":
             df = df.replace("", self.string_nan, regex=False)
+
+        # adjust index for with row_offset
+        if self.row_offset and not self.chunksize:
+            df.index = pd.RangeIndex(self.row_offset, self.row_offset + self.total_rows)
 
         return df
