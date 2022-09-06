@@ -76,8 +76,6 @@ Optional arguments:
  * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
  * **string_nan** - define how empty strings should be returned
 
-Note: Datetime conversions only convert the raw SPSS value, which is always a full datetime. If only certain portions are needed (e.g., date, time, year, month, day, etc.), use the `.dt` accessor on that column. The `var_formats` or `var_formats_tuple` metadata attributes can be used to see the original SPSS formats.
-
 
 Writing
 ------------------------
@@ -91,7 +89,7 @@ pyspssio.write_sav(`spss_file.sav`, df)
 Optional arguments:
  * **unicode** - (True - default) for 'UTF-8' or (False) for codepage mode
  * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
- * **metadata** - dictionary of metadata properties and their values (e.g., varLabels, varValueLabels, multRespDefs, etc.)
+ * **metadata** - dictionary of metadata properties and their values (e.g., var_labels, var_value_labels, mrsets, etc.)
  * **kwargs** - can pass metadata properties as separate arguments; these take precedence over those passed through the metadata argument
 
 
@@ -108,6 +106,19 @@ Optional arguments:
  * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
 
 Note: Cannot modify metadata when appending new records. Be careful with strings that might be longer than the allowed width.
+
+
+Other Notes
+========================
+
+Date/Time Variables
+------------------------
+
+**Date and datetime variables** - These are converted to/from full datetime objects, even for formats like DATE, QYR, and WKYR which don't display a time component. Users can opt to use Pandas' `.dt` accessor to extract specific components or force a specific accuracy (e.g., minute, day, hour) after reading the data. For example, https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.dt.floor.html. The `var_formats` and/or `var_formats_tuple` metadata attributes can be used to see the original SPSS formats.
+
+**Time variables** - These are converted to/from timestamp objects.
+
+Python/Pandas stores datetimes in nanseconds while SPSS stores them in seconds. Due to conversions that must take place, there may be some small discrepancies (< ms) between an original dataframe used to write an SPSS file and a dataframe read back from the same SPSS file.
 
 
 I/O Module Procedures
