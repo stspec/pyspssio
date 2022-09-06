@@ -2,9 +2,9 @@ include VERSION
 include README.*
 include LICENSE.*
 
-graft spssio/document
-graft spssio/include
-graft spssio/license
-graft spssio/win64
-graft spssio/macos
-graft spssio/lin64
+graft pyspssio/spssio/document
+graft pyspssio/spssio/include
+graft pyspssio/spssio/license
+graft pyspssio/spssio/win64
+graft pyspssio/spssio/macos
+graft pyspssio/spssio/lin64
