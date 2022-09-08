@@ -91,7 +91,7 @@ class SPSSFile(object):
         self.encoding = self.file_encoding
 
         # test encoding compatibility
-        compatible = self.is_compatible_encoding()
+        compatible = self.is_compatible_encoding
         if not compatible:
             UnicodeWarning("File encoding may not be compatible with SPSS I/O interface encoding")
 
@@ -203,6 +203,7 @@ class SPSSFile(object):
             )
             return ".".join(lc.getlocale())
 
+    @property
     def is_compatible_encoding(self):
         """Check encoding compatibility"""
 

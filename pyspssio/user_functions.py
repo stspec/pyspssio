@@ -142,8 +142,8 @@ def write_sav(spss_file, df, metadata=None, unicode=True, locale=None, **kwargs)
         Default None to use system locale
     **kwargs
         Option to provide other arguments,
-        including individual metadata attributes;
-        note that metadata attributes supplied here take precedence
+        including individual metadata attributes.
+        Note that metadata attributes supplied here take precedence.
     """
 
     with Writer(spss_file, mode="w", unicode=unicode, locale=locale) as sav:
@@ -164,7 +164,10 @@ def append_sav(spss_file, df, locale=None, **kwargs):
         Sets I/O locale when operating in codepage mode
         Default None to use system locale
     **kwargs
+        Additional arguments
 
+    Notes
+    -----
     Cannot modify metadata when appending new records.
     Be careful with strings that might be longer than the allowed width.
 

@@ -27,6 +27,13 @@ from .user_functions import *
 from . import config
 
 module_path = os.path.dirname(__file__)
+source_root = os.path.dirname(module_path)
+
+try:
+    with open(os.path.join(source_root, "VERSION"), encoding="utf-8") as v:
+        __version__ = v.readline()
+except FileNotFoundError:
+    __version__ = "unknown"
 
 pf_system = platform.system().lower()
 

@@ -1,6 +1,6 @@
 
 pyspssio
-========================
+--------
 
 Python package for reading and writing SPSS (.sav and .zsav) files to/from pandas dataframes.
 
@@ -9,7 +9,7 @@ This package uses the I/O Module for SPSS Statistics v27 available at https://ww
 **WARNING**: This is an early release with limited testing. Use with caution.
 
 Motivation
-========================
+----------
 
 Main reason for creating this package is to fill gaps by other similar packages.
 
@@ -26,7 +26,7 @@ Main reason for creating this package is to fill gaps by other similar packages.
 
 
 Basic Usage
-========================
+-----------
 
 
 Installation
@@ -43,76 +43,56 @@ import pyspssio
 
 
 Reading
-------------------------
+~~~~~~~
 
 Read data and metadata
 
 ```
-df, meta = pyspssio.read_sav('spss_file.sav')
+df, meta = pyspssio.read_sav("spss_file.sav")
 ```
 
 Read metadata only
 
 ```
-meta = pyspssio.read_metadata('spss_file.sav')
+meta = pyspssio.read_metadata("spss_file.sav")
 ```
 
 Read data in chunks of `chunksize` (number of rows/records)
 
 ```
-for df in pyspssio.read_sav('spss_file.sav', chunksize=1000):
+for df in pyspssio.read_sav("spss_file.sav", chunksize=1000):
 #   do something
 ```
 
 Note: metadata is not returned when reading in chunks
 
-Optional arguments:
- * **row_offset** - row number to start at (0-indexed)
- * **row_limit** - maximum number of rows to return
- * **usecols** - columns/variables to read (str, tuple, list, callable)
- * **convert_datetimes** - (True - default) to convert SPSS date, time, datetime variables to python/pandas datetime (default True)
- * **include_user_missing** - (True - default) keep user missing values in the dataframe or (False) replace with '' (strings) or NaN (numeric)
- * **chunksize** - chunksize to read in chunks (if defined returns generator object)
- * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
- * **string_nan** - define how empty strings should be returned
-
 
 Writing
-------------------------
+~~~~~~~
 
 Write dataframe to file.
 
 ```
-pyspssio.write_sav(`spss_file.sav`, df)
+pyspssio.write_sav("spss_file.sav", df)
 ```
 
-Optional arguments:
- * **unicode** - (True - default) for 'UTF-8' or (False) for codepage mode
- * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
- * **metadata** - dictionary of metadata properties and their values (e.g., var_labels, var_value_labels, mrsets, etc.)
- * **kwargs** - can pass metadata properties as separate arguments; these take precedence over those passed through the metadata argument
-
-
 Appending
-------------------------
+~~~~~~~~~
 
 Append existing SPSS file with new records.
 
 ```
-pyspssio.write_sav(`spss_file.sav`, df)
+pyspssio.write_sav("spss_file.sav", df)
 ```
-
-Optional arguments:
- * **locale** - Set I/O locale (e.g., 'English_United States.1252') when operating in codepage mode
 
 Note: Cannot modify metadata when appending new records. Be careful with strings that might be longer than the allowed width.
 
 
 Other Notes
-========================
+-----------
 
 Date/Time Variables
-------------------------
+~~~~~~~~~~~~~~~~~~~
 
 **Date and datetime variables** - These are converted to/from full datetime objects, even for formats like DATE, QYR, and WKYR which don't display a time component. Users can opt to use Pandas' `.dt` accessor to extract specific components or force a specific accuracy (e.g., minute, day, hour) after reading the data. For example, https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.dt.floor.html. The `var_formats` and/or `var_formats_tuple` metadata attributes can be used to see the original SPSS formats.
 
@@ -122,7 +102,7 @@ Python/Pandas stores datetimes in nanseconds while SPSS stores them in seconds. 
 
 
 I/O Module Procedures
-========================
+---------------------
 
 List of available I/O module procedures and class for which they fall under. See official documentation for details on each one.
 
@@ -134,7 +114,7 @@ All I/O module procedures can be accessed directly with `self.spssio.[procedure]
 
 
 SPSSFile
-------------------------
+~~~~~~~~
 
 spssOpenRead
 
@@ -174,7 +154,7 @@ spssGetNumberofVariables
 
 
 Header
-------------------------
+~~~~~~
 
 spssGetFileAttributes
 
@@ -252,7 +232,7 @@ spssCommitHeader
 
 
 Reader
-------------------------
+~~~~~~
 
 spssSeekNextCase
 
@@ -260,7 +240,7 @@ spssWholeCaseIn
 
 
 Writer
-------------------------
+~~~~~~
 
 spssWholeCaseOut
 
@@ -272,7 +252,7 @@ spssCommitCaseRecord
 
 
 Not Implemented (yet)
-------------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 spssAddMultRespDefC
 
