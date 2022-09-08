@@ -1,6 +1,6 @@
 
 pyspssio
---------
+========
 
 Python package for reading and writing SPSS (.sav and .zsav) files to/from pandas dataframes.
 

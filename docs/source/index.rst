@@ -5,9 +5,10 @@ Welcome to pyspssio's documentation!
 .. include:: ../../README.md
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 3
+   :caption: Contents
 
+   self
    functions
    classes
    exceptions
