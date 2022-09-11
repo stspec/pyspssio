@@ -7,4 +7,3 @@ Exceptions and Warnings
 .. autoexception:: SPSSError
 
 .. autoexception:: SPSSWarning
-

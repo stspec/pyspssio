@@ -26,7 +26,7 @@ from .spssfile import SPSSFile
 def varformat_to_tuple(varformat):
     """Convert variable format as string to tuple of integers"""
 
-    if isinstance(varformat, (tuple, list)):
+    if not isinstance(varformat, str):
         return varformat
 
     f_split = re.split(r"([^\d]+)|[\.]", varformat + ".0")
@@ -39,14 +39,14 @@ def varformat_to_tuple(varformat):
 
 
 class Header(SPSSFile):
-    """Class for getting and setting metadata"""
+    """Class for getting and setting metadata attributes"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     @property
-    def file_attributes(self):
-        """Get or set file attributes"""
+    def file_attributes(self) -> dict:
+        """Arbitrary user-defined file attributes"""
 
         func = self.spssio.spssGetFileAttributes
 
@@ -91,7 +91,7 @@ class Header(SPSSFile):
             return dict(zip(attr_names, attr_text))
 
     @file_attributes.setter
-    def file_attributes(self, attributes):
+    def file_attributes(self, attributes: dict) -> None:
         array_size = len(attributes)
         attr_names = []
         attr_text = []
@@ -115,8 +115,12 @@ class Header(SPSSFile):
         warn_or_raise(retcode, func)
 
     @property
-    def var_names(self):
-        """List of variable names"""
+    def var_names(self) -> list:
+        """List of variable names
+
+        May return a filtered list when returned as part of a metadata object
+        if only a subset of variables are specified to be used (e.g., usecols in read_sav).
+        """
 
         num_vars = self.var_count
 
@@ -139,8 +143,12 @@ class Header(SPSSFile):
         return var_name_list
 
     @property
-    def var_types(self):
-        """Get or set variable names and their types"""
+    def var_types(self) -> dict:
+        """Variable types
+
+        May return a filtered dictionary when returned as part of a metadata object
+        if only a subset of variables are specified to be used (e.g., usecols in read_sav).
+        """
 
         num_vars = self.var_count
 
@@ -165,7 +173,7 @@ class Header(SPSSFile):
         return var_types_dict
 
     @var_types.setter
-    def var_types(self, var_types):
+    def var_types(self, var_types: dict):
         for var_name, var_type in var_types.items():
             self._add_var(var_name, var_type)
 
@@ -185,8 +193,12 @@ class Header(SPSSFile):
         return var_handle
 
     @property
-    def var_handles(self):
-        """Get variable handles"""
+    def var_handles(self) -> dict:
+        """Variable handles references
+
+        Used when calling I/O module procedures that use
+        variable handles instead of variable names as arguments
+        """
 
         func = self.spssio.spssGetVarHandle
         func.argtypes = [c_int, c_char_p, POINTER(c_double)]
@@ -212,8 +224,8 @@ class Header(SPSSFile):
         return (f_type.value, f_width.value, f_dec.value)
 
     @property
-    def var_formats_tuple(self):
-        """Get variable formats in tuple style (Type, Width, Decimals)
+    def var_formats_tuple(self) -> dict:
+        """Variable formats as tuples in the form (type, width, decimals)
 
         ex. (5, 8, 2) instead of F8.2
         """
@@ -224,20 +236,10 @@ class Header(SPSSFile):
         return var_formats
 
     @property
-    def var_formats(self):
-        """Get or set variable formats
+    def var_formats(self) -> dict:
+        """Variable formats as strings
 
-        Parameters
-        ----------
-        var_formats : dict
-            Dictionary of variable names and formats (normal or tuple)
-
-        Returns
-        -------
-        dict
-            Dictionary of variable names and formats (normal)
-
-        Use var_formats_tuple property to get formats in tuple style
+        Use var_formats_tuple property for formats as tuples
         """
 
         var_formats = {}
@@ -251,7 +253,7 @@ class Header(SPSSFile):
         return var_formats
 
     @var_formats.setter
-    def var_formats(self, var_formats):
+    def var_formats(self, var_formats: dict):
         var_names = self.var_names
 
         for var_name, var_format in var_formats.items():
@@ -276,13 +278,16 @@ class Header(SPSSFile):
                     warn_or_raise(retcode, func, var_name, var_format)
 
     @property
-    def var_measure_levels(self):
-        """Get or set variable measure levels
+    def var_measure_levels(self) -> dict:
+        """Variable measure levels
 
-        0 = Unknown
-        1 = Nominal
-        2 = Ordinal
-        3 = Scale
+        Measure levels are returned as strings.
+        When setting, input accepts either strings or numerics.
+
+         - 0 = unknown
+         - 1 = nominal
+         - 2 = ordinal
+         - 3 = scale
         """
 
         func = self.spssio.spssGetVarMeasureLevel
@@ -297,7 +302,7 @@ class Header(SPSSFile):
         return var_levels
 
     @var_measure_levels.setter
-    def var_measure_levels(self, var_measure_levels):
+    def var_measure_levels(self, var_measure_levels: dict):
         var_names = self.var_names
 
         func = self.spssio.spssSetVarMeasureLevel
@@ -310,12 +315,15 @@ class Header(SPSSFile):
                 warn_or_raise(retcode, func, var_name, measure_level)
 
     @property
-    def var_alignments(self):
-        """Get or set variable alignments
+    def var_alignments(self) -> dict:
+        """Variable alignments
 
-        0 = SPSS_ALIGN_LEFT
-        1 = SPSS_ALIGN_RIGHT
-        2 = SPSS_ALIGN_CENTER
+        Alignments are returned as strings.
+        When setting, input accepts either strings or numerics.
+
+         - 0 = left
+         - 1 = right
+         - 2 = center
         """
 
         func = self.spssio.spssGetVarAlignment
@@ -330,7 +338,7 @@ class Header(SPSSFile):
         return var_alignments
 
     @var_alignments.setter
-    def var_alignments(self, var_alignments):
+    def var_alignments(self, var_alignments: dict):
         var_names = self.var_names
 
         func = self.spssio.spssSetVarAlignment
@@ -343,10 +351,10 @@ class Header(SPSSFile):
                 warn_or_raise(retcode, func, var_name, align)
 
     @property
-    def var_column_widths(self):
-        """Get or set column widths
+    def var_column_widths(self) -> dict:
+        """Column display widths
 
-        0 = Auto
+        Manually set column widths or specify 0 to use SPSS' algorithm to assign a width
         """
 
         func = self.spssio.spssGetVarColumnWidth
@@ -361,7 +369,7 @@ class Header(SPSSFile):
         return widths
 
     @var_column_widths.setter
-    def var_column_widths(self, var_column_widths):
+    def var_column_widths(self, var_column_widths: dict):
         var_names = self.var_names
 
         func = self.spssio.spssSetVarColumnWidth
@@ -373,8 +381,8 @@ class Header(SPSSFile):
                 warn_or_raise(retcode, func, var_name, column_width)
 
     @property
-    def var_labels(self):
-        """Get or set variable labels"""
+    def var_labels(self) -> dict:
+        """Variable labels"""
 
         len_buff = SPSS_MAX_VARLABEL + 1
         buffer = create_string_buffer(len_buff)
@@ -391,7 +399,7 @@ class Header(SPSSFile):
         return var_labels
 
     @var_labels.setter
-    def var_labels(self, labels):
+    def var_labels(self, labels: dict):
         var_names = self.var_names
 
         func = self.spssio.spssSetVarLabel
@@ -407,17 +415,20 @@ class Header(SPSSFile):
                 warn_or_raise(retcode, func, var_name, var_label)
 
     @property
-    def var_roles(self):
-        """Get or set variable roles
+    def var_roles(self) -> dict:
+        """Variable roles
 
-        0 = SPSS_ROLE_INPUT
-        1 = SPSS_ROLE_TARGET
-        2 = SPSS_ROLE_BOTH
-        3 = SPSS_ROLE_NONE
-        4 = SPSS_ROLE_PARTITION
-        5 = SPSS_ROLE_SPLIT
-        6 = SPSS_ROLE_FREQUENCY
-        7 = SPSS_ROLE_RECORDID
+        Roles are returned as strings.
+        When setting, input accepts either strings or numerics.
+
+         - 0 = input
+         - 1 = target
+         - 2 = both
+         - 3 = none
+         - 4 = partition
+         - 5 = split
+         - 6 = frequency
+         - 7 = recordid
         """
 
         func = self.spssio.spssGetVarRole
@@ -433,7 +444,7 @@ class Header(SPSSFile):
         return var_roles
 
     @var_roles.setter
-    def var_roles(self, var_roles):
+    def var_roles(self, var_roles: dict):
         var_names = self.var_names
         func = self.spssio.spssSetVarRole
         func.argtypes = [c_int, c_char_p, c_int]
@@ -534,10 +545,12 @@ class Header(SPSSFile):
             return {}
 
     @property
-    def var_value_labels(self):
-        """Get or set value labels
+    def var_value_labels(self) -> dict:
+        """Variable value labels
 
-        Note: numeric variables or string variables w/ length <= 8 only
+        Nested dictionary of variables with their value labels (if defined) as sub-dictionaries
+
+        Note: value labels only work for numeric and short string variables (length <= 8)
         """
 
         var_value_labels = {}
@@ -568,7 +581,7 @@ class Header(SPSSFile):
         warn_or_raise(retcode, func, var_name, value, label)
 
     @var_value_labels.setter
-    def var_value_labels(self, var_value_labels):
+    def var_value_labels(self, var_value_labels: dict):
         var_types = self.var_types
         for var_name, value_labels in var_value_labels.items():
             var_type = var_types.get(var_name)
@@ -581,8 +594,28 @@ class Header(SPSSFile):
                     func(var_name, value, label)
 
     @property
-    def mrsets(self):
-        """Get or set multi response set definitions"""
+    def mrsets(self) -> dict:
+        """Multi response set definitions
+
+        Multi response sets contain the following attributes
+         - type : "D" (dichotomous) or "C" (category)
+         - value_length : for dichotomous sets, this is the string length of the counted value
+         - counted_value : for dichotomous sets, this is the counted value
+         - label_length : length of set label
+         - label : set label
+         - variable_list : list of variables in the set
+
+        Notes
+        -----
+        Dichotomous mrsets only accept integers as a counted value.
+
+        value_length and label_length attributes are for reference only.
+        The I/O module returns multi response definitions as a single string
+        and these values are only used for parsing.
+
+        The only required fields for a valid mrset definition include type and variable_list.
+        If type == D (dichotomous), then counted_value is also required.
+        """
 
         mrsets_dict = {}
 
@@ -640,18 +673,7 @@ class Header(SPSSFile):
         return mrsets_dict
 
     @mrsets.setter
-    def mrsets(self, mrsets):
-        """Get or set multiple response set definitions
-
-        Returns
-        -------
-        dict
-            set_name
-                - type : str ('C' or 'D')
-                - counted_value : int or str (for 'D' type only)
-                - label : str
-                - variable_list : list of variables included in set
-        """
+    def mrsets(self, mrsets: dict):
 
         var_types = self.var_types
 
@@ -708,8 +730,17 @@ class Header(SPSSFile):
         warn_or_raise(retcode, func)
 
     @property
-    def case_size(self):
-        """Case size in bytes"""
+    def case_size(self) -> int:
+        """Record case size (in bytes)
+
+        Raw number of bytes for a single case record.
+        It can be calculated manually by adding all variable types
+        rounded up to the nearest multiple of 8.
+
+        This is the buffer size used to read a whole case record at once.
+        It is not necessily the number of bytes used to store a
+        case record on disk (depending on compression).
+        """
 
         func = self.spssio.spssGetCaseSize
         func.argtypes = [c_int, POINTER(c_long)]
@@ -719,8 +750,12 @@ class Header(SPSSFile):
         return case_size.value
 
     @property
-    def case_weight_var(self):
-        """Get or set case weight variable"""
+    def case_weight_var(self) -> str:
+        """Case weight variable
+
+        Variable set as the "weight" variable in SPSS.
+        Must be a scale numeric variable.
+        """
 
         func = self.spssio.spssGetCaseWeightVar
         case_weight_var = create_string_buffer(SPSS_MAX_VARNAME + 1)
@@ -729,7 +764,7 @@ class Header(SPSSFile):
         return case_weight_var.value.decode(self.encoding)
 
     @case_weight_var.setter
-    def case_weight_var(self, var_name):
+    def case_weight_var(self, var_name: str):
         func = self.spssio.spssSetCaseWeightVar
         func.argtypes = [c_int, c_char_p]
         retcode = func(self.fh, var_name.encode(self.encoding))
@@ -784,12 +819,17 @@ class Header(SPSSFile):
         return (missing_format, missing_values)
 
     @property
-    def var_missing_values(self):
-        """Get or set missing values
+    def var_missing_values(self) -> dict:
+        """Missing values
 
-        For missing ranges, the following keywords can be used inplace of numeric values:
-            - low: -inf, lo, low, lowest
-            - high: inf, hi, high, highest
+        Missing value definitions may contain three keys
+         1. lo = Low value used in missing range
+         2. hi = high value used in missing range
+         3. values = list of discrete values set as user missing
+
+        For missing ranges, the following keywords can be used inplace of numeric values
+         - low = -inf, lo, low, lowest
+         - high = inf, hi, high, highest
         """
 
         var_missing_values = {}
@@ -815,7 +855,7 @@ class Header(SPSSFile):
         return {k: v for k, v in var_missing_values.items() if v}
 
     @var_missing_values.setter
-    def var_missing_values(self, var_missing_values):
+    def var_missing_values(self, var_missing_values: dict):
         var_types = self.var_types
 
         for var_name, missing_values in var_missing_values.items():
@@ -944,7 +984,7 @@ class Header(SPSSFile):
             return dict(zip(attr_names, attr_text))
 
     @property
-    def var_attributes(self):
+    def var_attributes(self) -> dict:
         """Get and set arbitrary variable properties"""
 
         var_attributes = {}
@@ -956,7 +996,7 @@ class Header(SPSSFile):
         return var_attributes
 
     @var_attributes.setter
-    def var_attributes(self, var_attributes):
+    def var_attributes(self, var_attributes: dict):
 
         func = self.spssio.spssSetVarAttributes
 
@@ -998,8 +1038,11 @@ class Header(SPSSFile):
         return var_compat_name.value.decode(self.encoding).strip()
 
     @property
-    def var_compat_names(self):
-        """Returns dictionary of variable names with their compatible 8 byte name counterparts"""
+    def var_compat_names(self) -> dict:
+        """Short (8-byte) variable names
+
+        Dictionary of variable names with their "compatible" short 8-byte counterparts
+        """
 
         var_compat_names = {}
         for var_name in self.var_names:
@@ -1008,7 +1051,7 @@ class Header(SPSSFile):
         return var_compat_names
 
     @property
-    def var_sets(self):
+    def var_sets(self) -> dict:
         """Get or set variable sets
 
         SPSS apparently may use the 8 byte compatible variable names for this property.
@@ -1059,7 +1102,7 @@ class Header(SPSSFile):
         return var_sets_dict
 
     @var_sets.setter
-    def var_sets(self, var_sets):
+    def var_sets(self, var_sets: dict):
         if not var_sets:
             return
 
@@ -1079,9 +1122,10 @@ class Header(SPSSFile):
         warn_or_raise(retcode, func)
 
     def commit_header(self):
-        """Function to finalize metadata before writing data values
+        """Finalize metadata
 
-        Once this function is called, no further metadata modification is allowed
+        This function is used to finalize the header information before writing data.
+        Once this function is called, no further metadata modification is allowed.
         """
 
         func = self.spssio.spssCommitHeader

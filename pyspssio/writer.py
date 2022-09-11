@@ -13,11 +13,16 @@
 # is available in the LICENSE document.
 # =============================================================================
 
+from ctypes import *
+from typing import Union
+from types import SimpleNamespace
+
 import os
 import warnings
 import psutil
 import numpy as np
 import pandas as pd
+from pandas import DataFrame
 
 from pandas.api.types import (
     is_numeric_dtype,
@@ -26,8 +31,6 @@ from pandas.api.types import (
     is_datetime64_any_dtype,
     is_timedelta64_dtype,
 )
-
-from ctypes import *
 
 from .errors import SPSSWarning, SPSSError, warn_or_raise
 from . import config
@@ -74,14 +77,27 @@ class Writer(Header):
         retcode = func(self.fh)
         warn_or_raise(retcode, func)
 
-    def write_header(self, df, metadata=None, **kwargs):
-        """Write metadata properties"""
+    def write_header(self, df: DataFrame, metadata: Union[dict, SimpleNamespace] = None, **kwargs):
+        """Write metadata properties
+
+        Parameters
+        ----------
+        df
+            DataFrame
+        metadata
+            Dictionary of Header attributes to use (see Header class for more detail)
+        **kwargs
+            Additional arguments, including individual metadata attributes.
+            Note that metadata attributes supplied here take precedence.
+        """
 
         compression = {".sav": 1, ".zsav": 2}.get(os.path.splitext(self.filename)[1].lower())
         self.compression = compression
 
         if metadata is None:
             metadata = {}
+        elif isinstance(metadata, SimpleNamespace):
+            metadata = metadata.__dict__
 
         # combine, with preference to kwargs
         metadata = {**metadata, **kwargs}
@@ -180,9 +196,16 @@ class Writer(Header):
         # commit header
         self.commit_header()
 
-    def write_data_by_val(self, df):
+    def write_data_by_val(self, df: DataFrame):
         """Write data by variable/value
 
+        Parameters
+        ----------
+        df
+            DataFrame
+
+        Notes
+        -----
         Slower than whole_case_out
         Use when appending to an existing data set and variable order doesn't align
         """
@@ -231,8 +254,14 @@ class Writer(Header):
 
             self.commit_case_record()
 
-    def write_data(self, df, **kwargs):
-        """Write data to file"""
+    def write_data(self, df: DataFrame, **kwargs):
+        """Write data to file
+
+        Parameters
+        ----------
+        df
+            DataFrame
+        """
 
         # basic info
         var_types = self.var_types

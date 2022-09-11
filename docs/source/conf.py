@@ -31,6 +31,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
     "myst_parser",
 ]
 
@@ -42,12 +43,13 @@ autodoc_member_order = "bysource"
 autodoc_default_options = {
     "members": True,
     "show-inheritance": False,
-    "inherited-members": True,
+    "inherited-members": False,
     "no-special-members": True,
 }
 
 autosummary_generate = True
 autosummary_imported_members = True
+typehints_defaults = "braces"
 
 
 # -- Options for HTML output -------------------------------------------------

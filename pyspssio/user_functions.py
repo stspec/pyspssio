@@ -13,30 +13,32 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-
+from typing import Union, Any, Tuple, Generator
+from pandas import DataFrame
 from .reader import Reader
 from .writer import Writer
 
 
-def read_metadata(spss_file, usecols=None, locale=None):
+def read_metadata(
+    spss_file: str,
+    usecols: Union[list, tuple, str, callable, None] = None,
+    locale: str = None,
+) -> dict:
     """Reads metadata attributes from SPSS file
 
     Parameters
     ----------
-    spss_file : str
-        Filepath of SPSS file (.sav or .zsav)
-    usecols : str or tuple or list or callable, default=None
-        Specifies which columns to keep for column-related metadata;
-        Use None for all columns
-    locale : str, default=None
-        Sets I/O locale when operating in codepage mode
-        Default None to use system locale
+    spss_file
+        SPSS filename (.sav or .zsav)
+    usecols
+        Columns to use (None for all columns)
+    locale
+        Locale to use when I/O module is operating in codepage mode
 
     Returns
     -------
     dict
-        A dictionary of metadata attributes;
-        See Header class for more detail
+        Header properties (see Header class for more detail)
     """
 
     with Reader(spss_file, mode="r", usecols=usecols, locale=locale) as sav:
@@ -44,50 +46,47 @@ def read_metadata(spss_file, usecols=None, locale=None):
 
 
 def read_sav(
-    spss_file,
-    row_offset=0,
-    row_limit=None,
-    usecols=None,
-    convert_datetimes=True,
-    include_user_missing=True,
-    chunksize=None,
-    locale=None,
-    string_nan="",
-):
+    spss_file: str,
+    row_offset: int = 0,
+    row_limit: int = None,
+    usecols: Union[list, tuple, str, callable, None] = None,
+    convert_datetimes: bool = True,
+    include_user_missing: bool = True,
+    chunksize: int = None,
+    locale: str = None,
+    string_nan: Any = "",
+) -> Union[Tuple[DataFrame, dict], Generator[DataFrame, None, None]]:
     """Read data and metadata from SPSS file
 
     Parameters
     ----------
-    spss_file : str
-        Filepath of SPSS file (.sav or .zsav)
-    row_offset : int, default=0
-        Specifies which record number to start reading from
-    row_limit : int, default=None
-        Maximum number of records to return.
-    usecols : str or tuple or list or callable, default=None
-        Specifies which columns to keep;
-        Use None for all columns
-    convert_datetimes : bool, default=True
+    spss_file
+        SPSS filename (.sav or .zsav)
+    row_offset
+        Number of rows to skip
+    row_limit
+        Maximum number of rows to return
+    usecols
+        Columns to use (None for all columns)
+    convert_datetimes
         Convert SPSS datetimes to Python/Pandas datetime columns;
-        False returns float, seconds from October 15, 1582
-    include_user_missing : bool, default=True
+        False returns seconds from October 15, 1582 (SPSS start date)
+    include_user_missing
         Whether to keep user missing values or
-        replace them with NaN (numeric) and '' (strings)
-    chunksize : int, default=None
+        replace them with NaN (numeric) and "" (strings)
+    chunksize
         Number of rows to return per chunk
-    locale : str, default=None
-        Sets I/O locale when operating in codepage mode;
-        Default None to use system locale
-    string_nan : default=''
+    locale
+        Locale to use when I/O module is operating in codepage mode
+    string_nan
         Value to return for empty strings
 
     Returns
     -------
-    tuple : default
-        - dataframe
-        - dict (metadata)
-    generator : if chunksize is defined
-        - dataframe(s) of chunksize (no metadata dict)
+    tuple
+        DataFrame, metadata
+    generator
+        DataFrame(s) with chunksize number of rows (only if chunksize is specified)
     """
 
     if chunksize:
@@ -123,26 +122,30 @@ def read_sav(
         return df, metadata
 
 
-def write_sav(spss_file, df, metadata=None, unicode=True, locale=None, **kwargs):
-    """Write dataframe to SPSS (.sav or .zsav) file
+def write_sav(
+    spss_file: str,
+    df: DataFrame,
+    metadata: bool = None,
+    unicode: bool = True,
+    locale: str = None,
+    **kwargs
+) -> None:
+    """Write SPSS file (.sav or .zsav) from DataFrame
 
     Parameters
     ----------
-    spss_file : str
-        Filepath of SPSS file (.sav or .zsav) to create
-    df : dataframe
-        Pandas dataframe
-    metadata : dict, default=None
-        Dictionary of Header attributes to apply (e.g., varLabels, varValueLabels, etc.);
-        See Header class for more detail
-    unicode : bool, default=True
-        Whether to write the file in unicode or codepage mode
-    locale : str, default=None
-        Sets I/O locale when operating in codepage mode
-        Default None to use system locale
+    spss_file
+        SPSS filename (.sav or .zsav)
+    df
+        DataFrame
+    metadata
+        Dictionary of Header attributes to use (see Header class for more detail)
+    unicode
+        Whether to write the file in unicode (True) or codepage (False) mode
+    locale
+        Locale to use when I/O module is operating in codepage mode
     **kwargs
-        Option to provide other arguments,
-        including individual metadata attributes.
+        Additional arguments, including individual metadata attributes.
         Note that metadata attributes supplied here take precedence.
     """
 
@@ -151,18 +154,17 @@ def write_sav(spss_file, df, metadata=None, unicode=True, locale=None, **kwargs)
         sav.write_data(df=df, **kwargs)
 
 
-def append_sav(spss_file, df, locale=None, **kwargs):
-    """Append existing SPSS (.sav or .zsav) file with additional records
+def append_sav(spss_file: str, df: DataFrame, locale: str = None, **kwargs) -> None:
+    """Append existing SPSS file (.sav or .zsav) with additional records
 
     Parameters
     ----------
-    spss_file : str
-        Filepath of SPSS file (.sav or .zsav) to append
-    df : dataframe
-        Pandas dataframe
-    locale : str, default=None
-        Sets I/O locale when operating in codepage mode
-        Default None to use system locale
+    spss_file
+        SPSS filename (.sav or .zsav)
+    df
+        DataFrame
+    locale
+        Locale to use when I/O module is operating in codepage mode
     **kwargs
         Additional arguments
 
@@ -171,8 +173,8 @@ def append_sav(spss_file, df, locale=None, **kwargs):
     Cannot modify metadata when appending new records.
     Be careful with strings that might be longer than the allowed width.
 
-    locale is probably not necessary since file encoding
-    is obtained from the SPSS header information.
+    It may or may not be necessary to manually set locale since file encoding
+    information is obtained from the SPSS header information.
     """
 
     with Writer(spss_file, mode="a", locale=locale) as sav:

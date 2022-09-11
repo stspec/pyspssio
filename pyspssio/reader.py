@@ -14,10 +14,12 @@
 # =============================================================================
 
 
-import pandas as pd
-import numpy as np
-
 from ctypes import *
+from typing import Union, Any
+
+import numpy as np
+import pandas as pd
+from pandas import DataFrame
 
 from .errors import warn_or_raise
 from . import config
@@ -32,13 +34,13 @@ class Reader(Header):
     def __init__(
         self,
         *args,
-        row_offset=0,
-        row_limit=None,
-        usecols=None,
-        chunksize=None,
-        convert_datetimes=True,
-        include_user_missing=True,
-        string_nan="",
+        row_offset: int = 0,
+        row_limit: int = None,
+        usecols: Union[list, tuple, str, callable, None] = None,
+        chunksize: int = None,
+        convert_datetimes: bool = True,
+        include_user_missing: bool = True,
+        string_nan: Any = "",
         **kwargs
     ):
         super().__init__(*args, **kwargs)
@@ -133,11 +135,16 @@ class Reader(Header):
         return case_record
 
     @property
-    def metadata(self):
-        """Metadata property"""
+    def metadata(self) -> dict:
+        """Metadata object
+
+        This object contains properties/attributes from the Header class
+        mostly pertaining to variable information and data structure.
+        """
 
         usecols = self.usecols
 
+        # these are dictionaries in the form {var1: attributes, var2: attributes, ...}
         variable_properties = [
             "var_types",
             "var_formats",
@@ -169,6 +176,7 @@ class Reader(Header):
             "case_count": self.case_count,
             "case_weight_var": self.case_weight_var,
             "mrsets": mrsets,
+            "var_names": self.var_names,
         }
 
         for prop in variable_properties:
@@ -276,8 +284,29 @@ class Reader(Header):
             string_slices,
         )
 
-    def read_data(self, row_limit=None, convert_datetimes=None, include_user_missing=None):
-        """Read data"""
+    def read_data(
+        self,
+        row_limit: int = None,
+        convert_datetimes: bool = None,
+        include_user_missing: bool = None,
+    ) -> DataFrame:
+        """Read data
+
+        Parameters
+        ----------
+        row_limit
+            Maximum number of rows to return
+        convert_datetimes
+            Convert SPSS datetimes to Python/Pandas datetime columns;
+            False returns seconds from October 15, 1582 (SPSS start date)
+        include_user_missing
+            Whether to keep user missing values or
+            replace them with NaN (numeric) and "" (strings)
+
+        Returns
+        -------
+        DataFrame
+        """
 
         if row_limit:
             row_limit = min(row_limit, self.total_rows)
