@@ -26,14 +26,12 @@ from .constants import *
 from .user_functions import *
 from . import config
 
+from . import _version
+
+__version__ = _version.get_versions()["version"]
+
 module_path = os.path.dirname(__file__)
 source_root = os.path.dirname(module_path)
-
-try:
-    with open(os.path.join(source_root, "VERSION"), encoding="utf-8") as v:
-        __version__ = v.readline()
-except FileNotFoundError:
-    __version__ = "unknown"
 
 pf_system = platform.system().lower()
 
