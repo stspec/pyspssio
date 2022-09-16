@@ -116,7 +116,7 @@ class Header(SPSSFile):
 
     @property
     def var_names(self) -> list:
-        """List of variable names
+        """Variable names
 
         May return a filtered list when returned as part of a metadata object
         if only a subset of variables are specified to be used (e.g., usecols in read_sav).
@@ -985,7 +985,10 @@ class Header(SPSSFile):
 
     @property
     def var_attributes(self) -> dict:
-        """Get and set arbitrary variable properties"""
+        """Variable attributes
+
+        These are arbitrary variable properties,
+        analagous to file attributes"""
 
         var_attributes = {}
         for var_name in self.var_names:
@@ -1052,7 +1055,10 @@ class Header(SPSSFile):
 
     @property
     def var_sets(self) -> dict:
-        """Get or set variable sets
+        """Variable sets
+
+        These are NOT multi response sets. These variable sets are groupings
+        of variables that can be selected in the SPSS application as a sort of view filter.
 
         SPSS apparently may use the 8 byte compatible variable names for this property.
         It's currently not possible to obtain the auto-generated compatible names
@@ -1062,7 +1068,7 @@ class Header(SPSSFile):
 
         Set names when created in the normal SPSS application allow spaces and special characters.
         However, The I/O module returns an SPSS_INVALID_VARSETDEF error when these are included.
-        When an "=" sign is included in the set name, the set name is truncated (same behavior).
+        When an "=" sign is included in the set name, the set name is truncated.
         """
 
         short_to_long_var_names = {
