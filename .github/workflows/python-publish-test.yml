@@ -12,9 +12,9 @@ on:
   release:
     types: [published]
     tags:
-      - *-d*
-      - *-a*
-      - *-b*
+      - "*-d*"
+      - "*-a*"
+      - "*-b*"
 
 permissions:
   contents: read
