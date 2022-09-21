@@ -194,9 +194,15 @@ spssGetVarNMissingValues
 
 spssSetVarNMissingValues
 
+spssGetMultRespCount
+
 spssGetMultRespDefs
 
+spssGetMultRespDefsEx - replaces spssGetMultRespDefs
+
 spssSetMultRespDefs
+
+spssAddMultRespDefExt
 
 spssGetCaseSize
 
@@ -239,15 +245,9 @@ spssCommitCaseRecord
 
 spssAddMultRespDefC
 
-spssAddMultRespDefExt
-
 spssAddMultRespDefN
 
-spssGetMultRespCount
-
 spssGetMultRespDefByIndex
-
-spssGetMultRespDefsEx
 
 spssConvertDate - manual conversion instead
 

@@ -594,32 +594,134 @@ class Header(SPSSFile):
                     func(var_name, value, label)
 
     @property
+    def mrsets_count(self) -> int:
+        """Number of multi response set definitions
+
+        Needed if using spssGetMultRespDefByIndex.
+        Otherwise, len(mrsets) should be equivalent.
+        """
+
+        func = self.spssio.spssGetMultRespCount
+        func.argtypes = [c_int, POINTER(c_int)]
+
+        count = c_int()
+
+        retcode = func(self.fh, count)
+        warn_or_raise(retcode, func)
+
+        return count.value
+
+    def _parse_mrset_c(self, attr: str) -> dict:
+        d = {}
+        d["type"] = "C"
+        d["is_dichotomy"] = False
+        idx = 2
+        d["value_length"], d["counted_value"] = None, None
+        label_length = attr[idx:].split(" ", 1)[0]
+        idx += len(label_length) + 1
+        d["label"] = attr[idx:][: int(label_length.strip())]
+        idx += len(d["label"]) + 1
+        d["variable_list"] = attr[idx:].split()
+        return d
+
+    def _parse_mrset_d(self, attr: str) -> dict:
+        d = {}
+        d["type"] = "D"
+        d["is_dichotomy"] = True
+        idx = 1
+        value_length = attr[idx:].split(" ", 1)[0]
+        idx += len(value_length) + 1
+        d["counted_value"] = attr[idx:][: int(value_length.strip())]
+        idx += len(d["counted_value"]) + 1
+        label_length = attr[idx:].split(" ", 1)[0]
+        idx += len(label_length) + 1
+        d["label"] = attr[idx:][: int(label_length.strip())]
+        idx += len(d["label"]) + 1
+        d["variable_list"] = attr[idx:].split()
+        return d
+
+    def _parse_mrset_e(self, attr: str) -> dict:
+        d = {}
+        d["type"] = "E"
+        d["is_dichotomy"] = True
+        d["use_category_labels"] = True
+        d["use_first_var_label"] = attr[3] == "1"
+        idx = 4 + d["use_first_var_label"]
+        value_length = attr[idx:].split(" ", 1)[0]
+        idx += len(value_length) + 1
+        d["counted_value"] = attr[idx:][: int(value_length.strip())]
+        idx += len(d["counted_value"]) + 1
+        label_length = attr[idx:].split(" ", 1)[0]
+        idx += len(label_length) + 1
+        d["label"] = attr[idx:][: int(label_length.strip())]
+        idx += len(d["label"]) + 1
+        d["variable_list"] = attr[idx:].split()
+        return d
+
+    @property
     def mrsets(self) -> dict:
         """Multi response set definitions
 
         Multi response sets contain the following attributes
-         - type : "D" (dichotomous) or "C" (category)
-         - value_length : for dichotomous sets, this is the string length of the counted value
-         - counted_value : for dichotomous sets, this is the counted value
-         - label_length : length of set label
          - label : set label
+         - is_dichotomy : whether set is dichotomous (True) or Category (False)
+         - counted_value : counted value for dichotomous sets
+         - use_category_labels : whether to use counted value labels instead of variable labels
+         - use_first_var_label : whether to use first var label as set label
          - variable_list : list of variables in the set
+
 
         Notes
         -----
-        Dichotomous mrsets only accept integers as a counted value.
+        mrset name must begin with a "$".
 
-        value_length and label_length attributes are for reference only.
-        The I/O module returns multi response definitions as a single string
-        and these values are only used for parsing.
+        variable_list is the only required attribute.
+        However, if this is the only included attribute, then is_dichotomy is assumed to be False.
 
-        The only required fields for a valid mrset definition include type and variable_list.
-        If type == D (dichotomous), then counted_value is also required.
+        If is_dichotomy is True, counted_value must be specified.
+        If is_dichotomy is None and counted_value is not None, is_dichotomy is assumed to be True.
+
+        Numeric dichotomous sets only accept integers for a counted value.
+
+        use_category_labels is only applicable for dichotomous sets.
+        Setting this to True turns the set into an "extended" mrset definition.
+
+        use_first_var_label is only applicable when use_category_labels is True.
+        Specifying a set label when use_first_var_label is True might result in an invalid mrset definition.
+
+
+        Examples
+        --------
+
+        Category (C) Set::
+
+            {"$mc_mrset": {
+                "label": "This is an MC set",
+                "variable_list": ["var1", "var2", "var3"]
+            }}
+
+        Dichotomous (D) Set::
+
+            {"$md_mrset": {
+                "label": "This is an MD set",
+                "counted_value": 1,
+                "variable_list": ["resp1", "resp2", "resp3"]
+            }}
+
+        Dichotomous (E - Extended) Set::
+
+            {"$md_mrset": {
+                "counted_value": 1,
+                "use_category:labels": True,
+                "use_first_var_label": True,
+                "variable_list": ["cat1", "cat2", "cat3"]
+            }}
+
         """
 
         mrsets_dict = {}
 
-        func = self.spssio.spssGetMultRespDefs
+        func = self.spssio.spssGetMultRespDefsEx
         func.argtypes = [c_int, POINTER(c_char_p)]
         mrsets_string = c_char_p()
         retcode = func(self.fh, mrsets_string)
@@ -629,33 +731,16 @@ class Header(SPSSFile):
         elif mrsets_string:
             mrsets = mrsets_string.value.decode(self.encoding)  # pylint: disable=no-member
             mrsets = mrsets.strip().split("\n")
-            mrsets = [x.split("=", 2) for x in mrsets]
+            mrsets = [x.split("=", 1) for x in mrsets]
             for mrset in mrsets:
                 d = {}
                 setname, attr = mrset
-                if attr[0].upper() == "D":
-                    d["type"] = "D"
-                    idx = 1
-                    d["value_length"] = attr[idx:].split(" ", 1)[0]
-                    idx += len(d["value_length"]) + 1
-                    d["counted_value"] = attr[idx:][: int(d["value_length"].strip())]
-                    idx += len(d["counted_value"]) + 1
-                    d["label_length"] = attr[idx:].split(" ", 1)[0]
-                    idx += len(d["label_length"]) + 1
-                    d["label"] = attr[idx:][: int(d["label_length"].strip())]
-                    idx += len(d["label"]) + 1
-                    d["variable_list"] = attr[idx:].split()
-                    mrsets_dict[setname] = d
-                elif attr[0].upper() == "C":
-                    d["type"] = "C"
-                    idx = 2
-                    d["value_length"], d["counted_value"] = None, None
-                    d["label_length"] = attr[idx:].split(" ", 1)[0]
-                    idx += len(d["label_length"]) + 1
-                    d["label"] = attr[idx:][: int(d["label_length"].strip())]
-                    idx += len(d["label"]) + 1
-                    d["variable_list"] = attr[idx:].split()
-                    mrsets_dict[setname] = d
+                if attr[0].upper() == "C":
+                    mrsets_dict[setname] = self._parse_mrset_c(attr)
+                elif attr[0].upper() == "D":
+                    mrsets_dict[setname] = self._parse_mrset_d(attr)
+                elif attr[0].upper() == "E":
+                    mrsets_dict[setname] = self._parse_mrset_e(attr)
 
         # clean
         self.spssio.spssFreeMultRespDefs(mrsets_string)
@@ -664,9 +749,6 @@ class Header(SPSSFile):
         if len(mrsets_dict):
             var_types = self.var_types
             for mrset, d in mrsets_dict.items():
-                d["label_length"] = int(d["label_length"])
-                if d["value_length"] is not None:
-                    d["value_length"] = int(d["value_length"])
                 if d["counted_value"] is not None and var_types[d["variable_list"][0]] == 0:
                     d["counted_value"] = int(d["counted_value"])
 
@@ -674,60 +756,84 @@ class Header(SPSSFile):
 
     @mrsets.setter
     def mrsets(self, mrsets: dict):
+        for mrset_name, mrset_attr in mrsets.items():
+            self._add_mrset(mrset_name, mrset_attr)
+
+    def _add_mrset(self, mrset_name: str, mrset_attr: dict) -> None:
 
         var_types = self.var_types
 
-        # prepare mrsets
-        mrset_list = []
-        for mrset, d in mrsets.items():
-            if mrset[0] != "$":
-                mrset = "$" + mrset
-            label = str(d.get("label", mrset[1:]))
-            label_length = str(len(label.encode(self.encoding)))
-            set_type = d.get("type")
+        is_dichotomy = mrset_attr.get("is_dichotomy")
+        counted_value = mrset_attr.get("counted_value")
 
-            variable_list = [var for var in d.get("variable_list", []) if var in var_types]
-            if len(variable_list):
-                # only attempt to add if at least one variable is present
-                if not isinstance(variable_list, (list, tuple)):
-                    raise TypeError(f"Expected 'list' or 'tuple' for variable list - {mrset}")
-                if set_type is None:
-                    raise ValueError(
-                        f"Missing mrset 'type' for {mrset}: must be C (category) or D (dichotomous)"
-                    )
-                elif set_type.upper() == "C":
-                    mrset_list.append(
-                        " ".join(
-                            [mrset + "=" + set_type, label_length, label, " ".join(variable_list)]
-                        )
-                    )
-                elif set_type.upper() == "D":
-                    counted_value = d.get("counted_value")
-                    if counted_value is None:
-                        raise ValueError(f"Missing mrset 'counted_value' for {mrset}")
-                    else:
-                        if var_types[variable_list[0]] == 0:
-                            counted_value = int(float(counted_value))
-                        counted_value = str(counted_value)
-                        value_length = str(len(counted_value))
-                    mrset_list.append(
-                        " ".join(
-                            [
-                                mrset + "=" + set_type + value_length,
-                                counted_value,
-                                label_length,
-                                label,
-                                " ".join(variable_list),
-                            ]
-                        )
-                    )
-        mrsets = "\n".join(mrset_list).encode(self.encoding)
+        # infer is_dichotomy when not explicitly specified
+        if is_dichotomy is None:
+            is_dichotomy = counted_value is not None
 
-        # set mrsets
-        func = self.spssio.spssSetMultRespDefs
-        func.argtypes = [c_int, c_char_p]
-        retcode = func(self.fh, mrsets)
-        warn_or_raise(retcode, func)
+        # determine if set is numeric
+        is_numeric = isinstance(counted_value, (int, float))
+
+        encoded_vars = []
+        for var in mrset_attr.get("variable_list", []):
+            if var in var_types:
+                encoded_vars.append(var.encode(self.encoding))
+
+        num_vars = len(encoded_vars)
+
+        class MRSetStruct(Structure):
+            pass
+
+        MRSetStruct._fields_ = [
+            ("szMrSetName", c_char * int((SPSS_MAX_VARNAME + 1))),
+            ("szMrSetLabel", c_char * int((SPSS_MAX_VARLABEL + 1))),
+            ("qIsDichotomy", c_int),
+            ("qIsNumeric", c_int),
+            ("qUseCategoryLabels", c_int),
+            ("qUseFirstVarLabel", c_int),
+            ("Reserved", c_int * 14),
+            ("nCountedValue", c_long),
+            ("pszCountedValue", c_char_p),
+            ("ppszVarNames", POINTER(c_char_p * num_vars)),
+            ("nVariables", c_int),
+        ]
+
+        func = self.spssio.spssAddMultRespDefExt
+        func.argtypes = [c_int, POINTER(MRSetStruct)]
+
+        set_name = mrset_name.encode(self.encoding)
+        set_label = mrset_attr.get("label", "").encode(self.encoding)
+
+        is_dichotomy = int(is_dichotomy)
+        is_numeric = int(is_numeric)
+        use_category_labels = int(is_dichotomy and mrset_attr.get("use_category_labels", False))
+        use_first_var_label = int(
+            is_dichotomy and use_category_labels and mrset_attr.get("use_first_var_label", False)
+        )
+        reserved = (c_int * 14)(0)
+        n_counted_value = 0 if not is_numeric else int(counted_value)
+        c_counted_value = ("" if (is_numeric or not is_dichotomy) else counted_value).encode(
+            self.encoding
+        )
+        var_names = (c_char_p * num_vars)(*encoded_vars)
+
+        args = (
+            set_name,
+            set_label,
+            is_dichotomy,
+            is_numeric,
+            use_category_labels,
+            use_first_var_label,
+            reserved,
+            n_counted_value,
+            c_counted_value,
+            pointer(var_names),
+            num_vars,
+        )
+
+        mrset_struct = MRSetStruct(*args)
+
+        retcode = func(self.fh, byref(mrset_struct))
+        warn_or_raise(retcode, func, (mrset_name, mrset_attr, args))
 
     @property
     def case_size(self) -> int:

@@ -106,9 +106,9 @@ class Writer(Header):
         metadata["var_formats"] = metadata.get("var_formats", {})
         metadata["var_measure_levels"] = metadata.get("var_measure_levels", {})
 
-        # convert all varFormats to tuple structure
-        # ignores varFormatsTuple if supplied
-        # varFormats can be either plain or tuple structure
+        # convert all var_formats to tuple structure
+        # ignore var_formats_tuple if supplied
+        # var_formats can be either plain or tuple structure
         metadata["var_formats"] = {
             var_name: varformat_to_tuple(var_format)
             for var_name, var_format in metadata["var_formats"].items()
@@ -119,7 +119,7 @@ class Writer(Header):
 
         encoding = self.encoding
 
-        # setup varTypes, formats, levels
+        # setup types, formats, levels
         for col, dtype in dtypes.items():
             if (
                 metadata["var_types"].get(col)
@@ -175,6 +175,7 @@ class Writer(Header):
         ]
         attrs = [attr for attr in dir(self) if attr[0] != "_" and attr not in attr_to_ignore]
 
+        # catch Exceptions for non-critical attributes
         failed_to_set = {}
         for attr, v in metadata.items():
             if attr in attrs and v:

@@ -39,6 +39,11 @@ def read_metadata(
     -------
     dict
         Header properties (see Header class for more detail)
+
+    Examples
+    --------
+    >>> meta = pyspssio.read_metadata("spss_file.sav")
+
     """
 
     with Reader(spss_file, mode="r", usecols=usecols, locale=locale) as sav:
@@ -87,6 +92,25 @@ def read_sav(
         DataFrame, metadata
     generator
         DataFrame(s) with chunksize number of rows (only if chunksize is specified)
+
+    Examples
+    --------
+
+    Read data and metadata::
+
+        df, meta = pyspssio.read_sav("spss_file.sav")
+
+
+    Read metadata only::
+
+        meta = pyspssio.read_metadata("spss_file.sav")
+
+
+    Read data in chunks of chunksize (number of rows/records)::
+
+        for df in pyspssio.read_sav("spss_file.sav", chunksize=1000):
+            # do something
+
     """
 
     if chunksize:
@@ -125,7 +149,7 @@ def read_sav(
 def write_sav(
     spss_file: str,
     df: DataFrame,
-    metadata: bool = None,
+    metadata: dict = None,
     unicode: bool = True,
     locale: str = None,
     **kwargs
@@ -147,6 +171,11 @@ def write_sav(
     **kwargs
         Additional arguments, including individual metadata attributes.
         Note that metadata attributes supplied here take precedence.
+
+    Examples
+    --------
+    >>> pyspssio.write_sav("spss_file.sav", df, metadata=meta)
+
     """
 
     with Writer(spss_file, mode="w", unicode=unicode, locale=locale) as sav:
@@ -175,6 +204,11 @@ def append_sav(spss_file: str, df: DataFrame, locale: str = None, **kwargs) -> N
 
     It may or may not be necessary to manually set locale since file encoding
     information is obtained from the SPSS header information.
+
+    Examples
+    --------
+    >>> pyspssio.append_sav("spss_file.sav", df)
+
     """
 
     with Writer(spss_file, mode="a", locale=locale) as sav:
