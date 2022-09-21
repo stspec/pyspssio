@@ -7,6 +7,14 @@ This package uses the I/O Module for SPSS Statistics v27 available at https://ww
 
 **WARNING**: This is an early release with limited testing. Use with caution.
 
+
+## Links
+
+ * [PyPI](https://pypi.org/project/pyspssio/)
+ * [GitHub](https://github.com/stspec/pyspssio)
+ * [Read the Docs](https://pyspssio.readthedocs.io)
+
+
 ## Motivation
 
 Main reason for creating this package is to fill gaps by other similar packages.
