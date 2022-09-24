@@ -301,13 +301,13 @@ class Writer(Header):
                     ).ljust(buffer_size, string_padder)
                 )
             elif is_timedelta64_dtype(dtypes[col.name]):
-                return np.nan_to_num(col.dt.total_seconds(), nan=sysmis)
+                return col.dt.total_seconds().to_numpy(dtype=np.float64, na_value=sysmis)
             elif is_datetime64_any_dtype(dtypes[col.name]):
-                return np.nan_to_num(
-                    (col - pd_origin).dt.total_seconds() + SPSS_ORIGIN_OFFSET, nan=sysmis
+                return ((col - pd_origin).dt.total_seconds() + SPSS_ORIGIN_OFFSET).to_numpy(
+                    dtype=np.float64, na_value=sysmis
                 )
             else:
-                return np.nan_to_num(col, nan=sysmis)
+                return col.to_numpy(dtype=np.float64, na_value=sysmis)
 
         # choose chunksize
         total_records = len(df.index)
