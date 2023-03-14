@@ -613,49 +613,37 @@ class Header(SPSSFile):
 
     def _parse_mrset_c(self, attr: str) -> dict:
         d = {}
+        info = attr.split(" ".encode(self.encoding), maxsplit=2)
         d["type"] = "C"
         d["is_dichotomy"] = False
-        idx = 2
         d["value_length"], d["counted_value"] = None, None
-        label_length = attr[idx:].split(" ", 1)[0]
-        idx += len(label_length) + 1
-        d["label"] = attr[idx:][: int(label_length.strip())]
-        idx += len(d["label"]) + 1
-        d["variable_list"] = attr[idx:].split()
+        label_length = int(info[1].decode(self.encoding))
+        d["label"] = info[2][:label_length].decode(self.encoding)
+        d["variable_list"] = info[2][label_length + 1:].decode(self.encoding).split()
         return d
 
     def _parse_mrset_d(self, attr: str) -> dict:
         d = {}
+        info = attr.split(" ".encode(self.encoding), maxsplit=3)
         d["type"] = "D"
         d["is_dichotomy"] = True
-        idx = 1
-        value_length = attr[idx:].split(" ", 1)[0]
-        idx += len(value_length) + 1
-        d["counted_value"] = attr[idx:][: int(value_length.strip())]
-        idx += len(d["counted_value"]) + 1
-        label_length = attr[idx:].split(" ", 1)[0]
-        idx += len(label_length) + 1
-        d["label"] = attr[idx:][: int(label_length.strip())]
-        idx += len(d["label"]) + 1
-        d["variable_list"] = attr[idx:].split()
+        d["counted_value"] = info[1].decode(self.encoding)
+        label_length = int(info[2].decode(self.encoding))
+        d["label"] = info[3][:label_length].decode(self.encoding)
+        d["variable_list"] = info[3][label_length + 1:].decode(self.encoding).split()
         return d
 
     def _parse_mrset_e(self, attr: str) -> dict:
         d = {}
+        info = attr.split(" ".encode(self.encoding), maxsplit=5)
         d["type"] = "E"
         d["is_dichotomy"] = True
         d["use_category_labels"] = True
-        d["use_first_var_label"] = attr[3] == "1"
-        idx = 4 + d["use_first_var_label"]
-        value_length = attr[idx:].split(" ", 1)[0]
-        idx += len(value_length) + 1
-        d["counted_value"] = attr[idx:][: int(value_length.strip())]
-        idx += len(d["counted_value"]) + 1
-        label_length = attr[idx:].split(" ", 1)[0]
-        idx += len(label_length) + 1
-        d["label"] = attr[idx:][: int(label_length.strip())]
-        idx += len(d["label"]) + 1
-        d["variable_list"] = attr[idx:].split()
+        d["use_first_var_label"] = info[1].decode(self.encoding) == "11"
+        d["counted_value"] = info[3].decode(self.encoding)
+        label_length = int(info[4].decode(self.encoding))
+        d["label"] = info[5][:label_length].decode(self.encoding)
+        d["variable_list"] = info[5][label_length + 1:].decode(self.encoding).split()
         return d
 
     @property
@@ -729,17 +717,18 @@ class Header(SPSSFile):
             self.spssio.spssFreeMultRespDefs(mrsets_string)
             warn_or_raise(retcode, func)
         elif mrsets_string:
-            mrsets = mrsets_string.value.decode(self.encoding)  # pylint: disable=no-member
-            mrsets = mrsets.strip().split("\n")
-            mrsets = [x.split("=", 1) for x in mrsets]
+            mrsets = mrsets_string.value.split("\n".encode(self.encoding))
+            mrsets = [x.split("=".encode(self.encoding), 1) for x in mrsets]
             for mrset in mrsets:
-                d = {}
-                setname, attr = mrset
-                if attr[0].upper() == "C":
+                setname = mrset[0].decode(self.encoding)
+                if setname == "":
+                    continue
+                attr = mrset[1]
+                if attr.startswith("C".encode(self.encoding)):
                     mrsets_dict[setname] = self._parse_mrset_c(attr)
-                elif attr[0].upper() == "D":
+                elif attr.startswith("D".encode(self.encoding)):
                     mrsets_dict[setname] = self._parse_mrset_d(attr)
-                elif attr[0].upper() == "E":
+                elif attr.startswith("E".encode(self.encoding)):
                     mrsets_dict[setname] = self._parse_mrset_e(attr)
 
         # clean
