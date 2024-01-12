@@ -71,25 +71,28 @@ class SPSSFile(object):
             "ab": {"open": self.spssio.spssOpenAppendU8, "close": self.spssio.spssCloseAppend},
         }
 
-        # initialize in unicode or codepage mode
-        self.interface_encoding = unicode
-
         # get current locale information and set initial encoding
+        self.system_locale = lc.setlocale(lc.LC_ALL, "")
         language_code, encoding_category = lc.getlocale()
-        self.system_locale = ".".join((language_code, encoding_category))
         self.encoding = "utf-8" if unicode else encoding_category
+
         # test setting initial locale to obtain encoding
         if locale:
-            lc.setlocale(lc.LC_ALL, locale)
+            # force unicode off if locale is specified
+            unicode = False
+            # set system locale to get locale encoding information
+            locale = lc.setlocale(lc.LC_ALL, locale)
             language_code, encoding_category = lc.getlocale()
-            locale = ".".join((language_code, encoding_category))
-            self.encoding = "utf-8" if unicode else encoding_category
-            # reset locale after getting use locale information
+            # set encoding
+            self.encoding = encoding_category
+            # reset system locale after getting locale information
             lc.setlocale(lc.LC_ALL, self.system_locale)
+
+        # initialize I/O module in unicode or codepage mode
+        self.interface_encoding = unicode
 
         # set I/O locale and initial encoding
         self.locale = self.set_locale(self.system_locale if not locale else locale)
-        # self.encoding = "utf-8" if unicode else encoding_category
 
         # match I/O encoding based on file information for read/append modes
         if self.mode in ["rb", "ab"]:
