@@ -15,19 +15,49 @@
 
 import sys
 import argparse
-import inspect
+from inspect import signature, getmembers, isfunction
 
 from . import user_functions
 
 
-def parse_arguments(func):
-    """Helper function for reading a method signature and parsing command lind arguments"""
-
+funcs = {}
+for func_name, func in getmembers(user_functions, isfunction):
     parser = argparse.ArgumentParser()
-    for parammeter in inspect.signature(func).parameters:
-        parser.add_argument("--" + parammeter)
-    args = parser.parse_args()
-    return vars(args)
+    func_help = ""
+    for name, parameter in signature(func).parameters.items():
+        parser.add_argument("--" + name)
+        func_help += "\n - " + str(parameter)
+
+    funcs[func_name] = {"func": func, "parser": parser, "help": func_help.strip("\n")}
+
+help_message = f'''
+### Usage ###
+
+pyspssio <function> --arg1 arg1 --arg2 arg2
+
+### Functions ###
+
+{'\n'.join(' - ' + func_name for func_name in funcs.keys())}
+
+### Function Signatures ###
+
+{'\n\n'.join(name + '\n' + func['help'] for name, func in funcs.items())}
+
+'''
+
+
+def call_function(func_name):
+    """Helper function for calling function"""
+
+    func_info = funcs[func_name]
+    parser = func_info["parser"]
+    func = func_info["func"]
+    kwargs = vars(parser.parse_args())
+
+    try:
+        return func(**kwargs)
+    except Exception as err:
+        print(err, kwargs, func_info["help"], sep="\n\n")
 
 
 def main():
@@ -42,7 +72,10 @@ def main():
 
     """
 
-    func = getattr(user_functions, sys.argv[1])
+    if len(sys.argv) <= 1:
+        print(help_message)
+        return
+
+    func_name = sys.argv[1]
     sys.argv = sys.argv[0:1] + sys.argv[2:]
-    kwargs = parse_arguments(func)
-    return func(**kwargs)
+    return call_function(func_name)
