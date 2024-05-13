@@ -17,14 +17,28 @@ import sys
 import ast
 import json
 import argparse
-from inspect import signature, getmembers, isfunction, Parameter
+from inspect import signature, isfunction, Parameter
 from pandas import DataFrame
 
 from . import user_functions
 
 
+HELP_MESSAGE = """
+Usage:
+pyspssio <function> --arg1 arg1 --arg2 arg2
+
+Functions:
+ - read_sav
+ - read_metadata
+ - write_sav
+ - append_sav
+
+"""
+
+
 def boolean(value):
     """Safely convert input value to boolean"""
+
     if isinstance(value, str):
         value = value.title()
     return bool(ast.literal_eval(value))
@@ -32,6 +46,7 @@ def boolean(value):
 
 def dictionary(value):
     """Safely convert input value to dictionary"""
+
     if isinstance(value, str):
         value = json.loads(value)
     return dict(value)
@@ -39,6 +54,7 @@ def dictionary(value):
 
 def dataframe(value):
     """Safely convert input value to pandas DataFrame"""
+
     if isinstance(value, str):
         try:
             value = json.loads(value)
@@ -51,56 +67,49 @@ def dataframe(value):
     return DataFrame(value)
 
 
-funcs = {}
-for func_name, func in getmembers(user_functions, isfunction):
+def get_parser(func):
+    """Retrieve function parser for CLI"""
+
     parser = argparse.ArgumentParser(formatter_class=argparse.MetavarTypeHelpFormatter)
     parameters = signature(func).parameters
+
     for name, parameter in parameters.items():
         default = None if parameter.default == Parameter.empty else parameter.default
-        if parameter.annotation in [str, int, float]:
-            parser.add_argument("--" + name, type=parameter.annotation, default=default)
-        elif parameter.annotation == bool:
-            parser.add_argument("--" + name, type=boolean, default=default)
-        elif parameter.annotation == dict:
-            parser.add_argument("--" + name, type=dictionary, default=default)
-        elif name == "df":
+
+        if name == "df":
             parser.add_argument("--" + name, type=dataframe)
         elif name == "usecols":
             parser.add_argument("--" + name, type=str, nargs="*")
         elif name == "kwargs":
             continue
+        elif parameter.annotation in [str, int, float]:
+            parser.add_argument("--" + name, type=parameter.annotation, default=default)
+        elif parameter.annotation == bool:
+            parser.add_argument("--" + name, type=boolean, default=default)
+        elif parameter.annotation == dict:
+            parser.add_argument("--" + name, type=dictionary, default=default)
         else:
             parser.add_argument("--" + name, type=str, default=default)
 
-    funcs[func_name] = {"func": func, "parser": parser, "help": parser.format_help()}
-
-help_message = f'''
-Usage:
-pyspssio <function> --arg1 arg1 --arg2 arg2
-
-Functions:
-{'\n'.join(' - ' + func_name for func_name in funcs)}
-
-'''
+    return parser
 
 
 def call_function(func_name):
     """Helper function for calling function"""
 
-    try:
-        func_info = funcs[func_name]
-    except KeyError:
-        sys.stderr.write(f"{help_message}\nFunction not recognized: {func_name}\n")
+    func = getattr(user_functions, func_name)
+
+    if not isfunction(func):
+        sys.stderr.write(f"{HELP_MESSAGE}\nFunction not recognized: {func_name}\n")
         return None
 
-    parser = func_info["parser"]
-    func = func_info["func"]
+    parser = get_parser(func)
     kwargs = vars(parser.parse_args())
 
     try:
         return func(**kwargs)
     except Exception as err:
-        sys.stderr.write(f'\n{func_info["help"]}\n\n{kwargs}\n\n{err}\n')
+        sys.stderr.write(f"\n{parser.format_help()}\n\n{kwargs}\n\n{err}\n")
         return None
 
 
@@ -117,12 +126,12 @@ def main():
     """
 
     if len(sys.argv) <= 1:
-        sys.stdout.write(help_message)
+        sys.stdout.write(HELP_MESSAGE)
         return None
 
     func_name = sys.argv[1]
     if func_name.lower() in ["-h", "--help"]:
-        sys.stdout.write(help_message)
+        sys.stdout.write(HELP_MESSAGE)
         return None
 
     sys.argv = sys.argv[0:1] + sys.argv[2:]
