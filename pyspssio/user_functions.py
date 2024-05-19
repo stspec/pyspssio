@@ -60,7 +60,8 @@ def read_sav(
     chunksize: int = None,
     locale: str = None,
     string_nan: Any = "",
-) -> Union[Tuple[DataFrame, dict], Generator[DataFrame, None, None]]:
+    data_only: bool = False,
+) -> Union[DataFrame, Tuple[DataFrame, dict], Generator[DataFrame, None, None]]:
     """Read data and metadata from SPSS file
 
     Parameters
@@ -85,6 +86,10 @@ def read_sav(
         Locale to use when I/O module is operating in codepage mode
     string_nan
         Value to return for empty strings
+    data_only
+        Default (False) returns tuple of dataframe, metadata;
+        If True, only return dataframe;
+        Not applicable when chunksize is specified (always returns dataframe generator)
 
     Returns
     -------
@@ -142,6 +147,9 @@ def read_sav(
 
             metadata = sav.metadata
             df = sav.read_data(sav.total_rows, convert_datetimes, include_user_missing)
+
+        if data_only:
+            return df
 
         return df, metadata
 
