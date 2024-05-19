@@ -55,14 +55,17 @@ def dictionary(value):
 def dataframe(value):
     """Safely convert input value to pandas DataFrame"""
 
+    # Attempt to interpret string input as python object
+    # before passing to pandas DataFrame constructor
     if isinstance(value, str):
         try:
             value = json.loads(value)
-        except Exception:
+        except Exception as err_json:
+            sys.stderr.write(err_json)
             try:
-                value = ast.literal_eval(value.title())
-            except Exception:
-                pass
+                value = ast.literal_eval(value)
+            except Exception as err_eval:
+                sys.stderr.write(err_eval)
 
     return DataFrame(value)
 
@@ -116,8 +119,8 @@ def call_function(func_name):
 def main():
     """Main CLI caller
 
-    First argument should be name of pyspssio user function (ex. read_sav)
-    Remaining arguments should be function inputs
+    First argument should be name of pyspssio user function (ex. read_sav).
+    Remaining arguments should be function inputs.
 
     Examples
     --------
