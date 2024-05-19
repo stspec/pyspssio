@@ -61,11 +61,11 @@ def dataframe(value):
         try:
             value = json.loads(value)
         except Exception as err_json:
-            sys.stderr.write(err_json)
+            print(err_json, file=sys.stderr)
             try:
                 value = ast.literal_eval(value)
             except Exception as err_eval:
-                sys.stderr.write(err_eval)
+                print(err_eval, file=sys.stderr)
 
     return DataFrame(value)
 
@@ -103,7 +103,7 @@ def call_function(func_name):
     func = getattr(user_functions, func_name)
 
     if not isfunction(func):
-        sys.stderr.write(f"{HELP_MESSAGE}\nFunction not recognized: {func_name}\n")
+        print(f"{HELP_MESSAGE}\nFunction not recognized: {func_name}\n", file=sys.stderr)
         return None
 
     parser = get_parser(func)
@@ -112,7 +112,7 @@ def call_function(func_name):
     try:
         return func(**kwargs)
     except Exception as err:
-        sys.stderr.write(f"\n{parser.format_help()}\n\n{kwargs}\n\n{err}\n")
+        print(f"\n{parser.format_help()}\n\n{kwargs}\n\n{err}\n", file=sys.stderr)
         return None
 
 
@@ -129,12 +129,12 @@ def main():
     """
 
     if len(sys.argv) <= 1:
-        sys.stdout.write(HELP_MESSAGE)
+        print(HELP_MESSAGE, file=sys.stdout)
         return None
 
     func_name = sys.argv[1]
     if func_name.lower() in ["-h", "--help"]:
-        sys.stdout.write(HELP_MESSAGE)
+        print(HELP_MESSAGE, file=sys.stdout)
         return None
 
     sys.argv = sys.argv[0:1] + sys.argv[2:]
