@@ -3,46 +3,27 @@ LİSANS BİLGİLERİ
 Aşağıda listelenen programlar, daha önce Müşteri ve IBM tarafından kabul edilen Program lisansı koşullarına ek olarak aşağıdaki Lisans Bilgilerinin kayıt ve koşulları kapsamında lisanslanır. Müşteri, Programa ilişkin yürürlükte olan lisans koşullarını daha önce kabul etmemişse, Garanti Verilmeyen Programlar İçin Uluslararası Lisans Sözleşmesi (Z125-5589-05) geçerli olur.
 
 Program Adı (Program Numarası):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Aşağıdaki standart koşullar, Lisans Alan Tarafın Programı kullanımı için geçerlidir.
+
+Sınırlı kullanım hakkı
+
+Paketlenmiş Programlar hariç olmak üzere Lisans Alan Tarafa Programla birlikte sağlanan tüm IBM yazılımları, yalnızca Lisans Alan Tarafın Asıl Programı bu Lisans Bilgileri belgesi kapsamındaki kullanımını desteklemek amacıyla kullanılabilir. Bu tür bir kullanımın Asıl programın lisanslı kullanımıyla doğrudan ilgili olması gerekir.
+
+Lisans Alan Taraf, bu Programı herhangi bir üçüncü kişiye ticari BT hizmetleri sağlamak, ticari barındırma ya da zaman paylaşımı sunmak ya da alt lisans vermek, kiralamak ya da finansal olarak kiralamak üzere kullanmaya yetkili değildir.
 
 Yasaklanmış Kullanımlar
 
 Programda çıkacak herhangi bir hatanın ölüme, bedensel yaralanmaya veya mallara veya çevresel hasara yol açabilecek olması durumunda Lisans Alan Taraf Programı kullanamaz veya başkalarının kullanması için yetki veremez.
 
-Geliştirme Aracı
-
-Bu Program, yazılım uygulamalarının ve sistemlerinin geliştirilmesine yardımcı olmak üzere tasarlanmıştır. Lisans Alan Taraf yalnızca, bu Programı kullanarak geliştirdiği uygulamalar ve sistemlerden sorumludur ve bu uygulamalar ve sistemlerle ilgili olarak ortaya çıkan tüm riskleri üstlenir.
-
-Yeniden Dağıtılabilenler
-
-Bu Program, Yeniden Dağıtılabilenler olarak adlandırılan bileşenleri içeriyorsa bunlar, bu Programla birlikte gönderilen REDIST adlı dosyada tanımlanır. Bu Sözleşmede sağlanan lisans haklarına ek olarak Lisans Alan Taraf Yeniden Dağıtılabilenleri aşağıdaki koşullara uygun olarak dağıtabilir:
-1) Yeniden Dağıtım işlemi, yalnızca nesne kodu biçiminde ve bu Programla birlikte gönderilen REDIST adlı dosyada veya diğer belgelerde yer alan yönergelere ve belirtimlere uygun olarak gerçekleştirilebilir;
-2) Bu Programla birlikte gönderilen belgelerde Lisans Alan Tarafa, Yeniden Dağıtılabilenleri değiştirme izni açıkça veriliyorsa, Lisans Alan Tarafın yapacağı değişikliklerin ilgili belgelerdeki yönergelerin ve belirtimlerin tümüne uygun olması gerekir; eğer varsa, bu tür değişiklikler, Yeniden Dağıtılabilenler olarak değerlendirilmelidir;
-3) Yeniden Dağıtılabilenler, yalnızca bu Program kullanılarak geliştirilen Lisans Alan Tarafın Uygulamasının ("Lisans Alan Tarafın Uygulaması") bir parçası olarak ve yalnızca Lisans Alan Tarafın müşterilerini, ilgili Uygulamayı kullanmalarıyla bağlantılı olarak desteklemek amacıyla dağıtılabilir. Lisans Alan Tarafın Uygulamasının son kullanıcılara, Lisans Alan Tarafın yazılım ürününün son kullanıcılar tarafından edinilmesinde bu Yeniden Dağıtılabilenlerin temel motivasyon olmayacağı şekilde, önemli bir katma değer sağlaması gerekir;
-4) Yeniden Dağıtılabilenlerin Java Çalıştırma Zamanı Ortamı (Java Runtime Environment) içermesi durumunda, Uygulama, yalnızca genel bilgisayar aygıtlarında (örneğin: dizüstü bilgisayarlar, masaüstü bilgisayarlar ve sunucular) çalıştırılmak üzere tasarlandıysa ve elde taşınabilen veya yaygın olarak kullanılan diğer aygıtlarda (örneğin: bir mikroişlemci içeren ancak bilgiişlem, birincil çalışma amaçları olarak belirlenmiş olmayan aygıtlar) çalıştırılmak üzere tasarlanmadıysa, Lisans Alan Tarafın kendi Uygulamasıyla birlikte diğer Java-dışı Yeniden Dağıtılabilenleri de içermesi gerekir;
-5) Lisans Alan Taraf, Yeniden Dağıtılabilenlerde yer alan herhangi bir telif hakkı bildirimini veya bildirim dosyasını kaldıramaz;
-6) Lisans Alan Taraf, Lisans Alan Tarafın Uygulamasının kullanılması veya dağıtılmasından dolayı yöneltilen iddialara karşı IBM'i, IBM'in sağlayıcılarını ve distribütörlerini tazmin etmekle yükümlüdür;
-7) Lisans Alan Taraf, orijinal Yeniden Dağıtılabilen dosyalar/modüller ile aynı yol adını kullanamaz;
-8) Lisans Alan Taraf, IBM'in, sağlayıcılarının veya distribütörlerinin önceden yazılı izni olmadan, IBM'in, sağlayıcılarının veya distribütörlerinin adlarını veya ticari markalarını, Lisans Alan Tarafın Uygulamasının pazarlanmasıyla bağlantılı olarak kullanamaz;
-9) IBM, sağlayıcıları veya distribütörleri, Yeniden Dağıtılabilenleri ve ilişkili belgeleri herhangi bir destek yükümlülüğü olmaksızın ve MÜLKİYETE, HAK İHLALİ YAPILMAYACAĞINA VEYA MÜDAHALEYE DAİR GARANTİLER İLE TİCARİLİĞE VE BELİRLİ BİR AMACA UYGUNLUĞA DAİR ZIMNİ GARANTİLER VE KOŞULLAR DA DAHİL OLMAK, ANCAK TÜMÜ BUNLARLA SINIRLI OLMAMAK ÜZERE, AÇIK VEYA ZIMNİ HİÇBİR GARANTİ VERMEKSİZİN "OLDUĞU GİBİ" ESASIYLA SAĞLAR;
-10) Lisans Alan Tarafın Uygulamasında ve Yeniden Dağıtılabilenlerde yaptığı değişikliklere ilişkin tüm teknik desteğin sağlanmasından tamamen Lisans Alan Taraf sorumludur; ve
-11) Lisans Alan Taraf, Uygulamasının son kullanıcısı ile gerçekleştireceği lisans sözleşmesinde, bu Yeniden Dağıtılabilenlerin veya bunlardaki değişikliklerin, i) Uygulamasının geçerli kılınması dışında bir amaçla kullanılamayacağı, ii) kopyalanamayacağı (yedekleme amacı dışında), iii) Lisans Alan Tarafın Uygulamasından ayrı olarak başkalarına dağıtılamayacağı veya devredilemeyeceği ya da iv) geçerli yasaların sözleşme ile değiştirilmesine olanak tanımayarak açıkça izin verdiği durumlar dışında, ters çevrilemeyeceği, ters derlenemeyeceği veya başka bir yolla çevrilemeyeceği konusunda son kullanıcıyı önceden bilgilendirecektir. Ayrıca, Lisans Alan Tarafın lisans sözleşmesindeki koşulların, IBM açısından, en az bu Sözleşmede yer alan koşullar kadar koruyucu olması gereklidir.
-
 Kaynak Bileşenler ve Örnek Malzemeler
 
-Bu Program, kaynak kodu biçimindeki bazı bileşenleri ("Kaynak Bileşenler") ve Örnek Malzemeler olarak tanımlanan diğer malzemeleri içerebilir. Lisans Alan Taraf, Kaynak Bileşenleri ve Örnek Malzemeleri ancak Kaynak Bileşenleri ve Örnek Malzemeleri kullanımının bu Sözleşme kapsamındaki lisans hakları tarafından çizilen sınırlar içinde kalması ve ancak Kaynak Bileşenlerde ya da Örnek Malzemelerde içerilen hiçbir telif hakkı bilgisini veya bildirimini değiştirmemek veya silmemek koşuluyla dahili olarak kullanmak amacıyla kopyalayabilir ve kullanabilir. IBM, Kaynak Bileşenleri ve Örnek Malzemeleri, destek yükümlülüğü olmaksızın ve MÜLKİYETE, HAK İHLALİ YAPILMAYACAĞINA VEYA MÜDAHALE EDİLMEYECEĞİNE DAİR GARANTİLER İLE TİCARİLİĞE VE BELİRLİ BİR AMACA UYGUNLUĞA DAİR ZIMNİ GARANTİLER VE KOŞULLAR DA DAHİL OLMAK, ANCAK TÜMÜ BUNLARLA SINIRLI OLMAMAK ÜZERE, AÇIK VEYA ZIMNİ HİÇBİR GARANTİ VERMEKSİZİN "OLDUĞU GİBİ" ESASIYLA SAĞLAR.
+Program, kaynak kodu biçiminde bileşenler ("Kaynak Bileşenler") ve/veya Örnek Malzemeler olarak tanımlanan başka malzemeler içerir. Lisans Alan Taraf, Kaynak Bileşenleri ve Örnek Malzemeleri yalnızca bunları kullanımının bu Sözleşme kapsamındaki lisans hakları tarafından çizilen sınırlar içindeki dahili kullanım için kopyalayabilir ve değiştirebilir; ancak, Kaynak Bileşenlerde ya da Örnek Malzemelerde yer alan herhangi bir telif hakkı bilgisini veya bildirimi değiştirmeyecek veya silmeyecektir. IBM, Kaynak Bileşenleri ve Örnek Malzemeleri herhangi bir destek yükümlülüğü olmaksızın ve MÜLKİYETE, HAK İHLALİ YAPILMAYACAĞINA VEYA MÜDAHALEDE BULUNULMAYACAĞINA DAİR GARANTİLER İLE BİR ÜRÜN VEYA HİZMETİN TİCARİ SATIŞ KOŞULLARINA VE BELİRLİ BİR AMACA UYGUNLUĞA DAİR ZIMNİ GARANTİLER VE KOŞULLAR DAHİL OLMAK ÜZERE, AÇIK VEYA ZIMNİ HİÇBİR GARANTİ VERMEKSİZİN "OLDUĞU GİBİ" esasyla sağlar.
 
-Lisans Alan Taraf, bir Programın REDIST dosyasında listelenen Kaynak Bileşenlerin ve Örnek Malzemelerin değiştirilmiş sürümlerini, bu lisansta ve REDIST dosyasında yer alan koşullara uygun olarak yeniden dağıtabilir.
+Microsoft Visual Studio İçin Geçerli Koşullar
 
-Microsoft Visual Studio için Geçerli Koşullar
-
-Bu Program Microsoft Visual Studio SDK kodunu içerebilir. Lisans Alan Tarafa, bu tür bir kodu Microsoft Visual Studio ürününe ilişkin uzantılar geliştirmesi için izin verilmez.
-
-İhracat ve İthalat Sınırlamaları
-
-Bu Program şifreleme içerebilir. Bu Programın kullanıcılara devredilmesi veya kullanıcılar tarafından kullanımı yasaklanabilir veya A.B.D. İhracat Yönetimi Düzenlemeleri de dahil olmak üzere ithalat ya da ihracat yasalarına, düzenlemelerine veya ilkelerine tabi olabilir. Lisans Alan Taraf, A.B.D'deki ihracat veya yeniden ihracat sınırlamaları da dahil olmak, ancak tümü bunlarla sınırlı olmamak üzere bu Programın ihracatına, ithalatına veya kullanımına ilişkin tüm geçerli yasa, düzenleme ve ilkelere uygun davranmaktan tümüyle kendisinin sorumlu olduğunu kabul eder. Bu Programın ihracat sınıflandırmasını edinmek için aşağıdaki URL adresini ziyaret edin: https://www.ibm.com/products/exporting/.
+Program, Microsoft Visual Studio SDK kodunu içerir. Lisans Alan Tarafa, bu tür bir kodu Microsoft Visual Studio ürününe ilişkin uzantılar geliştirmesi için izin verilmez.
 
 Yukarıdakilere ek olarak, aşağıdaki koşullar Lisans Alan Tarafın bu Programı kullanımı için geçerlidir.
 
@@ -76,9 +57,9 @@ Bu Program, Yeniden Dağıtılabilenler olarak adlandırılan bileşenleri içer
 
 11. Lisans Alan Taraf, Uygulamasının son kullanıcısı ile gerçekleştireceği lisans sözleşmesinde, bu Yeniden Dağıtılabilenlerin veya bunlardaki değişikliklerin, i) Uygulamasının geçerli kılınması dışında bir amaçla kullanılamayacağı, ii) kopyalanamayacağı (yedekleme amacı dışında), iii) Lisans Alan Tarafın Uygulamasından ayrı olarak başkalarına dağıtılamayacağı veya devredilemeyeceği ya da iv) geçerli yasaların sözleşme ile değiştirilmesine olanak tanımayarak açıkça izin verdiği durumlar dışında, ters çevrilemeyeceği, ters derlenemeyeceği veya başka bir yolla çevrilemeyeceği konusunda son kullanıcıyı önceden bilgilendirecektir. Ayrıca, Lisans Alan Tarafın lisans sözleşmesindeki koşulların, IBM açısından, en az bu Sözleşmede yer alan koşullar kadar koruyucu olması gereklidir. 
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Garanti Verilmeyen Programlar İçin Uluslararası Lisans Sözleşmesi

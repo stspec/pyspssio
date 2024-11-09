@@ -3,46 +3,27 @@ INFORMAÇÕES DA LICENÇA
 Os Programas listados abaixo são licenciados sob os/ao abrigo dos termos e condições da seguinte Informação sobre a Licença a seguir, além dos termos de licença do Programa acordados anteriormente pelo Cliente e pela IBM. Se o Cliente não tiver acordado anteriormente com os termos de licença em vigor para o Programa, o Contrato de Licença Internacional para Programas Não Garantidos (Z125-5589-05) será aplicável.
 
 Nome do Programa (Número do Programa):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Os termos padrão a seguir se aplicam o uso do Programa pelo Licenciado.
+
+Direito de uso/utilização limitado
+
+Com exceção dos Programas em Pacote/Lote, todo software IBM fornecido ao Licenciado com o Programa poderá ser usado/utilizado somente para suportar o/a uso/utilização do Programa Principal pelo Licenciado sob/ao abrigo deste documento de Informações sobre a Licença, o que significa que tal uso/utilização deverá ter relação direta com um/uma uso/utilização licenciado/licenciada do Programa Principal.
+
+O Licenciado não está autorizado a usar/utilizar o Programa para fornecer serviços comerciais de TI a qualquer terceiro, hospedagem comercial ou fornecer compartilhamento de tempo ou sublicenciar, alugar ou arrendar o Programa.
 
 Usos Proibidos
 
 O Licenciado não poderá usar/utilizar ou autorizar outros a usar/utilizar o Programa se a falha do Programa puder resultar em morte, lesões corporais ou danos à propriedade ou ao meio ambiente.
 
-Ferramenta de Desenvolvimento
+Componentes fonte e materiais de amostra
 
-Este Programa é desenhado para auxiliar no desenvolvimento de sistemas e de software aplicacional. O Licenciado é o único responsável pelos aplicativos/pelas aplicações e sistemas que ele desenvolve ao usar este Programa e assume todos os riscos e responsabilidades pelos mesmos.
+O Programa inclui componentes na forma de código-fonte ("Componentes Fonte") ou outros materiais identificados como Materiais de Amostra ou ambos. O Licenciado pode copiar e modificar os Componentes Fonte e os Materiais de Amostra apenas para uso/utilização interno/interna dentro dos limites dos direitos de licença sob este Contrato/Acordo desde que não possa alterar ou excluir qualquer informação de copyright ou avisos contidos nos Componentes Fonte ou Materiais de Amostra. A IBM fornece os Componentes Fonte e Materiais de Amostra sem obrigação de suporte e "NO ESTADO EM QUE SE ENCONTRAM (""AS IS"")", SEM NENHUM TIPO DE GARANTIA, SEJA EXPRESSA OU IMPLÍCITA, INCLUINDO A GARANTIA DE TÍTULO, NÃO VIOLAÇÃO OU NÃO INTERFERÊNCIA E AS GARANTIAS IMPLÍCITAS E CONDIÇÕES DE COMERCIALIZAÇÃO E ADEQUAÇÃO PARA UM PROPÓSITO/FIM ESPECÍFICO.
 
-Redistribuíveis
+Termos do Microsoft Visual Studio
 
-Se o Programa incluir componentes que são Redistribuíveis, eles serão identificados no arquivo/ficheiro REDIST que acompanha o Programa. Além dos direitos de licença concedidos no Contrato/Acordo, o Licenciado pode distribuir os Redistribuíveis sujeitos aos seguintes termos:
-1) A redistribuição deve ser apenas em formato de código objeto/objecto e deve estar em conformidade com todas as orientações, instruções e especificações no REDIST ou na documentação que acompanha o Programa;
-2) Se a documentação que acompanha o Programa permitir expressamente que o Licenciado modifique os Redistribuíveis, tal modificação deve estar em conformidade com todas as orientações, instruções e especificações contidas naquela documentação, e essas modificações, caso existam, devem ser tratadas como Redistribuíveis;
-3) Os Redistribuíveis podem ser distribuídos apenas como parte do aplicativo/da aplicação do Licenciado que foi desenvolvido(a) usando o Programa ("Aplicativo/Aplicação do Licenciado") e apenas para suportar os clientes do Licenciado com respeito ao uso que fizerem do Aplicativo/da Aplicação do Licenciado. O Aplicativo/a Aplicação do Licenciado deve constituir um significativo valor acrescentado tal, que os Redistribuíveis não sejam uma motivação substancial para a aquisição, pelos usuários/utilizadores finais, do produto de software do Licenciado;
-4) Se os Redistribuíveis incluírem um Java Runtime Environment, o Licenciado deve também incluir outros Redistribuíveis não Java ao Aplicativo/à Aplicação do Licenciado, salvo se o Aplicativo/a Aplicação for concebido(a) para ser executado(a) apenas em recursos informáticos em geral (por exemplo: laptops, desktops e servidores) e não em dispositivos portáteis ou outras patentes (isto é, dispositivos que contêm um microprocessador, mas que não têm o uso de computador como o seu propósito/fim primário);
-5) O Licenciado não pode remover quaisquer arquivos/ficheiros de avisos ou de copyright contidos nos Redistribuíveis;
-6) O Licenciado deve defender a IBM, os seus fornecedores ou distribuidores de e contra qualquer reclamação advinda do uso ou distribuição do Aplicativo/da Aplicação do Licenciado;
-7) O Licenciado não pode usar o mesmo nome de caminho que os arquivos/ficheiros/módulos originais dos Redistribuíveis;
-8) O Licenciado não pode usar os nomes ou marcas registradas/registadas da IBM, de seus fornecedores ou distribuidores com respeito à comercialização do Aplicativo/da Aplicação do Licenciado sem o prévio consentimento por escrito da IBM ou daquele fornecedor ou distribuidor;
-9) A IBM, seus fornecedores e distribuidores fornecem os Redistribuíveis e a documentação relacionada sem obrigação de suporte e "NO ESTADO EM QUE SE ENCONTRAM (""AS IS"")", SEM GARANTIA DE QUALQUER ESPÉCIE, SEJA EXPRESSA OU IMPLÍCITA, INCLUINDO/INCLUSIVE A GARANTIA DE TÍTULO, DE NÃO VIOLAÇÃO OU DE NÃO INTERFERÊNCIA E AS GARANTIAS E CONDIÇÕES IMPLÍCITAS DE COMERCIALIZAÇÃO E ADEQUAÇÃO A UM DETERMINADO PROPÓSITO/FIM;
-10) O Licenciado é responsável por toda a assistência técnica para o Aplicativo/a Aplicação do Licenciado e por quaisquer modificações aos Redistribuíveis; e
-11) O contrato de licença/acordo de licenciamento do Licenciado com o usuário/utilizador final do Aplicativo/da Aplicação do Licenciado deve informar o usuário/utilizador final que os Redistribuíveis ou as suas modificações não podem ser i) usados para qualquer propósito/fim que não seja ativar/activar o Aplicativo/a Aplicação do Licenciado, ii) copiados (exceto/excepto para propósitos/fins de backup), iii) redistribuídos ou transferidos sem o Aplicativo/a Aplicação do Licenciado ou iv) montados de forma inversa, compilados de forma inversa ou, de qualquer forma, serem convertidos exceto/excepto conforme especificamente permitido pela lei e sem a possibilidade de uma renúncia contratual. Além disso, o contrato de licença/acordo de licenciamento do Licenciado deve, pelo menos, proteger a IBM tanto quanto os termos deste Contrato/Acordo.
-
-Componentes Fonte e Materiais de Amostra
-
-O Programa pode incluir alguns componentes na forma de código-fonte ("Componentes Fonte") e outros materiais identificados como Materiais de Amostra. O Licenciado pode copiar e modificar Componentes Fonte e Materiais de Amostra apenas para uso interno, contanto que tal uso esteja dentro dos limites dos direitos de licença sob este/ao abrigo deste Contrato/Acordo, desde que, no entanto, esse Licenciado não possa alterar ou excluir quaisquer informações de direitos autorais/de autor ou avisos contidos nos Componentes Fonte ou nos Materiais de Amostra. A IBM fornece os Componentes Fonte e Materiais de Amostra sem obrigação de suporte e "NO ESTADO EM QUE SE ENCONTRAM (""AS IS"")", SEM NENHUM TIPO DE GARANTIA, SEJA EXPRESSA OU IMPLÍCITA, INCLUINDO A GARANTIA DE TÍTULO, NÃO VIOLAÇÃO OU NÃO INTERFERÊNCIA E AS GARANTIAS IMPLÍCITAS E CONDIÇÕES DE COMERCIALIZAÇÃO E ADEQUAÇÃO PARA UM PROPÓSITO/FIM ESPECÍFICO.
-
-Para os Componentes Fonte e Materiais de Amostra listados num arquivo/ficheiro REDIST do Programa, o Licenciado pode redistribuir versões modificadas desses Componentes Fonte ou Materiais de Amostra que sejam consistentes com os termos desta licença e quaisquer instruções presentes no arquivo/ficheiro REDIST.
-
-Termos para o Microsoft Visual Studio
-
-O Programa pode conter o código do Microsoft Visual Studio SDK. O Licenciado não tem permissão para usar esse código para desenvolver extensões para o Microsoft Visual Studio.
-
-Restrições de Importação e Exportação
-
-Este Programa pode conter criptografia/encriptação. A transferência para ou o uso pelos usuários/utilizadores do Programa podem ser proibidos ou estarem sujeitos às leis de exportação ou importação, regulamentos ou políticas, incluindo/inclusive aqueles Regulamentos de Administração de Exportação dos Estados Unidos. O Licenciado assume toda a responsabilidade de conformidade com todas as leis, regulamentos e políticas aplicáveis relativas à exportação, importação ou uso deste Programa, incluindo/inclusive mas não limitado a, restrições dos Estados Unidos da América sobre exportações ou reexportações. Para obter a classificação de exportação deste Programa, consulte: https://www.ibm.com/products/exporting/.
+O Programa inclui o código SDK do Microsoft Visual Studio. O Licenciado não tem permissão para usar esse código para desenvolver extensões para o Microsoft Visual Studio.
 
 Além do apresentado acima, os termos a seguir se aplicam ao uso do Programa pelo Licenciado.
 
@@ -76,9 +57,9 @@ Se o Programa incluir componentes que são Redistribuíveis, eles serão identif
 
 11. O contrato de licença/acordo de licenciamento do Licenciado com o usuário/utilizador final do Aplicativo/da Aplicação do Licenciado deve informar o usuário/utilizador final que os Redistribuíveis ou as suas modificações não podem ser i) usados para qualquer propósito/fim que não seja ativar/activar o Aplicativo/a Aplicação do Licenciado, ii) copiados (exceto/excepto para propósitos/fins de backup), iii) redistribuídos ou transferidos sem o Aplicativo/a Aplicação do Licenciado ou iv) montados de forma inversa, compilados de forma inversa ou, de qualquer forma, serem convertidos exceto/excepto conforme especificamente permitido pela lei e sem a possibilidade de uma renúncia contratual. Além disso, o contrato de licença/acordo de licenciamento do Licenciado deve, pelo menos, proteger a IBM tanto quanto os termos deste Contrato/Acordo.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Contrato de Licença Internacional para Programas Não Garantidos

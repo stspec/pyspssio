@@ -1,48 +1,29 @@
 LIZENZINFORMATION
 
-Für die Lizenzierung der nachstehend aufgelisteten Programme gelten zusätzlich zu den bereits zwischen dem Kunden und IBM vereinbarten Programmlizenzbedingungen die Bedingungen der folgenden Lizenzinformation. Falls der Kunde den für das Programm geltenden Lizenzbedingungen nicht bereits zugestimmt hat, kommt Internationale Nutzungsbedingungen für Programme ohne Gewährleistung (Z125-5589-05) zur Anwendung.
+Für die Lizenzierung der nachstehend aufgelisteten Programme gelten zusätzlich zu den bereits zwischen dem Kunden und IBM vereinbarten Programmlizenzbedingungen die Bedingungen der folgenden Lizenzinformation. Falls der Kunde den für das Programm geltenden Lizenzbedingungen nicht bereits zugestimmt hat, kommen folgende Bedingungen zur Anwendung Internationale Nutzungsbedingungen für Programme ohne Gewährleistung (Z125-5589-05).
 
 Programmname (Programmnummer):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Die folgenden Standardbedingungen gelten für die Programmnutzung durch den Lizenznehmer.
+
+Eingeschränktes Nutzungsrecht
+
+Mit Ausnahme der gebündelten Programme darf die gesamte IBM Software, die dem Lizenznehmer zusammen mit dem Programm bereitgestellt wird, nur zur Unterstützung seiner Nutzung des Hauptprogramms im Rahmen dieser Lizenzinformation verwendet werden. Dies bedeutet, dass diese Verwendung in direktem Zusammenhang mit der lizenzierten Nutzung des Hauptprogramms stehen muss.
+
+Der Lizenznehmer ist nicht berechtigt, das Programm zur Bereitstellung kommerzieller IT-Services für Dritte, zur Bereitstellung kommerzieller Hosting-Services oder für kommerziell betriebenes Time-Sharing einzusetzen oder das Programm zu vermieten, zu verleasen oder Unterlizenzen für das Programm zu vergeben.
 
 Untersagte Nutzungen
 
 Der Lizenznehmer darf das Programm nicht nutzen oder Dritten die Berechtigung zur Nutzung des Programms erteilen, wenn ein Versagen des Programms zu Todesfällen, Personenschäden, Sach- oder Umweltschäden führen kann.
 
-Entwicklungstool
+Quellenkomponenten und Beispielmaterialien
 
-Dieses Programm wurde zur Unterstützung bei der Entwicklung von Softwareanwendungen oder Systemen konzipiert. Der Lizenznehmer ist allein verantwortlich für die Anwendungen und Systeme, die er unter Einsatz des Programms entwickelt, und trägt das gesamte Risiko und die Verantwortung dafür.
-
-Redistributables
-
-Wenn das Programm weiterverteilbare Komponenten (sog. Redistributables) enthält, sind diese in der REDIST-Datei aufgeführt, die zum Lieferumfang des Programms gehört. Zusätzlich zu den in der Vereinbarung gewährten Lizenzrechten darf der Lizenznehmer die Redistributables unter Einhaltung der folgenden Bedingungen weitergeben:
-1) Die Weitergabe muss ausschließlich in Form von Objektcode erfolgen und bei der Weitergabe müssen sämtliche Anweisungen, Instruktionen und Spezifikationen eingehalten werden, die in der REDIST-Datei oder der Begleitdokumentation des Programms aufgeführt sind.
-2) Wenn Bearbeitungen der Redistributables durch den Lizenznehmer gemäß der Begleitdokumentation des Programms ausdrücklich gestattet sind, müssen diese in Übereinstimmung mit sämtlichen dort aufgeführten Anweisungen, Instruktionen und Spezifikationen durchgeführt werden. Die Bearbeitungen müssen als Redistributables behandelt werden.
-3) Die Redistributables dürfen nur als Teil der Anwendung des Lizenznehmers, die mithilfe des Programms entwickelt wurde ("Anwendung des Lizenznehmers"), und nur zur Unterstützung seiner Kunden bei der Nutzung seiner Anwendung weitergegeben werden. Die Anwendung des Lizenznehmers muss einen erheblichen Mehrwert darstellen, sodass die Redistributables nicht die Hauptmotivation für die Endbenutzer zum Erwerb des Softwareprodukts des Lizenznehmers sind.
-4) Wenn die Redistributables eine Java Runtime Environment enthalten, muss der Lizenznehmer zusätzlich nicht auf Java basierende Redistributables in seine Anwendung aufnehmen, es sei denn, die Anwendung soll ausschließlich auf allgemeinen Computereinheiten (zum Beispiel Laptops, Desktops und Servern) ausgeführt werden und nicht auf mobilen Endgeräten oder sonstigen Einheiten für Pervasive Computing (zum Beispiel Einheiten, die einen Mikroprozessor enthalten, deren primärer Verwendungszweck aber nicht die Datenverarbeitung ist).
-5) Der Lizenznehmer darf keine Copyright- oder Notice-Dateien entfernen, die in den Redistributables enthalten sind.
-6) Der Lizenznehmer verpflichtet sich, IBM und die Lieferanten oder Distributoren von IBM in Bezug auf alle Ansprüche von Dritten und gegen Dritte, die aufgrund der Nutzung oder Weitergabe seiner Anwendung geltend gemacht werden, schadlos zu halten.
-7) Der Lizenznehmer darf nicht denselben Pfadnamen wie für die Original-Redistributables (Dateien und Module) verwenden.
-8) Der Lizenznehmer darf die Namen oder Marken von IBM oder der Lieferanten und Distributoren von IBM nur mit ihrer vorherigen schriftlichen Genehmigung in Verbindung mit der Vermarktung seiner Anwendung verwenden.
-9) IBM sowie die Lieferanten und Distributoren von IBM stellen die Redistributables einschließlich der zugehörigen Dokumentation ohne eine Verpflichtung zur Unterstützung, ohne Wartung (auf "as-is"-Basis) und ohne jegliche Gewährleistung (ausdrücklich oder stillschweigend) zur Verfügung, insbesondere ohne Gewährleistung für Rechtsmängel, für die Freiheit von Rechten Dritter, für das Recht auf Nichtbeeinträchtigung, für die Handelsüblichkeit und für die Verwendungsfähigkeit für einen bestimmten Zweck.
-10) Für die technische Unterstützung seiner Anwendung und der Bearbeitungen der Redistributables ist der Lizenznehmer selbst verantwortlich.
-11) In der Lizenzvereinbarung des Lizenznehmers mit dem Endbenutzer seiner Anwendung muss ein Hinweis enthalten sein, dass die Redistributables oder die davon erstellten Bearbeitungen i) nur zur Aktivierung seiner Anwendung verwendet werden dürfen, ii) nicht kopiert werden dürfen (außer für Sicherungszwecke), iii) nicht ohne seine Anwendung weitergegeben oder übertragen werden dürfen und iv) nicht rückumgewandelt (reverse assemble, reverse compile) oder in anderer Weise übersetzt werden dürfen, soweit nicht durch gesetzliche Regelung etwas anderes zwingend vorgeschrieben ist. Darüber hinaus sollte die Lizenzvereinbarung des Lizenznehmers die Rechte von IBM in mindestens demselben Maße schützen, wie sie durch die Bedingungen dieser Vereinbarung geschützt werden.
-
-Quellenkomponenten und Mustermaterialien
-
-Das Programm kann einige Komponenten in Form von Quellcode ("Quellenkomponenten") und sonstige Materialien, die als Mustermaterialien gekennzeichnet sind, enthalten. Der Lizenznehmer darf die Quellenkomponenten und Mustermaterialien nur für den internen Gebrauch kopieren und ändern, sofern eine solche Verwendung im Rahmen der Lizenzrechte dieser Vereinbarung erfolgt und der Lizenznehmer die in den Quellenkomponenten oder Mustermaterialien enthaltenen Copyrightvermerke oder Hinweise weder ändert noch löscht. IBM stellt die Quellenkomponenten und Mustermaterialien ohne eine Verpflichtung zur Unterstützung, ohne Wartung (auf "as-is"-Basis) und ohne jegliche Gewährleistung (ausdrücklich oder stillschweigend) zur Verfügung, insbesondere ohne Gewährleistung für Rechtsmängel, für die Freiheit von Rechten Dritter, für das Recht auf Nichtbeeinträchtigung, für die Handelsüblichkeit und für die Verwendungsfähigkeit für einen bestimmten Zweck.
-
-Der Lizenznehmer darf bearbeitete Versionen der Quellenkomponenten und Mustermaterialien, die in der REDIST-Datei eines Programms aufgeführt sind, weitergeben, sofern die Weitergabe in Übereinstimmung mit den Bedingungen dieser Lizenz und den Anweisungen in der REDIST-Datei erfolgt.
+Das Programm enthält Komponenten in Form von Quellcode ("Quellenkomponenten") oder sonstige Materialien, die als Beispielmaterialien gekennzeichnet sind, oder beides. Der Lizenznehmer darf Quellenkomponenten und Beispielmaterialien nur zur internen Verwendung im Rahmen der Lizenzrechte dieser Vereinbarung kopieren und bearbeiten, sofern keine in den Quellenkomponenten oder Beispielmaterialien enthaltenen Copyrightvermerke oder Eigentumshinweise geändert oder gelöscht werden. IBM stellt die Quellenkomponenten und Beispielmaterialien ohne Verpflichtung zur Unterstützung, im gegenwärtigen Zustand (auf "as-is"-Basis) und ohne jegliche Gewährleistung (ausdrücklich oder stillschweigend) zur Verfügung, insbesondere ohne Gewährleistung in Bezug auf Rechtsmängel, die Freiheit von Rechten Dritter, das Recht auf Nichtbeeinträchtigung, die Handelsüblichkeit und die Verwendungsfähigkeit für einen bestimmten Zweck.
 
 Bedingungen für Microsoft Visual Studio
 
-Das Programm kann Microsoft Visual Studio SDK-Code enthalten. Es ist dem Lizenznehmer nicht gestattet, diesen Code zur Entwicklung von Erweiterungen für Microsoft Visual Studio zu nutzen.
-
-Export- und Importbeschränkungen
-
-Dieses Programm kann Verschlüsselungstechnologie enthalten. Die Übertragung des Programms an andere Benutzer oder deren Verwendung des Programms ist möglicherweise untersagt oder unterliegt den Gesetzen, Verordnungen oder Bestimmungen für den Export oder Import, einschließlich der Export Administration Regulations (Exportkontrollbestimmungen) der Vereinigten Staaten. Der Lizenznehmer übernimmt die gesamte Verantwortung für die Einhaltung aller anwendbaren Gesetze, Verordnungen und Bestimmungen hinsichtlich des Exports, Imports oder der Verwendung dieses Programms, einschließlich der US-Beschränkungen, die für Exporte und Reexporte gelten. Die Exportklassifizierung dieses Programms kann über die folgende Adresse festgestellt werden: https://www.ibm.com/products/exporting/.
+Das Programm enthält Microsoft Visual Studio SDK-Code. Es ist dem Lizenznehmer nicht gestattet, diesen Code zur Entwicklung von Erweiterungen für Microsoft Visual Studio zu nutzen.
 
 Zusätzlich zu den obigen Bestimmungen gelten die folgenden Bedingungen für die Programmnutzung durch den Lizenznehmer.
 
@@ -76,9 +57,9 @@ Wenn das Programm weiterverteilbare Komponenten (sog. Redistributables) enthält
 
 11. In der Lizenzvereinbarung des Lizenznehmers mit dem Endbenutzer seiner Anwendung muss ein Hinweis enthalten sein, dass die Redistributables oder die davon erstellten Bearbeitungen i) nur zur Aktivierung seiner Anwendung verwendet werden dürfen, ii) nicht kopiert werden dürfen (außer für Sicherungszwecke), iii) nicht ohne seine Anwendung weitergegeben oder übertragen werden dürfen und iv) nicht rückumgewandelt (reverse assemble, reverse compile) oder in anderer Weise übersetzt werden dürfen, soweit nicht durch gesetzliche Regelung etwas anderes zwingend vorgeschrieben ist. Darüber hinaus muss die Lizenzvereinbarung des Lizenznehmers die Rechte von IBM in mindestens demselben Maße schützen, wie sie durch die Bedingungen dieser Vereinbarung geschützt werden. 
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Internationale Nutzungsbedingungen für Programme ohne Gewährleistung

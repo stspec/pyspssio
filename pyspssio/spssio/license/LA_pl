@@ -3,46 +3,27 @@ INFORMACJE LICENCYJNE
 Programy wymienione poniżej są licencjonowane na podstawie przedstawionych poniżej warunków Informacji licencyjnych, które stanowią uzupełnienie warunków licencji na Program uzgodnionych uprzednio między Klientem a IBM. Jeśli Klient nie dysponuje warunkami licencji uzgodnionymi uprzednio z IBM w odniesieniu do Programu, zastosowanie mają warunki licencji Międzynarodowa Umowa Licencyjna na Programy nieobjęte Gwarancją (Z125-5589-05).
 
 Nazwa Programu (Numer Programu):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Poniższe standardowe warunki mają zastosowanie do używania Programu przez Licencjobiorcę.
+
+Ograniczone prawo do używania
+
+Z wyjątkiem Programów Pakietowych wszystkie programy IBM udostępnione Licencjodawcy wraz z Programem mogą być używane jedynie w celu umożliwienia Licencjobiorcy używania Programu Głównego w ramach niniejszego dokumentu "Informacje licencyjne", co oznacza, że takie używanie musi być bezpośrednio związane z licencjonowanym używaniem Programu Głównego.
+
+Licencjobiorca nie jest uprawniony do używania Programu w celu świadczenia osobom trzecim komercyjnych usług informatycznych, usług serwerowych ani usług podziału czasu, jak również nie jest upoważniony do udzielania dalszych licencji na Program oraz wypożyczania i wydzierżawiania Programu.
 
 Niedozwolone używanie
 
 Licencjobiorca nie może używać ani upoważniać kogokolwiek do używania Programu w przypadku, gdy jego awaria mogłaby doprowadzić do śmierci, uszczerbku na zdrowiu, szkody w mieniu albo szkody w środowisku naturalnym.
 
-Narzędzie programistyczne
-
-Ten Program został zaprojektowany z myślą o udzielaniu pomocy w projektowaniu oprogramowania i systemów. Licencjobiorca ponosi wyłączną odpowiedzialność za aplikacje i systemy stworzone przy użyciu Programu oraz przyjmuje na siebie wszelkie ryzyko i odpowiedzialność z nimi związane.
-
-Elementy Podlegające Redystrybucji
-
-Jeśli Program zawiera komponenty będące Elementami Podlegającymi Redystrybucji, zostaną one zidentyfikowane w pliku REDIST dołączonym do Programu. Poza prawami licencyjnymi przyznanymi na mocy Umowy, Licencjobiorca może dystrybuować Elementy Podlegające Redystrybucji na następujących warunkach:
-1) Muszą być one redystrybuowane w postaci kodu wynikowego oraz zgodnie z wszystkimi wskazówkami, instrukcjami i specyfikacjami w pliku REDIST lub dokumentacji dołączonej do Programu;
-2) Jeśli dokumentacja dołączona do Programu wyraźnie zezwala Licencjobiorcy na modyfikowanie Plików Podlegających Redystrybucji, wówczas takie modyfikacje muszą być zgodne z wszystkimi wskazówkami, instrukcjami i specyfikacjami w tej dokumentacji i być traktowane jak Pliki Podlegające Redystrybucji;
-3) Pliki Podlegające Redystrybucji można dystrybuować jedynie jako część aplikacji Licencjobiorcy opracowanej z użyciem Programu (zwanej dalej "Aplikacją Licencjobiorcy") i jedynie do wspierania klientów Licencjobiorcy w związku z używaniem przez nich Aplikacji Licencjobiorcy. Aplikacja Licencjobiorcy musi stanowić istotną wartość dodaną, tak aby Pliki Podlegające Redystrybucji nie stanowiły istotnej motywacji do nabycia przez użytkowników końcowych oprogramowania Licencjobiorcy;
-4) Jeśli Pliki Podlegające Redystrybucji obejmują środowisko Java Runtime Environment, Licencjobiorca musi również dołączyć do Aplikacji Licencjobiorcy inne niż Java Pliki Podlegające Redystrybucji, chyba że Aplikacja ta jest zaprojektowana z myślą o uruchamianiu jedynie na urządzeniach komputerowych ogólnego zastosowania (na przykład laptopach, desktopach i serwerach), a nie na urządzeniach kieszonkowych ani przenośnych (tzn. urządzeniach zawierających mikroprocesor, ale nie będących przede wszystkich urządzeniami obliczeniowymi);
-5) Licencjobiorca nie może usuwać żadnych plików z uwagami dotyczącymi praw autorskich i innymi zawartych w Plikach Podlegających Redystrybucji;
-6) Licencjobiorca będzie chronić IBM, dostawców IBM i dystrybutorów IBM przed wszelkimi roszczeniami wynikającymi z używania lub rozpowszechniania Aplikacji Licencjobiorcy;
-7) Licencjobiorca nie może korzystać ze ścieżek o tej samej nazwie, co ścieżki do oryginalnych plików/modułów Plików Podlegających Redystrybucji;
-8) Licencjobiorca nie może wykorzystywać - w związku z czynnościami marketingowymi odnoszącymi się do Aplikacji Licencjobiorcy - nazw ani znaków towarowych IBM, dostawców IBM ani dystrybutorów IBM bez ich wcześniejszej pisemnej zgody;
-9) IBM, dostawcy IBM i dystrybutorzy IBM dostarczają Pliki Podlegające Redystrybucji oraz związaną z nimi dokumentację bez zobowiązania do wsparcia i W STANIE, W JAKIM SIĘ ZNAJDUJĄ ("AS IS"), BEZ UDZIELANIA JAKICHKOLWIEK GWARANCJI (RĘKOJMIĘ WYŁĄCZA SIĘ), WYRAŹNYCH LUB DOMNIEMANYCH, A W SZCZEGÓLNOŚCI GWARANCJI PRAWA WŁASNOŚCI, NIENARUSZANIA PRAW OSÓB TRZECICH ORAZ DOMNIEMANYCH GWARANCJI i WARUNKÓW PRZYDATNOŚCI HANDLOWEJ I PRZYDATNOŚCI DO OKREŚLONEGO CELU;
-10) Licencjobiorca ponosi odpowiedzialność za wszelką pomoc techniczną dotyczącą Aplikacji Licencjobiorcy oraz wszelkich modyfikacji Elementów Podlegających Redystrybucji;
-11) Umowa licencyjna Licencjobiorcy z użytkownikiem końcowym Aplikacji Licencjobiorcy musi powiadamiać użytkownika końcowego, że Plików Podlegających Redystrybucji oraz ich modyfikacji nie można i) używać do celów innych niż umożliwienie działania Aplikacji Licencjobiorcy, ii) kopiować (z wyjątkiem tworzenia kopii zapasowych), iii) dalej dystrybuować ani przenosić bez Aplikacji Licencjobiorcy ani iv) deasemblować, dekompilować ani poddawać translacji w inny sposób, z wyjątkiem przypadków wyraźnie dozwolonych przez prawo, bez możliwości wyłączenia na mocy umowy. Ponadto umowa licencyjna Licencjobiorcy musi zapewniać IBM ochronę co najmniej równą zapewnianej przez warunki niniejszej Umowy.
-
 Komponenty Źródłowe i Materiały Przykładowe
 
-Program może zawierać komponenty w postaci kodu źródłowego (zwane dalej "Komponentami Źródłowymi") oraz inne materiały określone jako Materiały Przykładowe. Licencjobiorca może kopiować i modyfikować Komponenty Źródłowe i Materiały Przykładowe jedynie na użytek wewnętrzny, pod warunkiem, że użytek taki mieści się w granicach praw licencyjnych na mocy niniejszej Umowy, zaś Licencjobiorca nie będzie zmieniać ani usuwać żadnych informacji czy uwag o prawach autorskich zawartych w Komponentach Źródłowych lub Materiałach Przykładowych. IBM dostarcza Komponenty Źródłowe i Materiały Przykładowe bez zobowiązania do wsparcia, W STANIE, W JAKIM SIĘ ZNAJDUJĄ ("AS IS"), BEZ UDZIELANIA JAKICHKOLWIEK GWARANCJI (RĘKOJMIĘ RÓWNIEŻ WYŁĄCZA SIĘ), WYRAŹNYCH LUB DOMNIEMANYCH, A W SZCZEGÓLNOŚCI GWARANCJI PRAWA WŁASNOŚCI, NIENARUSZANIA PRAW OSÓB TRZECICH ORAZ DOMNIEMANYCH GWARANCJI i WARUNKÓW PRZYDATNOŚCI HANDLOWEJ I PRZYDATNOŚCI DO OKREŚLONEGO CELU.
-
-W przypadku Komponentów Źródłowych i Materiałów Przykładowych wymienionych w pliku REDIST Programu Licencjobiorca może redystrybuować zmodyfikowane wersje tych Komponentów Źródłowych i Materiałów Przykładowych, zgodnie z warunkami niniejszej licencji oraz wszelkimi instrukcjami w pliku REDIST.
+Program zawiera komponenty w postaci kodu źródłowego (zwane dalej "Komponentami Źródłowymi") lub inne materiały określone jako Materiały Przykładowe, albo oba te elementy. Licencjobiorca może kopiować i modyfikować Komponenty Źródłowe i Materiały Przykładowe jedynie na użytek wewnętrzny w granicach praw licencyjnych na mocy niniejszej Umowy, pod warunkiem jednak, że Licencjobiorca nie będzie zmieniać ani usuwać żadnych informacji czy uwag o prawach autorskich zawartych w Komponentach Źródłowych lub Materiałach Przykładowych. IBM dostarcza Komponenty Źródłowe i Materiały Przykładowe bez zobowiązania do wsparcia, W STANIE, W JAKIM SIĘ ZNAJDUJĄ ("AS IS"), BEZ UDZIELANIA JAKICHKOLWIEK GWARANCJI (RĘKOJMIĘ RÓWNIEŻ WYŁĄCZA SIĘ), WYRAŹNYCH LUB DOMNIEMANYCH, A W SZCZEGÓLNOŚCI GWARANCJI PRAWA WŁASNOŚCI, NIENARUSZANIA PRAW OSÓB TRZECICH ORAZ DOMNIEMANYCH GWARANCJI i WARUNKÓW PRZYDATNOŚCI HANDLOWEJ I PRZYDATNOŚCI DO OKREŚLONEGO CELU.
 
 Warunki dotyczące produktu Microsoft Visual Studio
 
-Program może zawierać kod SDK Microsoft Visual Studio. Licencjobiorca nie może używać takiego kodu do tworzenia rozszerzeń produktu Microsoft Visual Studio.
-
-Ograniczenia eksportowe i importowe
-
-Program ten może zawierać technologię kryptograficzną. Korzystanie z Programu przez użytkowników w różnych krajach, jak również przenoszenie Programu na użytkowników w tym samym kraju lub w różnych krajach może być zabronione lub podlegać specjalnym prawom i przepisom eksportowym lub importowym lub polityce rządu w kraju Licencjobiorcy, w tym prawom i przepisom eksportowym i importowym obowiązującym w Stanach Zjednoczonych. Licencjobiorca przyjmuje na siebie całą odpowiedzialność za przestrzeganie wszystkich obowiązujących praw i przepisów w zakresie eksportu, importu i używania tego Programu, a w szczególności ograniczeń w zakresie eksportu lub ponownego eksportu obowiązujących w Stanach Zjednoczonych. Klasyfikację eksportową tego Programu znaleźć można pod adresem: https://www.ibm.com/products/exporting/.
+Program zawiera kod SDK Microsoft Visual Studio. Licencjobiorca nie może używać takiego kodu do tworzenia rozszerzeń produktu Microsoft Visual Studio.
 
 Ponadto używanie Programu przez Licencjobiorcę podlega następującym warunkom.
 
@@ -76,9 +57,9 @@ Jeśli Program zawiera komponenty będące Elementami Podlegającymi Redystrybuc
 
 11. Umowa licencyjna Licencjobiorcy z użytkownikiem końcowym Aplikacji Licencjobiorcy musi powiadamiać użytkownika końcowego, że Elementów Podlegających Redystrybucji oraz ich modyfikacji nie można i) używać do celów innych niż umożliwienie działania Aplikacji Licencjobiorcy, ii) kopiować (z wyjątkiem tworzenia kopii zapasowych), iii) dalej dystrybuować ani przenosić bez Aplikacji Licencjobiorcy ani iv) deasemblować, dekompilować ani poddawać translacji w inny sposób, z wyjątkiem przypadków wyraźnie dozwolonych przez prawo, bez możliwości wyłączenia na mocy umowy. Ponadto umowa licencyjna Licencjobiorcy musi zapewniać IBM ochronę co najmniej równą zapewnianej przez warunki niniejszej Umowy.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Międzynarodowa Umowa Licencyjna na Programy nieobjęte Gwarancją

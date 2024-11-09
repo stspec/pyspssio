@@ -3,46 +3,27 @@ LICENČNÍ INFORMACE
 Níže uvedené Programy jsou licencovány na základě následujících podmínek uvedených v dokumentu Licenční informace, které doplňují licenční podmínky pro Program, s nimiž dříve Zákazník a IBM vyjádřili souhlas Pokud Zákazník dříve nevyjádřil souhlas s účinnými licenčními podmínkami pro Program, uplatní se licence Mezinárodní licenční smlouva pro programy bez záruky (Z125-5589-05).
 
 Název Programu (Číslo Programu):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Na používání Programu Držitelem licence se vztahují následující standardní podmínky.
+
+Omezená uživatelská práva
+
+S výjimkou Programů v balíku lze veškerý software IBM poskytnutý Držiteli licence s Programem použít pouze k podpoře užívání Základního programu Držitelem licence v souladu s dokumentem Licenční informace, což znamená, že takové použití musí přímo souviset s licencovaným použitím Základního programu.
+
+Držitel licence není oprávněn používat Program k poskytování komerčních služeb IT jakékoli třetí straně, k poskytování komerčního hostování nebo sdílení času nebo k udělování sublicencí, pronájmu nebo pronájmu Programu.
 
 Zakázané užívání
 
 Držitel licence nesmí používat nebo autorizovat ostatní pro použití Programu, pokud by selhání Programu mohlo způsobit smrt, škodu na zdraví nebo škody na majetku či životním prostředí.
 
-Development Tool
+Komponenty ve zdrojovém kódu a Vzorové materiály
 
-Účelem tohoto Programu je podpora vývoje softwarových aplikací a systémů. Držitel licence nese výhradní odpovědnost za aplikace a systémy, které Držitel licence vyvine s využitím tohoto Programu; Držitel licence přebírá veškerá rizika a odpovědnost za takové aplikace a systémy.
-
-Redistribuovatelné položky
-
-Jestliže Program obsahuje komponenty, které jsou Redistribuovatelnými položkami, budou identifikovány v souboru REDIST, který je připojen k Programu. Kromě licenčních práv udělených v této Smlouvě smí Držitel licence distribuovat Redistribuovatelné položky v souladu s níže uvedenými podmínkami:
-1) Redistribuce musí být prováděna pouze ve formě objektového kódu a musí splňovat všechny pokyny, instrukce a specifikace obsažené v souborech REDIST připojených k Programu nebo v dokumentaci;
-2) V případě, že dokumentace přiložená k Programu výslovně povoluje Držiteli licence upravovat Redistribuovatelné položky, musí tyto úpravy dodržovat všechny pokyny, instrukce a specifikace obsažené v této dokumentaci a tyto případné modifikace musí být považovány za Redistribuovatelné položky;
-3) Redistribuovatelné položky mohou být distribuovány pouze v rámci aplikace Držitele licence, která byla vyvinuta prostřednictvím Programu ("Aplikace Držitele licence"), a to pouze k podpoře zákazníků Držitele licence v souvislosti s jejich užíváním Aplikace Držitele licence. Aplikace Držitele licence musí tvořit významnou přidanou hodnotu, aby Redistribuovatelné položky nepředstavovaly pro koncové uživatele softwarových produktů Držitele licence hlavní motivaci k nákupu;
-4) Jestliže Redistribuovatelné položky zahrnují rozhraní Java Runtime Environment, musí Držiteli licence do své Aplikace také zahrnout jiné než Redistribuovatelné Java položky, ledaže je tato Aplikace určena ke spouštění pouze na klasických výpočetních zařízeních (například přenosné počítače, stolní počítače a servery), nikoliv na přenosných nebo jiných pervazivních zařízeních (například zařízení obsahující mikroprocesory, jejichž jejich primárním účelem není výpočetní zpracování);
-5) Držitel licence nesmí odstraňovat žádné soubory obsahující copyrightové výhrady nebo soubory Notices obsažené v Redistribuovatelných položkách;
-6) Držitel licence musí IBM, její dodavatele nebo distributory zbavit odpovědnosti v souvislosti se všemi nároky vzniklými na základě užívání nebo distribuce Aplikace Držitele licence;
-7) Držitel licence nesmí používat stejnou cestu, jakou mají původní Redistribuovatelné soubory/moduly;
-8) Držitel licence nesmí užívat názvy nebo ochranné známky IBM nebo jejích dodavatelů či distributorů ve spojení s marketingem Aplikace Držitele licence, pokud k tomu předem nezíská písemný souhlas IBM nebo příslušného dodavatele či distributora;
-9) IBM, její dodavatelé a distributoři poskytují tyto Redistribuovatelné položky a související dokumentaci bez závazku podpory a "JAK JSOU", BEZ ZÁRUKY JAKÉHOKOLIV DRUHU, VYJÁDŘENÉ VÝSLOVNĚ ČI VYPLÝVAJÍCÍ Z OKOLNOSTÍ, VČETNĚ ZÁRUKY VLASTNICKÉHO NÁROKU, NEPORUŠENÍ PRÁV TŘETÍCH STRAN A VYPLÝVAJÍCÍCH ZÁRUK A PODMÍNEK PRODEJNOSTI A VHODNOSTI PRO DANÝ ÚČEL;
-10) Držitel licence odpovídá za veškerou technickou asistenci pro své Aplikace a jakékoliv změny Redistribuovatelných položek; a
-11) Licenční smlouva, kterou uzavřel Držitel licence s koncovým uživatelem Aplikace Držitele licence, musí informovat koncového uživatele o tom, že Redistribuovatelné položky nebo jejich modifikace nesmí být a) užívány k jiným účelům než k aktivaci Aplikace Držitele licence, ii) kopírovány (s výjimkou zálohování), iii) dále distribuovány nebo převáděny bez Aplikace Držitele licence nebo iv) zpětně překládány, zpětně kompilovány nebo jiným způsobem překládány, pokud zákon výslovně nepovoluje výjimky, a bez možnosti smluvního zřeknutí se. Kromě toho musí licenční smlouva Držitele licence poskytovat IBM přinejmenším stejnou ochranu jako podmínky této Smlouvy.
-
-Komponenty ve vzorovém kódu a Vzorové materiály
-
-Program může obsahovat některé komponenty ve formě zdrojového kódu ("Komponenty ve zdrojovém kódu") a jiné materiály označované jako Vzorové materiály. Držitel licence smí kopírovat a měnit Komponenty ve zdrojovém kódu a Vzorové materiály pouze pro interní užívání a pouze pod podmínkou, že toto užívání bude v souladu s omezeními licenčních oprávnění stanovenými touto Smlouvou. Držitel licence však nesmí měnit ani odstraňovat žádné informace nebo výhrady týkající se autorských práv obsažené v Komponentách ve zdrojovém kódu nebo ve Vzorových materiálech. IBM poskytuje tyto Komponenty ve zdrojovém kódu a Vzorové materiály bez závazku podpory a "JAK JSOU", BEZ ZÁRUKY JAKÉHOKOLIV DRUHU, VYJÁDŘENÉ VÝSLOVNĚ ČI VYPLÝVAJÍCÍ Z OKOLNOSTÍ, VČETNĚ ZÁRUKY VLASTNICTVÍ, NEPORUŠENÍ PRÁV TŘETÍCH STRAN A ZÁRUK A PODMÍNEK PRODEJNOSTI A VHODNOSTI PRO DANÝ ÚČEL.
-
-U Komponent ve zdrojovém kódu a Vzorových materiálů uvedených v souboru REDIST, který je součástí Programu, může Držitel licence redistribuovat upravené verze těchto Komponent ve zdrojovém kódu nebo Vzorových materiálů v souladu s podmínkami této licence a s pokyny uvedenými v souboru REDIST.
+Program obsahuje komponenty ve formě zdrojového kódu ("Komponenty ve zdrojovém kódu"), nebo jiné materiály označované jako Vzorové materiály, nebo obojí. Držitel licence smí kopírovat a upravovat Zdrojové komponenty a Vzorové materiály pouze pro interní účely, za předpokladu, že toto užívání splňuje limity licenčních práv podle této Smlouvy, avšak pod podmínkou, že Držitel licence nesmí pozměňovat ani odstraňovat žádné informace o autorských právech nebo právech k duševnímu vlastnictví, které jsou uvedeny ve Zdrojových komponentách či Vzorových materiálech. IBM poskytuje tyto Komponenty ve zdrojovém kódu a Vzorové materiály bez závazku podpory a "JAK JSOU", BEZ ZÁRUKY JAKÉHOKOLIV DRUHU, VYJÁDŘENÉ VÝSLOVNĚ ČI VYPLÝVAJÍCÍ Z OKOLNOSTÍ, VČETNĚ ZÁRUKY VLASTNICTVÍ, NEPORUŠENÍ PRÁV TŘETÍCH OSOB A ZÁRUK A PODMÍNEK PRODEJNOSTI A VHODNOSTI PRO DANÝ ÚČEL.
 
 Podmínky pro Microsoft Visual Studio
 
-Program může obsahovat kód Microsoft Visual Studio SDK. Držitel licence není oprávněn užívat tento kód k vývoji rozšíření produktu Microsoft Visual Studio.
-
-Omezení vývozu a dovozu
-
-Tento Program může obsahovat funkci šifrování. Převod Programu na uživatele nebo jeho užívání ze strany uživatelů mohou být zakázány nebo mohou podléhat vývozním nebo dovozním zákonům, nařízením či směrnicím, včetně vývozních nařízení Spojených států amerických. Držitel licence nese veškerou odpovědnost za dodržování všech příslušných zákonů, nařízení a směrnic týkajících se vývozu, dovozu nebo užívání tohoto Programu, včetně - nikoliv však pouze - omezení vývozu a zpětného vývozu platných ve Spojených státech amerických. Vývozní klasifikaci tohoto Programu získáte na webových stránkách: https://www.ibm.com/products/exporting/.
+Program obsahuje kód Microsoft Visual Studio SDK. Držitel licence není oprávněn užívat tento kód k vývoji rozšíření produktu Microsoft Visual Studio.
 
 Kromě výše uvedeného se na použití Programu Držitelem licence vztahují následující podmínky.
 
@@ -76,9 +57,9 @@ Jestliže Program obsahuje komponenty, které jsou Redistribuovatelnými položk
 
 11. Licenční smlouva, kterou uzavřel Držitel licence s koncovým uživatelem Aplikace Držitele licence, musí informovat koncového uživatele o tom, že Redistribuovatelné položky nebo jejich modifikace nesmí být a) užívány k jiným účelům než k aktivaci Aplikace Držitele licence, ii) kopírovány (s výjimkou zálohování), iii) dále distribuovány nebo převáděny bez Aplikace Držitele licence nebo iv) zpětně překládány, zpětně kompilovány nebo jiným způsobem překládány, pokud zákon výslovně nepovoluje výjimky, a bez možnosti smluvního zřeknutí se. Kromě toho musí licenční smlouva Držitele licence poskytovat IBM přinejmenším stejnou ochranu jako podmínky této Smlouvy.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Mezinárodní licenční smlouva pro programy bez záruky

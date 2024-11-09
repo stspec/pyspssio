@@ -3,46 +3,27 @@ LICENSE INFORMATION
 The Programs listed below are licensed under the following License Information terms and conditions in addition to the Program license terms previously agreed to by Client and IBM. If Client does not have previously agreed to license terms in effect for the Program, the International License Agreement for Non-Warranted Programs (Z125-5589-05) applies.
 
 Program Name (Program Number):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 The following standard terms apply to Licensee's use of the Program.
+
+Limited use right
+
+With the exception of Bundled Programs, all IBM software provided to Licensee with the Program can only be used to support Licensee's use of the Principal Program under this License Information document, which means such use must be directly related to a licensed use of the Principal Program.
+
+Licensee is not authorized to use the Program to provide commercial IT services to any third party, to provide commercial hosting or timesharing, or to sublicense, rent, or lease the Program.
 
 Prohibited Uses
 
 Licensee may not use or authorize others to use the Program if failure of the Program could lead to death, bodily injury, or property or environmental damage.
 
-Development Tool
-
-This Program is designed to aid in the development of software applications and systems. Licensee is solely responsible for the applications and systems that it develops by using this Program and assumes all risk and responsibility therefor.
-
-Redistributables
-
-If the Program includes components that are Redistributable, they will be identified in the REDIST file that accompanies the Program. In addition to the license rights granted in the Agreement, Licensee may distribute the Redistributables subject to the following terms:
-1) Redistribution must be in object code form only and must conform to all directions, instruction and specifications in the Program's accompanying REDIST or documentation;
-2) If the Program's accompanying documentation expressly allows Licensee to modify the Redistributables, such modification must conform to all directions, instruction and specifications in that documentation and these modifications, if any, must be treated as Redistributables;
-3) Redistributables may be distributed only as part of Licensee's application that was developed using the Program ("Licensee's Application") and only to support Licensee's customers in connection with their use of Licensee's Application. Licensee's Application must constitute significant value add such that the Redistributables are not a substantial motivation for the acquisition by end users of Licensee's software product;
-4) If the Redistributables include a Java Runtime Environment, Licensee must also include other non-Java Redistributables with Licensee's Application, unless the Application is designed to run only on general computer devices (for example, laptops, desktops and servers) and not on handheld or other pervasive devices (i.e., devices that contain a microprocessor but do not have computing as their primary purpose);
-5) Licensee may not remove any copyright or notice files contained in the Redistributables;
-6) Licensee must hold IBM, its suppliers or distributors harmless from and against any claim arising out of the use or distribution of Licensee's Application;
-7) Licensee may not use the same path name as the original Redistributable files/modules;
-8) Licensee may not use IBM's, its suppliers or distributors names or trademarks in connection with the marketing of Licensee's Application without IBM's or that supplier's or distributor's prior written consent;
-9) IBM, its suppliers and distributors provide the Redistributables and related documentation without obligation of support and "AS IS", WITH NO WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING THE WARRANTY OF TITLE, NON-INFRINGEMENT OR NON-INTERFERENCE AND THE IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
-10) Licensee is responsible for all technical assistance for Licensee's Application and any modifications to the Redistributables; and
-11) Licensee's license agreement with the end user of Licensee's Application must notify the end user that the Redistributables or their modifications may not be i) used for any purpose other than to enable Licensee's Application, ii) copied (except for backup purposes), iii) further distributed or transferred without Licensee's Application or iv) reverse assembled, reverse compiled, or otherwise translated except as specifically permitted by law and without the possibility of a contractual waiver. Furthermore, Licensee's license agreement must be at least as protective of IBM as the terms of this Agreement.
-
 Source Components and Sample Materials
 
-The Program may include some components in source code form ("Source Components") and other materials identified as Sample Materials. Licensee may copy and modify Source Components and Sample Materials for internal use only provided such use is within the limits of the license rights under this Agreement, provided however that Licensee may not alter or delete any copyright information or notices contained in the Source Components or Sample Materials. IBM provides the Source Components and Sample Materials without obligation of support and "AS IS", WITH NO WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING THE WARRANTY OF TITLE, NON-INFRINGEMENT OR NON-INTERFERENCE AND THE IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-
-For Source Components and Sample Materials listed in a Program's REDIST file, Licensee may redistribute modified versions of those Source Components or Sample Materials consistent with the terms of this license and any instructions in the REDIST file.
+The Program includes components in source code form ("Source Components"), or other materials identified as Sample Materials or both. Licensee may copy and modify Source Components and Sample Materials for internal use only within the limits of the license rights under this Agreement; provided, however, that Licensee may not alter or delete any copyright information or notices contained in the Source Components or Sample Materials. IBM provides the Source Components and Sample Materials without obligation of support and "AS IS", WITH NO WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING THE WARRANTY OF TITLE, NON-INFRINGEMENT OR NON-INTERFERENCE AND THE IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 Terms for Microsoft Visual Studio
 
-The Program may contain Microsoft Visual Studio SDK code. Licensee is not permitted to use such code to develop extensions to Microsoft Visual Studio.
-
-Export and Import Restrictions
-
-This Program may contain cryptography. Transfer to, or use by, users of the Program may be prohibited or subject to export or import laws, regulations or policies, including those of the United States Export Administration Regulations. Licensee assumes all responsibility for complying with all applicable laws, regulations, and policies regarding the export, import, or use of this Program, including but not limited to, U.S. restrictions on exports or reexports. To obtain the export classification of this Program refer to: https://www.ibm.com/products/exporting/.
+The Program includes Microsoft Visual Studio SDK code. Licensee is not permitted to use such code to develop extensions to Microsoft Visual Studio.
 
 In addition to the above, the following terms apply to Licensee's use of the Program.
 
@@ -65,9 +46,9 @@ If the Program includes components that are Redistributable, they will be identi
 10) Licensee is responsible for all technical assistance for Licensee's Application and any modifications to the Redistributables; and
 11) Licensee's license agreement with the end user of Licensee's Application must notify the end user that the Redistributables or their modifications may not be i) used for any purpose other than to enable Licensee's Application, ii) copied (except for backup purposes), iii) further distributed or transferred without Licensee's Application or iv) reverse assembled, reverse compiled, or otherwise translated except as specifically permitted by law and without the possibility of a contractual waiver. Furthermore, Licensee's license agreement must be at least as protective of IBM as the terms of this Agreement. 
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 International License Agreement for Non-Warranted Programs

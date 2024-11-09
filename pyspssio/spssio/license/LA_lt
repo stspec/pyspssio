@@ -3,46 +3,27 @@ LICENCIJOS INFORMACIJA
 Toliau nurodytos Programos licencijuojamos pagal šias Licencijos informacijos sąlygas, kurios papildo Programos licencijos sąlygas, dėl kurių susitarė Klientas ir IBM. Jei Klientas anksčiau nėra sutikęs su Programai taikomomis licencijos sąlygomis, taikoma Programų kurioms neteikiama garantija tarptautinė licencinė sutartis (Z125-5589-05).
 
 Programos pavadinimas (Programos numeris):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Šios standartinės sąlygos taikomos Licenciato Programos naudojimui.
+
+Riboto naudojimo teisė
+
+Išskyrus Sugrupuotas programas, Visa Licenciatui su Programa pateikta IBM programinė įranga gali būti naudojama tik Licenciato Pagrindinės programos naudojimui palaikyti pagal šį Licencijos informacijos dokumentą. Tai reiškia, kad toks naudojimas turi būti tiesiogiai susijęs su Pagrindinės programos licencijuotu naudojimu.
+
+Licenciatas neturi teisės naudoti Programos komercinėms IT paslaugoms teikti jokiai trečiajai šaliai, taip pat teikti komercinę išteklių nuomą ar laiko paskirstymą, teikti antrinę Programos licenciją ar ją nuomoti.
 
 Draudžiamas naudojimas
 
 Licenciatas negali naudoti ar autorizuoti nauodoti Programą, jei jos gedimas gali sukelti mirtį, kūno sužalojimų, nuosavybės ar aplinkos pažeidimą.
 
-Kūrimo įrankis
-
-Ši Programa skirta padėti kurti programinės įrangos taikomąsias programas ir sistemas. Licenciatas išskirtinai atsako už taikomąsias programas ir sistemas, kurias sukūrė naudodamas šią Programą, ir prisiima visą su tuo susijusią riziką ir atsakomybę.
-
-Perskirstymo paketai
-
-Jeigu į Programą įtraukti Perskirstomieji komponentai, jie bus nurodyti REDIST faile, pateiktame kartu su Programa. Kartu su Sutarties suteiktomis licencijos teisėmis Licenciatas gali platinti Perskirstymo komponentus laikydamasis šių sąlygų:
-1) perskirstymas turi vykti tik objekto kodo forma ir turi atitikti visus Programos REDIST ar lydraštyje pateiktus nurodymus, instrukcijas ir specifikacijas;
-2) jei Programos lydraštyje aiškiai nurodyta, kad Licenciatui leidžiama modifikuoti Perskirstymo paketus, tokios modifikacijos turi atitikti visus toje dokumentacijoje pateiktus nurodymus, instrukcijas ir specifikacijas, ir šios modifikacijos, jei tokių yra, turi būti laikomos Perskirstymo paketais;
-3) Perskirstymo paketai gali būti platinami tik kaip Licenciato taikomosios programos, kuri buvo sukurta naudojant Programą, („Licenciato taikomoji programa“) dalis ir tik Licenciato klientų naudojamai Licenciato taikomajai programai palaikyti. Licenciato taikomoji programa turi teikti svarbią pridėtinę vertę taip, kad Licenciato taikomosios programos produkto galutiniai vartotojai nebūtų motyvuoti įsigyti Perskirstymo paketus;
-4) jeigu į Perskirstymo paketus įtraukta „Java“ vykdymo aplinka, Licenciatas taip pat privalo į Licenciato taikomąją programą įtraukti kitus ne „Java“ Perskirstymo paketus, nebent Taikomoji programa sukurta veikti tik bendruosiuose kompiuterių įrenginiuose (pavyzdžiui, skreitiniuose, staliniuose kompiuteriuose ir serveriuose), o ne kišeniniuose ar kituose skvarbiuosiuose įrenginiuose (t. y. įrenginiuose, kurie turi mikroprocesorių, tačiau kurių kompiuterio funkcijos nėra pirminis naudojimo tikslas);
-5) Licenciatas negali pašalinti jokių Perskirstymo paketuose esančių autoriaus teisių arba pastabų failų;
-6) Licenciatas nelaikys IBM, jos tiekėjų arba platintojų atsakingais už jokias pretenzijas, susijusias su Licenciato taikomosios programos naudojimu ar platinimu;
-7) Licenciatas negali naudoti tokio paties kaip originalių Perskirstymo paketų failų / modulių kelio pavadinimo;
-8) Parduodamas Licenciato taikomąją programą Licenciatas negali naudoti IBM, jos tiekėjų arba platintojų pavadinimų arba prekių ženklų, neturėdamas IBM, to tiekėjo arba platintojo išankstinio raštiško sutikimo;
-9) IBM, jos tiekėjai ir platintojai pateikia Perskirstymo paketus ir susijusią dokumentaciją be palaikymo įsipareigojimo ir TOKIĄ, KOKIA YRA, NESUTEIKDAMI JOKIOS APIBRĖŽTOS AR NUMANOMOS GARANTIJOS, ĮSKAITANT PAVADINIMO, NEPAŽEIDŽIAMUMO AR NEĮSIKIŠIMO GARANTIJAS IR NUMANOMAS TINKAMUMO PREKYBAI IR TAM TIKRAM TIKSLUI GARANTIJAS IR SĄLYGAS;
-10) Licenciatas atsakingas už visą techninę pagalbą, susijusią su Licenciato taikomąja programa, ir už bet kokias Perskirstymo paketų modifikacijas; ir
-11) Licenciato ir Licenciato taikomosios programos galutinio vartotojo licencijos sutartis turi įspėti galutinį vartotoją, kad Perskirstymo paketų arba jų modifikavimų negalima i) naudoti kitu tikslu, nei Licenciato taikomajai programai įgalinti, ii) kopijuoti (išskyrus kuriant atsarginę kopiją), iii) platinti ar perduoti naudoti be Licenciato taikomosios programos, arba iv) išardyti, dekompiliuoti ar kitaip versti, išskyrus, jei tai aiškiai leidžia teisės aktai ir nepažeidžiami sutartiniai įsipareigojimai. Be to, Licenciato licencinė sutartis turi būti sauganti IBM bent tiek, kiek tai apibrėžia šios Sutarties sąlygos.
-
 Šaltinio komponentai ir pavyzdinė medžiaga
 
-Į Programą gali būti įtraukti keli komponentai išeitinio kodo forma („Šaltinio komponentai“) ir kita medžiaga, apibrėžta kaip Pavyzdinė medžiaga. Licenciatas gali kopijuoti ir modifikuoti Šaltinio komponentus ir Pavyzdinę medžiagą tik naudoti viduje, jei toks naudojimas nepažeidžia šios Sutarties licencijos teisių ir jei Licenciatas nekeičia ar nenaikina jokios Šaltinio komponentuose ir Pavyzdinėje medžiagoje esančios autoriaus teisių informacijos ar pranešimų. IBM pateikia Šaltinio komponentus ir Pavyzdinę medžiagą be palaikymo įsipareigojimo ir TOKIĄ, KOKIA YRA, NESUTEIKIANT JOKIŲ AIŠKIAI NURODYTŲ AR NENURODYTŲ GARANTIJŲ, ĮSKAITANT NUOSAVYBĖS TEISĖS, NEPAŽEIDŽIAMUMO AR NEĮSIKIŠIMO GARANTIJAS IR NENURODYTAS TINKAMUMO PREKIAUTI IR TAM TIKRAM TIKSLUI GARANTIJAS IR SĄLYGAS.
-
-Licenciatas gali platinti Programos REDIST faile išvardytų modifikuotų Šaltinio komponentų ir Pavyzdinės medžiagos versijas laikydamasis šios licencijos sąlygų ir REDIST faile pateiktų instrukcijų.
+Į Programą yra įtrauktų komponentų išeitinio kodo forma („Šaltinio komponentai“) arba kita medžiaga, apibrėžta kaip Pavyzdinė medžiaga, arba abu šie elementai. Licenciatas gali kopijuoti ir modifikuoti Šaltinio komponentus ir Pavyzdinę medžiagą tik naudoti viduje, nepažeisdamas šios Sutarties licencijos teisių; tačiau Licenciatas negali keisti ar naikinti jokios Šaltinio komponentuose ir Pavyzdinėje medžiagoje esančios autoriaus teisių informacijos ar pranešimų. IBM pateikia Šaltinio komponentus ir Pavyzdinę medžiagą be palaikymo įsipareigojimo ir TOKIĄ, KOKIA YRA, NESUTEIKIANT JOKIŲ AIŠKIAI NURODYTŲ AR NENURODYTŲ GARANTIJŲ, ĮSKAITANT NUOSAVYBĖS TEISĖS, NEPAŽEIDŽIAMUMO AR NEĮSIKIŠIMO GARANTIJAS IR NENURODYTAS TINKAMUMO PREKIAUTI IR TAM TIKRAM TIKSLUI GARANTIJAS IR SĄLYGAS.
 
 „Microsoft Visual Studio“ sąlygos
 
-Programoje gali būti „Microsoft Visual Studio SDK“ kodas. Licenciatui neleidžiama naudoti tokio kodo kuriant „Microsoft Visual Studio“ plėtinius.
-
-Eksporto ir importo apribojimai
-
-Šioje Programoje gali būti šifravimų. Vartotojams Programą perduoti arba ją naudoti gali būti draudžiama arba gali būti taikomi eksporto ar importo įstatymai, taisyklės arba strategijos, įskaitant Jungtinių Amerikos Valstijų eksporto valdymo reglamentą. Licenciatas prisiima visą atsakomybę už visų taikomų įstatymų, taisyklių ir strategijų, susijusių su šios Programos eksportu, importu arba naudojimu, įskaitant, bet neapsiribojant, JAV eksporto arba pakartotinio eksporto apribojimus, laikymąsi. Norėdami gauti šios Programos eksporto kategoriją, žr: https://www.ibm.com/products/exporting/.
+Į Programą įtrauktas „Microsoft Visual Studio SDK“ kodas. Licenciatui neleidžiama naudoti tokio kodo kuriant „Microsoft Visual Studio“ plėtinius.
 
 Be anksčiau nurodytos informacijos, toliau nurodytos sąlygos taikomos Licenciato Programos naudojimui.
 
@@ -76,9 +57,9 @@ Jeigu į Programą įtraukti Perskirstomieji komponentai, jie bus nurodyti REDIS
 
 11. Licenciato ir Licenciato taikomosios programos galutinio vartotojo licencijos sutartis turi įspėti galutinį vartotoją, kad Perskirstymo paketų arba jų modifikavimų negalima i) naudoti kitu tikslu, nei Licenciato taikomajai programai įgalinti, ii) kopijuoti (išskyrus kuriant atsarginę kopiją), iii) platinti ar perduoti naudoti be Licenciato taikomosios programos, arba iv) išardyti, dekompiliuoti ar kitaip versti, išskyrus, jei tai aiškiai leidžia teisės aktai ir nepažeidžiami sutartiniai įsipareigojimai. Be to, Licenciato licencinė sutartis turi būti sauganti IBM bent tiek, kiek tai apibrėžia šios Sutarties sąlygos.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Programų kurioms neteikiama garantija tarptautinė licencinė sutartis
