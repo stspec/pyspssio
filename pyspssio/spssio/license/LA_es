@@ -3,46 +3,27 @@ INFORMACIÓN SOBRE LICENCIA
 Los Programas que se enumeran a continuación se licencian bajo los siguientes términos y condiciones de Licencia, además de los términos de licencia del Programa acordados previamente entre el Cliente e IBM. Si el Cliente no ha aceptado con anterioridad los términos de la licencia aplicables al Programa, se aplicará Acuerdo Internacional de Licencia para Programas sin Garantía (Z125-5589-05).
 
 Nombre de Programa (Número de Programa):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Los términos estándar siguientes se aplican al uso por parte del Licenciatario del Programa.
+
+Derecho de uso limitado
+
+A excepción de los Programas Empaquetados, cualquier software de IBM proporcionado al Licenciatario con el Programa podrá utilizarse únicamente para dar soporte al uso del Programa Principal por parte del Licenciatario en virtud de este documento de Información de Licencia, lo que significa que dicho uso debe estar directamente relacionado con un uso bajo licencia del Programa Principal.
+
+El Licenciatario no tiene autorización para utilizar el Programa con el fin de prestar servicios comerciales de TI a terceros, proporcionar servicios de alojamiento comercial o uso temporal compartido ni sublicenciar, alquilar o arrendar el Programa.
 
 Usos prohibidos
 
 El Licenciatario no puede utilizar ni autorizar a terceros para utilizar el Programa si un fallo del Programa puede producir la muerte, daños corporales o daños a la propiedad o al medio ambiente.
 
-Herramienta de Desarrollo
-
-Este Programa está diseñado para facilitar el desarrollo de aplicaciones y sistemas de software. El Licenciatario es el único responsable de las aplicaciones y sistemas que desarrolla mediante el uso del Programa y, por tanto, asume todos los riesgos y responsabilidades.
-
-Redistribuibles
-
-Si el Programa incluye componentes que son Redistribuibles, se identificarán en el archivo REDIST que acompaña al Programa. Además de los derechos de licencia que se otorgan en el Acuerdo, el Licenciatario puede distribuir los Redistribuibles sujeto a los siguientes términos:
-1) La redistribución debe ser sólo en formato de código objeto y debe cumplir con todas las directrices, instrucciones y especificaciones de la documentación o del archivo REDIST que acompaña al Programa;
-2) Si la documentación que acompaña al Programa permite explícitamente al Licenciatario modificar los Redistribuibles, dichas modificaciones deben cumplir con todas las directrices, instrucciones y especificaciones de dicha documentación y estas modificaciones, si las hubiere, deben considerarse como Redistribuibles;
-3) El Licenciatario puede distribuir los Redistribuibles únicamente como parte de la aplicación del Licenciatario que se desarrolló utilizando el Programa ("Aplicación del Licenciatario") y únicamente para ofrecer soporte a los clientes del Licenciatario en conexión con su uso de la Aplicación del Licenciatario. La Aplicación del Licenciatario debe representar un valor añadido significativo, de modo que los Redistribuibles no sean una motivación importante en la adquisición del producto software por parte de los usuarios finales;
-4) Si los Redistribuibles incluyen un Java Runtime Environment, el Licenciatario debe incluir también otros Redistribuibles que no sean Java con la Aplicación del Licenciatario, a menos que la aplicación del Licenciatario se haya diseñado para ejecutarse sólo en dispositivos generales de sistemas (portátiles, sistemas de sobremesa y servidores, por ejemplo) y no en dispositivos portátiles u otros dispositivos generales (es decir, dispositivos que contienen un microprocesador pero que su finalidad principal no es el sistema informático);
-5) El Licenciatario no puede eliminar ningún archivo de aviso o de copyright de los Redistribuibles;
-6) El Licenciatario deberá eximir de cualquier responsabilidad a IBM, a sus proveedores y a sus distribuidores de y contra cualquier reclamación que surja por el uso o distribución de la Aplicación del Licenciatario;
-7) El Licenciatario no puede utilizar el mismo nombre de vía de acceso que los archivos/módulos Redistribuibles originales;
-8) El Licenciatario no puede utilizar los nombres ni las marcas registradas de IBM, de sus proveedores ni de sus distribuidores en relación con la comercialización de la Aplicación del Licenciatario sin el previo consentimiento por escrito de IBM o de dicho proveedor o distribuidor;
-9) IBM, sus proveedores y sus distribuidores proporcionan los Redistribuibles y la documentación relacionada sin ningún tipo de obligación de soporte y "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, NI IMPLÍCITA NI EXPLÍCITA, INCLUIDAS LA GARANTÍA DE TÍTULO, LA GARANTÍA DE NO INFRACCIÓN DE DERECHOS DE TERCEROS O LIBRE DE INTERFERENCIAS Y LAS GARANTÍAS Y CONDICIONES IMPLÍCITAS DE COMERCIALIZACIÓN E IDONEIDAD PARA UNA FINALIDAD DETERMINADA;
-10) El Licenciatario se responsabilizará de toda la asistencia técnica para la Aplicación del Licenciatario y de todas las modificaciones en los Redistribuibles; y
-11) En el acuerdo de licencia de con el usuario final de la Aplicación del Licenciatario, el Licenciatario notificará al usuario final que los Redistribuibles o sus modificaciones no pueden i) utilizarse con ninguna otra finalidad que no sea habilitar la Aplicación del Licenciatario, ii) copiarse (excepto a efectos de copia de seguridad), iii) distribuirse ni transferirse sin la Aplicación del Licenciatario o iv) desensamblarse, descompilarse ni de otro modo traducirse, excepto aquello específicamente permitido por la correspondiente legislación sin que sea posible la renuncia por contrato. Además, el acuerdo de licencia del Licenciatario deberá proteger a IBM al igual, cómo mínimo, que los términos de este Acuerdo.
-
 Componentes en Código Fuente y Materiales de muestra
 
-El Programa puede incluir algunos componentes en formato de código fuente ("Componente en Código Fuente") y otros materiales identificados como Materiales de muestra. El Licenciatario puede copiar y modificar los Componentes en Código Fuente y los Materiales de muestra únicamente para uso interno, siempre que dicho uso esté dentro de los límites de los derechos de licencia en virtud del presente Acuerdo, y siempre y cuando el Licenciatario no altere ni suprima ninguna información de copyright ni de avisos de los Componentes en Código Fuente ni de los Materiales de muestra. IBM proporciona los Componentes en Código Fuente y los Materiales de muestra sin ningún tipo de obligación de soporte y "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, NI IMPLÍCITA NI EXPLÍCITA, INCLUIDAS LA GARANTÍA DE TÍTULO, LA GARANTÍA DE NO VULNERACIÓN DE DERECHOS DE TERCEROS O DE NO INJERENCIA Y LAS GARANTÍAS Y CONDICIONES IMPLÍCITAS DE COMERCIALIZACIÓN E IDONEIDAD PARA UNA FINALIDAD DETERMINADA.
-
-Para los Componentes en Código Fuente y los Materiales de muestra que aparecen en la lista del archivo REDIST de un Programa, el Licenciatario puede redistribuir las versiones modificadas de dichos Componentes en Código Fuente o Materiales de Muestra que sean coherentes con los términos de la presente licencia y con las instrucciones del archivo REDIST.
+El Programa incluye algunos componentes en formato de código fuente ("Componentes en Código Fuente") y otros materiales identificados como Materiales de muestra, o ambos. El Licenciatario puede copiar y modificar los Componentes en Código Fuente y los Materiales de muestra únicamente para uso interno, siempre que dicho uso esté dentro de los límites de los derechos de licencia en virtud del presente Acuerdo, y siempre y cuando el Licenciatario no altere ni suprima ninguna información de copyright ni de avisos de los Componentes en Código Fuente ni de los Materiales de muestra. IBM proporciona los Componentes en Código Fuente y los Materiales de muestra sin ningún tipo de obligación de soporte y "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, NI IMPLÍCITA NI EXPLÍCITA, INCLUIDAS LA GARANTÍA DE TÍTULO, LA GARANTÍA DE NO VULNERACIÓN DE DERECHOS DE TERCEROS O DE NO INJERENCIA Y LAS GARANTÍAS Y CONDICIONES IMPLÍCITAS DE COMERCIALIZACIÓN E IDONEIDAD PARA UNA FINALIDAD DETERMINADA.
 
 Términos para Microsoft Visual Studio
 
-El Programa puede contener código de Microsoft Visual Studio SDK. El Licenciatario no puede utilizar dicho código para desarrollar extensiones para Microsoft Visual Studio.
-
-Restricciones de exportación e importación
-
-Este Programa puede contener cifrado. El uso o la transferencia del Programa a usuarios puede estar prohibido o sujeto a las leyes, los reglamentos y las políticas de importación y exportación, incluidos aquellos de las Regulaciones de Administración de Exportaciones (Export Administration Regulations) de Estados Unidos. El Licenciatario asume la plena responsabilidad de cumplir con todas las leyes, los reglamentos y las políticas aplicables respecto a la exportación, la importación o la utilización del presente Programa, incluidas pero sin limitarse a, las restricciones EE. UU. sobre exportaciones o reexportaciones. Para obtener la clasificación de exportaciones de este Programa consulte: https://www.ibm.com/products/exporting/.
+El Programa contiene código de Microsoft Visual Studio SDK. El Licenciatario no puede utilizar dicho código para desarrollar extensiones para Microsoft Visual Studio.
 
 Además de lo indicado, los términos siguientes se aplican al uso por parte del Licenciatario del Programa.
 
@@ -76,9 +57,9 @@ Si el Programa incluye componentes que son Redistribuibles, se identificarán en
 
 11. En el acuerdo de licencia de con el usuario final de la Aplicación del Licenciatario, el Licenciatario notificará al usuario final que los Redistribuibles o sus modificaciones no pueden i) utilizarse con ninguna otra finalidad que no sea habilitar la Aplicación del Licenciatario, ii) copiarse (excepto a efectos de copia de seguridad), iii) distribuirse ni transferirse sin la Aplicación del Licenciatario o iv) desensamblarse, descompilarse ni de otro modo traducirse, excepto aquello específicamente permitido por la correspondiente legislación sin que sea posible la renuncia por contrato. Además, el acuerdo de licencia del Licenciatario deberá proteger a IBM al igual, cómo mínimo, que los términos de este Acuerdo.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Acuerdo Internacional de Licencia para Programas sin Garantía

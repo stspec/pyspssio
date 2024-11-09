@@ -3,46 +3,27 @@ INFORMATIONS SUR LA LICENCE
 Les Logiciels spécifiés ci-dessous sont concédés sous licence conformément aux dispositions des Informations sur la Licence suivantes qui s'ajoutent à celles des dispositions de la licence du Logiciel précédemment acceptée par le Client et IBM. Si le Client n'a pas précédemment accepté les dispositions de la licence en vigueur pour le Logiciel, les Conditions Internationales d'Utilisation des Logiciels non garantis (Z125-5589-05) s'appliquent.
 
 Nom du Logiciel (Référence du Logiciel) : 
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Les dispositions suivantes s'appliquent à l'utilisation du Logiciel par le Détenteur de la Licence.
+
+Autorisation d'Utilisation Restreinte
+
+À l'exception des Logiciels Groupés, tous les logiciels IBM fournis au Détenteur de la Licence avec le Logiciel ne peuvent être utilisés que dans le cadre de son utilisation du Logiciel Principal au titre du présent document Informations sur la Licence, ce qui signifie que ladite utilisation doit être liée directement à l'utilisation autorisée du Logiciel Principal.
+
+Le Détenteur de la Licence n'est pas autorisé à utiliser le Logiciel pour fournir des services informatiques commerciaux à une tierce partie, pour fournir un hébergement ou un partage de temps commercial, ou pour accorder des sous-licences pour le Logiciel ni pour le louer.
 
 Utilisations interdites
 
 Le Détenteur de la Licence n'est pas autorisé à utiliser ou à permettre à d'autres personnes d'utiliser le Logiciel si un dysfonctionnement du Logiciel est susceptible d'entraîner la mort, des préjudices corporels ou une dégradation matérielle ou environnementale.
 
-Outil de développement
-
-Ce Logiciel est conçu pour faciliter le développement d'applications et de systèmes logiciels. Le Détenteur de la Licence est seul responsable des applications et des systèmes qu'il développe à l'aide de ce Logiciel et il assume tous les risques et responsabilités applicables.
-
-Logiciels Redistribuables
-
-Si le Logiciel comprend des Logiciels Redistribuables, ceux-ci seront identifiés dans le fichier REDIST fourni avec le Logiciel. En plus des droits de licence concédés dans le présent Contrat, le Détenteur de la Licence est autorisé à distribuer les Logiciels Redistribuables conformément aux dispositions suivantes :
-1) La redistribution doit être effectuée sous forme de code objet uniquement et doit être conforme à l'ensemble des instructions, directives et spécifications contenues dans la documentation du Logiciel ou dans le fichier REDIST fourni avec ;
-2) Lorsque ladite documentation autorise le Détenteur de la Licence expressément à modifier les Logiciels Redistribuables, ladite modification doit être conforme à l'ensemble des instructions, directives et spécifications contenues dans la documentation, et le cas échéant, les logiciels modifiés restent des Logiciels Redistribuables ;
-3) Les Logiciels Redistribuables peuvent être distribués uniquement dans le cadre de l'application développée par le Détenteur de la Licence à l'aide du Logiciel (son "Application") et de la prise en charge de ses clients dans le cadre de leur utilisation de son Application. L'Application du Détenteur de la Licence doit proposer une valeur ajoutée significative, de sorte que la distribution des Logiciels Redistribuables, dans le cadre de l'acquisition de l'Application du Détenteur de la Licence, ne constitue pas l'argument d'achat principal des utilisateurs finaux ;
-4) Dans le cas où les Logiciels Redistribuables contiennent Java Runtime Environment, le Détenteur de la Licence doit inclure également des Logiciels Redistribuables non-Java équivalents avec son Application, sauf si son Application est conçue pour être exécutée uniquement sur des systèmes informatiques d'usage courant (par exemple des ordinateurs portables, des ordinateurs de bureau ou des serveurs) et non pas sur des unités mobiles (par exemple, les unités dotées d'un microprocesseur mais dont la fonction principale n'est pas le calcul) ;
-5) Le Détenteur de la Licence n'est pas autorisé à retirer les mentions de droits d'auteur ou les Fichiers Notices contenus dans les Logiciels Redistribuables ;
-6) Le Détenteur de la Licence s'engage à protéger IBM, ses fournisseurs et ses distributeurs contre toute réclamation résultant de l'utilisation ou de la distribution de l'Application du Détenteur de la Licence ;
-7) Le Détenteur de la Licence ne peut pas utiliser le même nom de chemin d'accès que celui des fichiers et/ou modules d'origine des Logiciels Redistribuables ;
-8) Le Détenteur de la Licence n'est pas autorisé à utiliser les noms ou les marques d'IBM ou de ses fournisseurs ou distributeurs dans le cadre de la commercialisation de son Application sans autorisation écrite préalable de leur part ;
-9) IBM, ses fournisseurs et ses distributeurs fournissent lesdits Logiciels Redistribuables ainsi que leur documentation sans obligation de support. Ces éléments sont fournis "EN L'ÉTAT", SANS GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, Y COMPRIS TOUTE GARANTIE DE TITRE, DE NON-CONTREFAÇON OU DE NON-INTERFÉRENCE, AINSI QUE LES GARANTIES IMPLICITES EN MATIÈRE DE VALEUR MARCHANDE ET D'APTITUDE À UNE UTILISATION PARTICULIÈRE ;
-10) Il est de la responsabilité du Détenteur de la Licence d'assurer l'assistance technique de son Application et de toute modification apportée aux Logiciels Redistribuables ; et
-11) Dans le Contrat de licence avec l'utilisateur final de son Application, le Détenteur de la Licence doit avertir celui-ci que les Logiciels Redistribuables ou leurs modifications ne peuvent pas être i) utilisés à d'autres fins que l'activation de son Application, ii) copiés (sauf à des fins de sauvegarde), iii) distribués ou transférés à d'autres personnes sans son Application, ni iv) désassemblés, décompilés ou traduits de quelque façon que ce soit sauf si autorisé par la loi et en l'absence de disposition légale contraire possible. En outre, le Contrat de licence du Détenteur de la Licence doit être au moins aussi protecteur d'IBM que les dispositions du présent Contrat.
-
 Composants Source, Échantillons et Exemples
 
-Le Logiciel peut contenir des composants inclus sous la forme de code source ("Composants Source") ainsi que d'autres éléments appelés Échantillons et Exemples. Le Détenteur de la Licence est autorisé à copier et modifier les Composants Source ainsi que les Échantillons et Exemples à des fins internes, sous réserve que ladite utilisation reste dans les limites des droits de licence concédés au titre du présent Contrat et ce, à condition que le Détenteur de la Licence ne modifie ni ne supprime les mentions de droits d'auteur ou les Fichiers Notices contenus dans les Composants Source ou les Échantillons et Exemples. IBM fournit les Composants Source ainsi que les Échantillons et Exemples sans obligation de support. Ces Composants Source, Échantillons et Exemples sont fournis "EN L'ÉTAT", SANS GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, Y COMPRIS TOUTE GARANTIE DE TITRE, DE NON-CONTREFAÇON OU DE NON-INTERFÉRENCE, AINSI QUE LES GARANTIES IMPLICITES EN MATIÈRE DE VALEUR MARCHANDE ET D'APTITUDE À UNE UTILISATION PARTICULIÈRE.
+Le Logiciel contient des composants sous forme de code source ("Composants Source") ou d'autres éléments appelés Échantillons et Exemples, voire les deux. Le Détenteur de la Licence est autorisé à copier et à modifier les Composants Source ainsi que les Échantillons et Exemples à des fins internes dans les limites des droits de licence concédés au titre du présent Contrat ; et ce, à condition que le Détenteur de la Licence ne modifie ni ne supprime les mentions de droits d'auteur ou les Fichiers Notices contenus dans les Composants Source ou les Échantillons et Exemples. IBM fournit les Composants Source ainsi que les Échantillons et Exemples sans obligation de support. Ces Composants Source, Échantillons et Exemples sont fournis "EN L'ÉTAT", SANS GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, Y COMPRIS TOUTE GARANTIE DE TITRE, DE NON-CONTREFAÇON OU DE NON-INTERFÉRENCE, AINSI QUE LES GARANTIES IMPLICITES EN MATIÈRE DE VALEUR MARCHANDE ET D'APTITUDE À UNE UTILISATION PARTICULIÈRE.
 
-Le Détenteur de la Licence peut distribuer des versions modifiées des Composants Source, Échantillons et Exemples répertoriés dans le fichier REDIST d'un Logiciel, sous réserve que lesdites modifications aient été effectuées conformément aux dispositions de la présente licence et aux instructions du fichier REDIST.
+Dispositions relatives à Microsoft Visual Studio
 
-Dispositions pour Microsoft Visual Studio
-
-Le Logiciel peut contenir le code du kit de développement de Microsoft Visual Studio. Le Détenteur de la Licence n'est pas autorisé à utiliser ledit code pour développer des extensions vers Microsoft Visual Studio.
-
-Restrictions à l'exportation et à l'importation
-
-Le Logiciel peut contenir une cryptographie. L'utilisation du Logiciel par, ou son transfert à, des utilisateurs d'autres pays peut être interdit ou soumis à des lois, réglementations ou politiques en matière d'exportation ou d'importation, y compris les lois sur l'exportation et l'importation du Ministère du Commerce américain (U.S. Export Administration Regulations). Le Détenteur de la Licence s'engage formellement à respecter l'ensemble des lois, réglementations et politiques en vigueur relatives à l'importation, l'exportation ou l'utilisation du Logiciel, y compris, mais de façon non limitative, les restrictions en vigueur aux Etats-Unis relatives aux exportations et aux réexportations. La classification d'exportation de ce Logiciel est disponible à l'adresse suivante : https://www.ibm.com/products/exporting/.
+Le Logiciel comprend du code de logiciel SDK Microsoft Visual Studio. Le Détenteur de la Licence n'est pas autorisé à utiliser ce code pour développer des extensions vers Microsoft Visual Studio.
 
 En plus des dispositions ci-dessus, les dispositions suivantes s'appliquent à l'utilisation du Logiciel par le Détenteur de la Licence.
 
@@ -76,9 +57,9 @@ Si le Logiciel comprend des Logiciels Redistribuables, ceux-ci seront identifié
 
 11. Dans le Contrat de licence avec l'utilisateur final de son Application, le Détenteur de la Licence doit avertir celui-ci que les Logiciels Redistribuables ou leurs modifications ne peuvent pas être i) utilisés à d'autres fins que l'activation de son Application, ii) copiés (sauf à des fins de sauvegarde), iii) distribués ou transférés à d'autres personnes sans son Application, ni iv) désassemblés, décompilés ou traduits de quelque façon que ce soit sauf si autorisé par la loi et en l'absence de disposition légale contraire possible. En outre, le Contrat de licence du Détenteur de la Licence doit être au moins aussi protecteur d'IBM que les dispositions du présent Contrat.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Conditions Internationales d'Utilisation des Logiciels non garantis

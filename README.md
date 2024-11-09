@@ -3,7 +3,7 @@
 
 pyspssio is a python package for reading and writing SPSS (.sav and .zsav) files to/from pandas dataframes.
 
-This package uses the I/O Module for SPSS Statistics v27 available at https://www.ibm.com/.
+This package uses the I/O Module for SPSS Statistics v29 available at https://www.ibm.com/.
 
 **WARNING**: This is an early release with limited testing. Use with caution.
 

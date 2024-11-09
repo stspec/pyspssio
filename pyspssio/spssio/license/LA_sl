@@ -3,46 +3,27 @@ PODATKI O LICENCIRANJU
 Spodaj navedeni programi so licencirani na podlagi naslednjih določb in pogojev licenčne informacije, ki veljajo poleg pogojev licence za program, s katerimi naročnik in IBM predhodno soglašata. Če naročnik predhodno ne soglaša s pogoji, ki veljajo za program, velja Mednarodna licenčna pogodba za programe brez garancije (Z125-5589-05).
 
 Ime programa (Številka programa):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Za uporabo programa s strani imetnika licence veljajo naslednji standardni pogoji.
+
+Omejena pravica do uporabe
+
+Z izjemo paketnih programov lahko imetnik licence uporablja vso IBM-ovo programsko opremo, ki je zagotovljena s programom, samo za podporo pri uporabi glavnega programa na podlagi tega dokumenta z informacijami o licenciranju, kar pomeni, da mora biti takšna uporaba neposredno povezana z licencirano uporabo glavnega programa.
+
+Imetnik licence ne sme uporabljati programa za nudenje komercialnih storitev informacijske tehnologije nobeni tretji osebi, za nudenje komercialnega gostovanja ali dodeljevanja časa oziroma za podlicenciranje programa ali njegovo dajanje v najem ali zakup.
 
 Prepovedana uporaba
 
 Imetnik licence ne sme uporabljati programa ali za njegovo uporabo pooblastiti drugih uporabnikov, če lahko napaka programa povzroči smrt, telesne poškodbe ali škodo na lastnini ali v okolju.
 
-Orodje za razvoj
-
-Ta program je oblikovan kot pomoč pri razvijanju aplikacij in sistemov programske opreme. Imetnik licence je izključno odgovoren za aplikacije in sisteme, ki jih razvije s pomočjo tega programa, in prevzema vse tveganje in odgovornosti zanje.
-
-Enote, ki jih je mogoče redistribuirati
-
-Če vključuje program komponente, ki jih je mogoče redistribuirati, bodo določene v datoteki REDIST, ki spremlja program. Poleg licenčnih pravic, ki so dodeljene v pogodbi, lahko imetnik licence distribuira enote, ki jih je mogoče redistribuirati, v skladu z naslednjimi določbami:
-1) Redistribucija mora biti ponujena v obliki objektne kode in mora upoštevati vse smernice, navodila in specifikacije iz datoteke REDIST ali dokumentacije programa;
-2) Če spremljajoča dokumentacija programa imetniku licence izrecno dovoljuje spreminjanje enot, ki jih je mogoče redistribuirati, morajo takšni popravki upoštevati vse smernice, navodila in specifikacije v tej dokumentaciji, in ti popravki (če obstajajo) morajo biti obravnavani kot enote, ki jih je mogoče redistribuirati;
-3) Imetnik licence lahko distribuira enote, ki jih je mogoče redistribuirati, samo kot del svoje aplikacije, ki je bila razvita s pomočjo programa ("aplikacija imetnika licence"), in samo za nudenje podpore strankam imetnika licence v povezavi z njihovo uporabo aplikacije imetnika licence. Aplikacija imetnika licence mora predstavljati pomembno dodatno vrednost, tako da enote, ki jih je mogoče redistribuirati, ne predstavljajo glavnega motiva, zaradi katerega bi končni uporabniki pridobili izdelek programske opreme imetnika licence;
-4) Če vključujejo enote, ki jih je mogoče redistribuirati, izvajalno okolje Java, mora imetnik licence s svojo aplikacijo vključiti tudi druge nejavanska enote, ki jih je mogoče redistribuirati, razen če je aplikacija oblikovana tako, da se izvaja samo na splošnih računalniških napravah (to so prenosniki, namizni računalniki in strežniki) in ne na ročnih ali drugih prodornih napravah (to so naprave, ki vsebujejo mikroprocesor, vendar računalništvo ni njihov glavni namen);
-5) Imetnik licence ne sme odstraniti nobenih datotek z avtorskimi pravicami ali obvestili, vsebovanimi v enotah, ki jih je mogoče redistribuirati;
-6) Imetnik licence mora zavarovati IBM, njegove dobavitelje ali distributerje pred kakršnimikoli zahtevki, vloženimi zaradi uporabe ali distribucije aplikacije imetnika licence;
-7) Imetnik licence ne sme uporabiti enakega imena poti kot izvirne datotek/moduli enot, ki jih je mogoče redistribuirati;
-8) Imetnik licence ne sme uporabljati imen ali blagovnih znamk IBM-a, njegovih dobaviteljev ali distributerjev v povezavi s trženjem svoje aplikacije, ne da bi pred tem pridobil pisno soglasje IBM-a, tega dobavitelja ali distributerja;
-9) IBM, njegovi dobavitelji in distributerji nudijo enote, ki jih je mogoče redistribuirati, in povezano dokumentacijo, brez obveze za nudenje podpore in "TAKŠNE, KAKŠRNI SO", BREZ GARANCIJ KAKRŠNEKOLI VRSTE, PA NAJ BODO IZRECNE ALI NAKAZANE, KAR VKLJUČUJE TUDI GARANCIJO NASLOVA, NEKRŠENJA ALI NEOVIRANJA, IN NAKAZANE GARANCIJE IN POGOJE TRŽNOSTI IN UPORABNOSTI ZA DOLOČEN NAMEN;
-10) Imetnik licence je odgovoren za vso tehnično podporo za aplikacijo imetnika licence in za kakršnekoli popravke v enotah, ki jih je mogoče redistribuirati; in
-11) Imetnik licence mora v licenčni pogodbi, ki jo sklene s končnim uporabnikom aplikacije, končnega uporabnika obvestiti, da enot, ki jih je mogoče redistribuirati, ali njihovih popravkov, ni dovoljeno i) uporabljati za noben drug namen, razen za omogočenje aplikacije imetnika licence, ii) kopirati (razen za namene varnostnega kopiranja), iii) nadalje distribuirati ali prenesti brez aplikacije imetnika licence ali iv) vzvratno sestaviti, vzvratno prevesti ali kako drugače prevesti, razen če to izrecno dopušča zakon in brez možnosti pogodbene odpovedi. Poleg tega mora biti licenčna pogodba imetnika licence vsaj v tolikšni meri ščititi IBM kot določbe te pogodbe.
-
 Izvorne komponente in vzorčno gradivo
 
-Program lahko vključuje nekatere komponente v obliki izvorne kode ("izvorne komponente") in drugo gradivo, imenovano "vzorčno gradivo". Imetnik licence lahko kopira in spreminja izvorne komponente ter vzorčno gradivo za notranjo uporabo samo v primeru, da je takšna uporaba v okviru licenčnih pravic, določenih v tej pogodbi, vendar imetnik licence ne sme spreminjati ali brisati kakršnihkoli informacij o avtorstvu ali obvestil v izvornih komponentah ali vzorčnem gradivu. IBM ponuja izvorne komponente in vzorčno gradivo brez obveznosti za podporo in "TAKŠNO, KAKRŠNO JE", BREZ GARANCIJ KAKRŠNEKOLI VRSTE, PA NAJ BODO IZRECNE ALI NAKAZANE, KAR VKLJUČUJE TUDI GARANCIJO ZA NASLOV, NEKRŠENJE ALI NEOVIRANJE IN ZAKONSKE GARANCIJE IN POGOJE ZA PRODAJNOST IN PRIMERNOST ZA DOLOČEN NAMEN.
+Program vključuje komponente v obliki izvorne kode ("izvorne komponente") ali drugo gradivo, ki je določeno kot vzorčno gradivo, ali oboje. Imetnik licence lahko prekopira in spremeni izvorne komponente ter vzorčno gradivo za notranjo uporabo, vendar samo znotraj omejitev licenčnih pravic, ki izhajajo iz te pogodbe, in pod pogojem, da ne spremeni ali izbriše nobenih informacij o avtorskih pravicah ali obvestil, vsebovanih v izvornih komponentah ali vzorčnem gradivu. IBM ponuja izvorne komponente in vzorčno gradivo brez obveznosti za podporo in "TAKŠNO, KAKRŠNO JE", BREZ JAMSTEV KAKRŠNEKOLI VRSTE, PA NAJ BODO IZRECNA ALI ZAKONSKA, KAR VKLJUČUJE TUDI JAMSTVO PRAVNEGA NASLOVA, NEKRŠENJA ALI NEOVIRANJA IN ZAKONSKA JAMSTVA IN POGOJE ZA PRODAJNOST IN PRIMERNOST ZA DOLOČEN NAMEN.
 
-Za izvorne komponente in vzorčno gradivo, navedeno v datoteki REDIST programa, lahko imetnik licence redistribuira spremenjene različice teh izvornih komponent ali vzorčnega gradiva v skladu z določbami te licence in katerihkoli navodil iz datoteke REDIST.
+Pogoji za Microsoft Visual Studio
 
-Določbe za Microsoft Visual Studio
-
-Program lahko vsebuje kodo Microsoft Visual Studio SDK. Imetnik licence ne sme uporabiti te kode za razvoj razširitev za Microsoft Visual Studio.
-
-Izvozne in uvozne omejitve
-
-Ta program lahko vsebuje kodirano pisavo. Prenos ali uporaba programa sta lahko prepovedana ali pa sta predmet izvoznih ali uvoznih zakonov, predpisov ali načel, vključno z izvoznimi predpisi ameriške administracije. Imetnik licence prevzema vso odgovornost za podrejanje vsem ustreznim zakonom, predpisom in načelom v zvezi z izvažanjem, uvažanjem ali uporabo tega programa, kar vključuje tudi (vendar ni omejeno na) omejitve izvažanja ali vnovičnega izvažanja Združenih držav Amerike. Za pridobitev izvozne klasifikacije za ta program pojdite na spletno stran https://www.ibm.com/products/exporting/.
+Program vključuje kodo SDK za Microsoft Visual Studio SDK. Imetnik licence ne sme uporabiti te kode za razvoj razširitev za Microsoft Visual Studio.
 
 Za uporabo programa s strani imetnike licence poleg zgoraj navedenih pogojev veljajo tudi naslednji pogoji.
 
@@ -76,9 +57,9 @@ Enote, ki jih je mogoče redistribuirati
 
 11. Imetnik licence mora v licenčni pogodbi, ki jo sklene s končnim uporabnikom aplikacije, končnega uporabnika obvestiti, da enot, ki jih je mogoče redistribuirati, ali njihovih popravkov, ni dovoljeno i) uporabljati za noben drug namen, razen za omogočenje aplikacije imetnika licence, ii) kopirati (razen za namene varnostnega kopiranja), iii) nadalje distribuirati ali prenesti brez aplikacije imetnika licence ali iv) vzvratno sestaviti, vzvratno prevesti ali kako drugače prevesti, razen če to izrecno dopušča zakon in brez možnosti pogodbene odpovedi. Poleg tega mora licenčna pogodba imetnika licence vsaj v tolikšni meri varovati IBM kot določbe te pogodbe.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Mednarodna licenčna pogodba za programe brez garancije

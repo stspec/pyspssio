@@ -3,46 +3,27 @@ INFORMASI LISENSI
 Program-program yang tercantum di bawah ini dilisensikan dengan syarat dan ketentuan Informasi Lisensi berikut ini selain syarat lisensi Program yang sebelumnya telah disetujui oleh Klien dan IBM. Apabila Klien sebelumnya tidak menyetujui syarat lisensi yang berlaku untuk Program, Perjanjian Lisensi Internasional untuk Program Tanpa Garansi (Z125-5589-05) akan berlaku.
 
 Nama Program (Nomor Program):
-IBM I/O Modules for IBM SPSS Statistics Data Files 27.0 (Tool)
+IBM I/O Modules for IBM SPSS Statistics Data Files 28.0.1.0 (Tool)
 
 Syarat-syarat standar berikut ini berlaku untuk penggunaan Program oleh Pemegang Lisensi.
+
+Hak penggunaan terbatas
+
+Dengan pengecualian Program Bundel, semua perangkat lunak IBM yang disediakan kepada Pemegang Lisensi dengan Program hanya dapat digunakan untuk mendukung penggunaan Program Utama oleh Pemegang Lisensi berdasarkan dokumen Informasi Lisensi ini, yang berarti penggunaan tersebut harus berkaitan secara langsung dengan penggunaan Program Utama berlisensi.
+
+Pemegang Lisensi tidak berhak untuk menggunakan Program guna memberikan layanan TI komersial kepada pihak ketiga mana pun, memberikan hosting komersial atau berbagi waktu, atau mensublisensikan, menyewakan, atau menyewagunakan Program.
 
 Penggunaan yang Dilarang
 
 Pemegang Lisensi tidak dapat menggunakan atau memberi wewenang kepada pihak lain untuk menggunakan Program apabila kegagalan Program dapat menyebabkan kematian, cedera fisik, atau kerusakan properti atau lingkungan.
 
-Perangkat Pengembangan
-
-Program ini didesain untuk membantu dalam pengembangan aplikasi-aplikasi dan sistem-sistem perangkat lunak. Pemegang Lisensi hanya bertanggung jawab atas aplikasi-aplikasi dan sistem-sistem yang dikembangkannya dengan menggunakan Program ini serta menerima semua risiko dan tanggung jawab atas Program tersebut.
-
-Perangkat Lunak yang Dapat Didistribusikan
-
-Apabila Program termasuk komponen-komponen yang Dapat Didistribusikan, komponen-komponen tersebut akan diidentifikasi dalam file REDIST yang menyertai Program. Selain hak-hak lisensi yang diberikan dalam Perjanjian, Pemegang Lisensi dapat mendistribusikan Perangkat Lunak yang Dapat Didistribusikan dengan tunduk kepada syarat-syarat berikut ini:
-1) Pendistribusian kembali harus dalam bentuk kode objek saja dan harus mentaati semua arahan, instruksi, dan spesifikasi dalam REDIST atau dokumentasi yang menyertai Program;
-2) Apabila dokumentasi yang menyertai Program secara tegas memperbolehkan Pemegang Lisensi untuk memodifikasi Perangkat Lunak yang Dapat Didistribusikan, modifikasi tersebut harus mentaati semua arahan, instruksi, dan spesifikasi dalam dokumentasi tersebut dan modifikasi-modifikasi ini, apabila ada, harus diperlakukan sebagai Perangkat Lunak yang Dapat Didistribusikan;
-3) Perangkat Lunak yang Dapat Didistribusikan dapat didistribusikan hanya sebagai bagian dari aplikasi Pemegang Lisensi yang telah dikembangkan dengan menggunakan Program ("Aplikasi Pemegang Lisensi") dan hanya untuk mendukung para konsumen Pemegang Lisensi yang berkaitan dengan penggunaan mereka atas Aplikasi Pemegang Lisensi. Aplikasi Pemegang Lisensi harus merupakan tambahan nilai yang signifikan sehingga Perangkat Lunak yang Dapat Didistribusikan bukanlah merupakan motivasi penting untuk akuisisi atas produk perangkat lunak Pemegang Lisensi oleh para pengguna akhir;
-4) Apabila Perangkat Lunak yang Dapat Distribusikan termasuk Java Runtime Environment, Pemegang Lisensi juga harus memasukkan Perangkat Lunak non-Java yang Dapat Didistribusikan lainnya dengan Aplikasi Pemegang Lisensi, kecuali apabila Aplikasi didesain untuk menjalankan hanya pada alat-alat komputer biasa (sebagai contoh: laptop, destop, dan server) dan tidak pada produk genggam atau alat-alat yang tersebar lainnya (sebagai contoh: alat-alat yang berisi mikroprosesor tetapi tidak memiliki kemampuan komputerisasi sebagai tujuan utama mereka);
-5) Pemegang Lisensi tidak dapat menghapus file atau pemberitahuan tentang hak cipta yang terdapat dalam Perangkat Lunak yang Dapat Didistribusikan;
-6) Pemegang Lisensi harus membebaskan IBM, para pemasok atau distributornya dari dan atas setiap tuntutan yang timbul dari penggunaan atau distribusi Aplikasi Pemegang Lisensi;
-7) Pemegang Lisensi tidak dapat menggunakan nama jalur yang sama dengan file-file/modul-modul Perangkat Lunak yang Dapat Didistribusikan yang asli;
-8) Pemegang Lisensi tidak dapat menggunakan nama-nama atau merek-merek dagang IBM, para pemasok atau distributornya yang terkait dengan pemasaran Aplikasi Pemegang Lisensi tanpa adanya persetujuan tertulis sebelumnya dari IBM atau pemasok atau distributornya tersebut;
-9) IBM serta para pemasok dan distributornya memberikan Perangkat Lunak yang Dapat Didistribusikan dan dokumentasi terkait tanpa adanya kewajiban dukungan dan "APA ADANYA", TANPA GARANSI APA PUN, SECARA TEGAS ATAU TERSIRAT, TERMASUK GARANSI KEPEMILIKAN, JAMINAN TIDAK ADANYA PELANGGARAN ATAU CAMPUR TANGAN SERTA JAMINAN DAN KETENTUAN SECARA TERSIRAT TENTANG KELAYAKAN UNTUK DIPERJUALBELIKAN DAN KESESUAIAN UNTUK TUJUAN TERTENTU.;
-10) Pemegang Lisensi bertanggung jawab atas semua bantuan teknis untuk Aplikasi Pemegang Lisensi dan setiap modifikasi terhadap Perangkat Lunak yang Dapat Didistribusikan; dan
-11) Perjanjian lisensi Pemegang Lisensi dengan pengguna akhir Aplikasi Pemegang Lisensi harus memberitahu pengguna akhir bahwa Perangkat Lunak yang Dapat Didistribusikan atau modifikasi-modifikasinya tidak dapat i) digunakan untuk tujuan selain untuk memungkinkan Aplikasi Pemegang Lisensi, ii) disalin (kecuali untuk tujuan cadangan), iii) selanjutnya didistribusikan atau ditransfer tanpa Aplikasi Pemegang Lisensi atau iv) dirakit kembali, disusun kembali, atau dengan cara lain, diterjemahkan kecuali apabila diizinkan secara khusus oleh undang-undang dan tanpa adanya pelepasan kontrak. Selanjutnya, perjanjian lisensi Pemegang Lisensi harus setidaknya bersifat melindungi IBM sama seperti syarat-syarat Perjanjian ini.
-
 Komponen Sumber dan Material Contoh
 
-Program dapat mencakup beberapa komponen dalam bentuk kode sumber ("Komponen Sumber") dan beberapa material lain yang dikenal sebagai Material Contoh. Pemegang Lisensi dapat menyalin dan memodifikasi Komponen-komponen Sumber dan Material Contoh untuk penggunaan internal hanya dengan ketentuan bahwa penggunaan tersebut dalam batas-batas hak lisensi berdasarkan Perjanjian ini, akan tetapi dengan ketentuan bahwa Pemegang Lisensi tidak dapat mengubah atau menghapus setiap informasi atau pemberitahuan tentang hak cipta yang terdapat dalam Komponen-komponen Sumber atau Material Contoh.  IBM memberikan Komponen-komponen Sumber dan Material Sampel tanpa adanya kewajiban dukungan dan "APA ADANYA", TANPA GARANSI APA PUN, SECARA TEGAS ATAU TERSIRAT, TERMASUK GARANSI KEPEMILIKAN, JAMINAN TIDAK ADANYA PELANGGARAN ATAU CAMPUR TANGAN SERTA JAMINAN DAN KETENTUAN SECARA TERSIRAT TENTANG KELAYAKAN UNTUK DIPERJUALBELIKAN DAN KESESUAIAN UNTUK TUJUAN TERTENTU.
+Program mencakup komponen-komponen dalam bentuk kode sumber ("Komponen Sumber"), atau material lain yang dikenal sebagai Material Contoh atau keduanya. Pemegang Lisensi dapat menyalin dan memodifikasi Komponen Sumber dan Material Contoh untuk penggunaan internal saja dalam batas hak lisensi berdasarkan Perjanjian ini; namun, dengan ketentuan bahwa Pemegang Lisensi tidak boleh mengubah atau menghapus informasi hak cipta atau pemberitahuan apa pun yang terdapat dalam Komponen Sumber atau Material Contoh. IBM memberikan Komponen-komponen Sumber dan Material Contoh tanpa adanya kewajiban dukungan dan "SEBAGAIMANA ADANYA", TANPA GARANSI APA PUN, SECARA TEGAS ATAU TERSIRAT, TERMASUK GARANSI KEPEMILIKAN, JAMINAN TIDAK ADANYA PELANGGARAN ATAU CAMPUR TANGAN SERTA JAMINAN DAN KETENTUAN SECARA TERSIRAT TENTANG KELAYAKAN UNTUK DIPERJUALBELIKAN DAN KESESUAIAN UNTUK TUJUAN TERTENTU.
 
-Untuk Komponen-komponen Sumber yang tercantum dalam file REDIST dari sebuah Program, Pemegang Lisensi dapat mendistribusikan kembali versi-versi yang telah dimodifikasi dari Komponen-komponen Sumber tersebut sesuai dengan syarat-syarat lisensi ini dan setiap instruksi dalam file REDIST.
+Syarat-Syarat untuk Microsoft Visual Studio
 
-Syarat untuk Microsoft Visual Studio
-
-Program dapat berisi kode Microsoft Visual Studio SDK. Pemegang Lisensi tidak diizinkan untuk menggunakan kode tersebut untuk mengembangkan ekstensi-ekstensi Microsoft Visual Studio.
-
-Pembatasan Ekspor dan Impor
-
-Program ini dapat berisi kriptografi. Transfer ke, atau penggunaan oleh, para pengguna Program dapat dilarang atau tunduk kepada undang-undang, peraturan atau kebijakan ekspor atau impor, termasuk undang-undang, peraturan atau kebijakan ekspor dan impor Peraturan Administrasi Ekspor Amerika Serikat (United States Export Administration Regulations). Pemegang Lisensi menerima semua tanggung jawab untuk mematuhi semua undang-undang, peraturan, dan kebijakan yang berlaku terkait dengan ekspor, impor atau penggunaan Program ini, termasuk tetapi tidak terbatas pada, pembatasan-pembatasan tentang ekspor dan ekspor ulang di A.S. Untuk mendapatkan klasifikasi ekspor dari Program ini, lihat: https://www.ibm.com/products/exporting/.
+Program mencakup SDK kode Microsoft Visual Studio. Pemegang Lisensi tidak diizinkan untuk menggunakan kode tersebut untuk mengembangkan ekstensi-ekstensi Microsoft Visual Studio.
 
 Selain hal-hal di atas, syarat-syarat berikut ini berlaku untuk penggunaan Program oleh Pemegang Lisensi.
 
@@ -63,9 +44,9 @@ Apabila Program termasuk komponen-komponen yang Dapat Didistribusikan Kembali, k
 10) Pemegang Lisensi bertanggung jawab atas semua bantuan teknis untuk Aplikasi Pemegang Lisensi dan modifikasi-modifikasi apa pun terhadap Perangkat Lunak yang Dapat Didistribusikan Kembali; dan
 11) Perjanjian lisensi Pemegang Lisensi dengan pengguna akhir Aplikasi Pemegang Lisensi harus memberitahu pengguna akhir bahwa Perangkat Lunak yang Dapat Didistribusikan Kembali atau modifikasi-modifikasi dari perangkat-perangkat lunak tersebut tidak dapat i) digunakan untuk tujuan apa pun selain untuk memungkinkan Aplikasi Pemegang Lisensi, ii) disalin (kecuali untuk tujuan-tujuan cadangan), iii) selanjutnya didistribusikan atau ditransfer tanpa Aplikasi Pemegang Lisensi atau iv) dirakit kembali, disusun kembali atau dengan cara lain, diterjemahkan kecuali sebagaimana diizinkan secara khusus oleh undang-undang dan tanpa adanya kemungkinan pengabaian kontrak. Selanjutnya, perjanjian lisensi Pemegang Lisensi harus setidaknya bersifat melindungi IBM sebagaimana syarat-syarat Perjanjian ini.
 
-L/N:  L-CZAA-BKKMWM
-D/N:  L-CZAA-BKKMWM
-P/N:  L-CZAA-BKKMWM
+L/N:  L-LLFN-C5TDE9
+D/N:  L-LLFN-C5TDE9
+P/N:  L-LLFN-C5TDE9
 
 
 Perjanjian Lisensi Internasional untuk Program Tanpa Garansi
