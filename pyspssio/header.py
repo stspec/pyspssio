@@ -82,13 +82,14 @@ class Header(SPSSFile):
             retcode = func(self.fh, attr_names, attr_text, num_attributes)
             warn_or_raise(retcode, func)
 
+            # decode before freeing to avoid use-after-free on Linux
+            names = [x.decode(self.encoding) for x in attr_names[0]]
+            texts = [x.decode(self.encoding) for x in attr_text[0]]
+
             # clean
             self.spssio.spssFreeAttributes(attr_names, attr_text, num_attributes)
 
-            attr_names = (x.decode(self.encoding) for x in attr_names[0])
-            attr_text = (x.decode(self.encoding) for x in attr_text[0])
-
-            return dict(zip(attr_names, attr_text))
+            return dict(zip(names, texts))
 
     @file_attributes.setter
     def file_attributes(self, attributes: dict) -> None:
@@ -1069,14 +1070,15 @@ class Header(SPSSFile):
             )
             warn_or_raise(retcode, func)
 
+            # decode before freeing to avoid use-after-free on Linux
+            names = [x.decode(self.encoding) for x in attr_names[0]]
+            texts = [x.decode(self.encoding) for x in attr_text[0]]
+
             # clean
             retcode = clean(attr_names, attr_text, num_attributes)
             warn_or_raise(retcode, clean)
 
-            attr_names = (x.decode(self.encoding) for x in attr_names[0])
-            attr_text = (x.decode(self.encoding) for x in attr_text[0])
-
-            return dict(zip(attr_names, attr_text))
+            return dict(zip(names, texts))
 
     @property
     def var_attributes(self) -> dict:
