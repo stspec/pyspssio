@@ -1,6 +1,53 @@
 [build-system]
-# Minimum requirements for the build system to execute.
 requires = [
-    "setuptools>=51.0.0",
-    "wheel"
+    "setuptools>=61.2",
+    "wheel",
+    "versioneer[toml]"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspssio"
+description = "Read and write SPSS (.sav and .zsav) files to/from pandas dataframes"
+authors = [{name = "Steven Spector", email = "stspec.dev@gmail.com"}]
+license = {text = "MIT"}
+requires-python = ">=3.6"
+dependencies = [
+    "pandas",
+    "psutil",
+]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/stspec/pyspssio"
+Documentation = "https://pyspssio.readthedocs.io"
+
+[project.scripts]
+pyspssio = "pyspssio.command_line:main"
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "pyspssio/_version.py"
+versionfile_build = "pyspssio/_version.py"
+tag_prefix = "v"
+parentdir_prefix = "pyspssio-"
+
+[tool.setuptools]
+packages = ["pyspssio"]
+include-package-data = true
+license-files = ["LICENSE.txt"]
+
+[tool.setuptools.package-data]
+pyspssio = [
+    "spssio/document/*",
+    "spssio/include/*",
+    "spssio/license/*",
+    "spssio/win64/*.*",
+    "spssio/macos/*.*",
+    "spssio/lin64/*.*",
 ]

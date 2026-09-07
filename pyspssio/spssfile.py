@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
@@ -14,61 +13,68 @@
 # =============================================================================
 
 
-import os
-import re
-import platform
-import warnings
+import ctypes
 import locale as lc
+import os
+import platform
+import sys
+import threading
+import warnings
+from ctypes import (
+    POINTER,
+    byref,
+    c_char_p,
+    c_double,
+    c_int,
+    c_long,
+    create_string_buffer,
+)
+from pathlib import Path
 
-from ctypes import *
-
-from .errors import warn_or_raise
 from . import config
 from .constants import SPSS_MAX_ENCODING
+from .errors import warn_or_raise
 
 
-class SPSSFile(object):
+class SPSSFile:
     """Base class for opening and closing SPSS files"""
 
-    def __init__(self, spss_file: str, mode: str = "rb", unicode: bool = True, locale: str = None):
+    _runtime_lock = threading.Lock()
+    _runtime_initialized = False
+    _library_handles = {}
+    _library_links = []
+    _spssio = None
+
+    def __init__(
+        self, spss_file: str, mode: str = "rb", unicode: bool = True, locale: str = None
+    ):
         if config.spssio_module is None:
             raise ValueError(
                 "Missing spssio module. Set location of module by changing pyspssio.config.spssio_module = path/to/module.ext"
             )
 
+        # initialize SPSS I/O binaries
+        self._ensure_runtime_initialized()
+        self.spssio = self._spssio
+
         # basic settings
         self.filename = spss_file
         self.mode = mode[0] + "b"  # always open/close in byte mode
 
-        # load I/O module
-        pf = platform.system().lower()
-
-        if pf.startswith("win"):
-            loader = WinDLL
-            lib_pat = r".*\.dll.*"
-        elif pf.startswith("darwin"):
-            loader = CDLL
-            lib_pat = r".*\.dylib.*"
-        else:
-            loader = CDLL
-            lib_pat = r".*\.so.*"
-
-        path = os.path.dirname(config.spssio_module)
-        libs = [os.path.join(path, lib) for lib in sorted(os.listdir(path))]
-        libs = [lib for lib in libs if re.fullmatch(lib_pat, lib, re.I)]
-
-        if pf.startswith("win"):
-            self._load_libs(libs, loader)
-            self.spssio = loader(config.spssio_module)
-        else:
-            self._load_libs(libs, loader)
-            self.spssio = loader(config.spssio_module)
-
         # functions for opening and closing (always open with utf-8 encoded filenames)
         self._modes = {
-            "rb": {"open": self.spssio.spssOpenReadU8, "close": self.spssio.spssCloseRead},
-            "wb": {"open": self.spssio.spssOpenWriteU8, "close": self.spssio.spssCloseWrite},
-            "ab": {"open": self.spssio.spssOpenAppendU8, "close": self.spssio.spssCloseAppend},
+            "rb": {
+                "open": self.spssio.spssOpenReadU8,
+                "close": self.spssio.spssCloseRead,
+            },
+            "wb": {
+                "open": self.spssio.spssOpenWriteU8,
+                "close": self.spssio.spssCloseWrite,
+            },
+            "ab": {
+                "open": self.spssio.spssOpenAppendU8,
+                "close": self.spssio.spssCloseAppend,
+            },
         }
 
         # get current locale information and set initial encoding
@@ -110,7 +116,10 @@ class SPSSFile(object):
         # test encoding compatibility
         compatible = self.is_compatible_encoding
         if not compatible:
-            UnicodeWarning("File encoding may not be compatible with SPSS I/O interface encoding")
+            warnings.warn(
+                "File encoding may not be compatible with SPSS I/O interface encoding",
+                UnicodeWarning,
+            )
 
         # system missing value for reference to replace with null types
         self.sysmis = self._host_sysmis_val
@@ -129,31 +138,125 @@ class SPSSFile(object):
     def __exit__(self, exception_type, exception_value, exception_traceback):
         self._exit_cleanup()
 
-    def _load_libs(self, libs, loader):
-        lib_status = {}
-        lib_errors = {}
+    @classmethod
+    def _ensure_runtime_initialized(cls) -> None:
+        """Ensure the SPSS I/O dynamic libraries are initialized for the current process.
+        Previous behavior reloaded the libraries whenever a new `SPSSFile` class instance was created.
+        """
+
+        if cls._runtime_initialized:
+            return
+
+        with cls._runtime_lock:
+            if cls._runtime_initialized:
+                return
+
+            # get platform-specific dynamic library settings
+            pf = platform.system().lower()
+
+            if pf.startswith("win"):
+                loader = ctypes.WinDLL
+                lib_pat = "*.dll*"
+            elif pf.startswith("darwin"):
+                loader = ctypes.CDLL
+                lib_pat = "*.dylib*"
+            else:
+                loader = ctypes.CDLL
+                lib_pat = "*.so*"
+
+            # resolve dynamic library directory
+            spssio_module = Path(config.spssio_module)
+            library_dir = spssio_module.resolve(strict=True).parent
+
+            # create symbolic links for MacOS workaround
+            if pf.startswith("darwin"):
+                cls._library_links = cls._create_library_symlinks(library_dir, lib_pat)
+
+            # load
+            cls._library_handles = cls._load_libs(library_dir, lib_pat, loader)
+            cls._spssio = cls._library_handles[spssio_module.name]
+
+    @classmethod
+    def _create_library_symlinks(
+        cls, library_dir: str | Path, library_pat: str = "*"
+    ) -> list:
+        """Generate symbolic links in the Python executable to the SPSS I/O dynamic libraries.
+
+        The dynamic libraries for MacOS sometimes reference each other using `@executable_path`,
+        which can cause issues in vitural environments. Ideally, the libraries should probably be using
+        `@loader_path` instead. To avoid patching the binaries directly with external scripts, this workaround
+        simply creates symbolic links near the real Python executable.
+
+        Note that this workaround is only required for MacOS. Linux and Windows both seems to find the libraries just fine as is.
+        """
+
+        library_dir = Path(library_dir).resolve(strict=True)
+
+        # locate python interpreter's directory
+        real_python_binary = Path(sys.executable).resolve(strict=True)
+
+        # create a "lib" directory relative to python executable if it doesn't exist
+        target_dir = real_python_binary.parent.parent / "lib"
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        # symlink local files into python's expected directory
+        links = []
+
+        for lib_path in library_dir.glob(library_pat):
+            lib_path = lib_path.resolve(strict=True)
+            lib_link = target_dir / lib_path.name
+
+            # check existing symlink
+            if lib_link.is_symlink():
+                # keep current valid symlink
+                if lib_link.resolve(strict=True) == lib_path:
+                    links.append(lib_link)
+                    continue
+                # remove stale or invalid symlink
+                else:
+                    lib_link.unlink()
+
+            # for non-symlink path, do not overwrite
+            elif lib_link.exists():
+                warnings.warn(
+                    f"Cannot create symlink for the following library because conflicting file exists at same path: {lib_link}"
+                )
+
+            # create symlink
+            try:
+                lib_link.symlink_to(lib_path)
+                links.append(lib_link)
+            except OSError:
+                warnings.warn(
+                    f"Failed to create symlink for the following library: {lib_path.name}"
+                )
+
+        return links
+
+    @classmethod
+    def _load_libs(cls, library_dir, library_pat, loader):
+        library_dir = Path(library_dir).resolve()
+        libs = [library_dir / lib for lib in library_dir.glob(library_pat)]
+
+        loaded = {}
+        failed = {}
 
         try_num = 0
-        success = False
 
-        while not success and try_num < len(libs):
+        while try_num < len(libs) and (failed or not loaded):
             for lib in libs:
-                status = True
+                if lib.name in loaded:
+                    continue
                 try:
-                    loader(lib)
-                except Exception as e:
-                    status = False
-                    lib_errors[lib] = e
-                finally:
-                    lib_status[lib] = status
+                    loaded[lib.name] = loader(lib)
+                    if lib.name in failed:
+                        del failed[lib.name]
+                except OSError as e:
+                    failed[lib.name] = e
 
-            success = all(lib_status.values())
             try_num += 1
 
-        return {
-            os.path.basename(lib): (status if status else lib_errors[lib])
-            for lib, status in lib_status.items()
-        }
+        return loaded
 
     @property
     def _low_high_val(self):
@@ -188,7 +291,6 @@ class SPSSFile(object):
         func.argtypes = [c_int]
         retcode = func(c_int(int(unicode)))
         warn_or_raise(retcode, func)
-        return
 
     @property
     def file_encoding(self) -> str:
@@ -211,11 +313,7 @@ class SPSSFile(object):
             return result.decode(self.encoding)
         else:
             warnings.warn(
-                "Failed to set locale to: "
-                + locale
-                + ". "
-                + "Current locale is: "
-                + ".".join(lc.getlocale()),
+                f"Failed to set locale to: {locale}. Current locale is: {'.'.join(lc.getlocale())}",
                 stacklevel=2,
             )
             return ".".join(lc.getlocale())
@@ -318,7 +416,7 @@ class SPSSFile(object):
         func = self.spssio.spssGetReleaseInfo
         retcode = func(self.fh, rel_info_arr)
         warn_or_raise(retcode, func)
-        return dict([(item, rel_info_arr[i]) for i, item in enumerate(fields)])
+        return {item: rel_info_arr[i] for i, item in enumerate(fields)}
 
     @property
     def var_count(self) -> int:

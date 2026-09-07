@@ -126,3 +126,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# uv
+.uv
+.uv/
+uv.lock
+
+# Other
+*.DS_Store
