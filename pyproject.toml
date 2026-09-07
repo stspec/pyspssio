@@ -1,8 +1,8 @@
 [build-system]
 requires = [
-    "setuptools>=61.2",
-    "wheel",
-    "versioneer[toml]"
+    "setuptools>=80",
+    "setuptools-scm[simple]>=9.2",
+    "wheel"
 ]
 build-backend = "setuptools.build_meta"
 
@@ -28,14 +28,6 @@ Documentation = "https://pyspssio.readthedocs.io"
 
 [project.scripts]
 pyspssio = "pyspssio.command_line:main"
-
-[tool.versioneer]
-VCS = "git"
-style = "pep440"
-versionfile_source = "pyspssio/_version.py"
-versionfile_build = "pyspssio/_version.py"
-tag_prefix = "v"
-parentdir_prefix = "pyspssio-"
 
 [tool.setuptools]
 packages = ["pyspssio"]

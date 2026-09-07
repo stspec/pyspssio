@@ -134,3 +134,4 @@ uv.lock
 
 # Other
 *.DS_Store
+.ruff_cache

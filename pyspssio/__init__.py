@@ -16,7 +16,7 @@ import os
 import platform
 import warnings
 
-from . import _version, config
+from . import config
 from .constants import *
 from .errors import SPSSError, SPSSWarning
 from .header import Header
@@ -33,7 +33,12 @@ from .user_functions import read_sav as read_sav
 from .user_functions import write_sav as write_sav
 from .writer import Writer
 
-__version__ = _version.get_versions()["version"]
+try:
+    from importlib.metadata import version
+
+    __version__ = version("pyspssio")
+except ImportError:
+    __version__ = "unknown"
 
 module_path = os.path.dirname(__file__)
 source_root = os.path.dirname(module_path)

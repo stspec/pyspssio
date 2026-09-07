@@ -33,8 +33,13 @@ from pandas.api.types import (
 )
 
 from . import config
-from .constants import *
-from .constants_map import *
+from .constants import (
+    SPSS_MAX_LONGSTRING,
+    SPSS_ORIGIN_OFFSET,
+)
+from .constants_map import (
+    spss_string_formats,
+)
 from .errors import SPSSError, SPSSWarning, warn_or_raise
 from .header import Header, varformat_to_tuple
 
@@ -42,8 +47,17 @@ from .header import Header, varformat_to_tuple
 class Writer(Header):
     """Class for writing SPSS file"""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self,
+        spss_file: str,
+        mode: str = "wb",
+        unicode: bool = True,
+        locale: str | None = None,
+        **kwargs,
+    ):
+        # force write mode
+        mode = "wb"
+        super().__init__(spss_file, mode, unicode, locale, **kwargs)
 
     def _whole_case_out(self, case_record):
         """case_record is a string buffer"""

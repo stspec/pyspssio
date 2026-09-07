@@ -34,17 +34,23 @@ class Reader(Header):
 
     def __init__(
         self,
-        *args,
+        spss_file: str,
+        mode: str = "rb",
+        unicode: bool = True,
+        locale: str | None = None,
+        *,
         row_offset: int = 0,
-        row_limit: int = None,
+        row_limit: int | None = None,
         usecols: list | tuple | str | callable | None = None,
-        chunksize: int = None,
+        chunksize: int | None = None,
         convert_datetimes: bool = True,
         include_user_missing: bool = True,
         string_nan: Any = "",
         **kwargs,
     ):
-        super().__init__(*args, **kwargs)
+        # force read mode
+        mode = "rb"
+        super().__init__(spss_file, mode, unicode, locale, **kwargs)
 
         # adjust usecols
         if usecols is None:

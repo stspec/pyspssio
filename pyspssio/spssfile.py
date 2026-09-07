@@ -46,7 +46,11 @@ class SPSSFile:
     _spssio = None
 
     def __init__(
-        self, spss_file: str, mode: str = "rb", unicode: bool = True, locale: str = None
+        self,
+        spss_file: str,
+        mode: str = "rb",
+        unicode: bool = True,
+        locale: str | None = None,
     ):
         if config.spssio_module is None:
             raise ValueError(

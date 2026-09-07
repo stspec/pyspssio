@@ -40,17 +40,6 @@ from .constants import (
     SPSS_TWO_MISSVAL,
 )
 from .constants_map import (
-    SPSS_EMPTY_VARSETS,
-    SPSS_MAX_SHORTVARNAME,
-    SPSS_MAX_VARLABEL,
-    SPSS_MAX_VARNAME,
-    SPSS_MISS_RANGE,
-    SPSS_MISS_RANGEANDVAL,
-    SPSS_NO_MISSVAL,
-    SPSS_NO_VARSETS,
-    SPSS_ONE_MISSVAL,
-    SPSS_THREE_MISSVAL,
-    SPSS_TWO_MISSVAL,
     alignments,
     alignments_str,
     measure_levels,
@@ -81,9 +70,6 @@ def varformat_to_tuple(varformat):
 
 class Header(SPSSFile):
     """Class for getting and setting metadata attributes"""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
     @property
     def file_attributes(self) -> dict:
