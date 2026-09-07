@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
@@ -13,16 +12,19 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-from typing import Union, Any, Tuple, Generator
+from collections.abc import Generator
+from typing import Any
+
 from pandas import DataFrame
+
 from .reader import Reader
 from .writer import Writer
 
 
 def read_metadata(
     spss_file: str,
-    usecols: Union[list, tuple, str, callable, None] = None,
-    locale: str = None,
+    usecols: list | tuple | str | callable | None = None,
+    locale: str | None = None,
 ) -> dict:
     """Reads metadata attributes from SPSS file
 
@@ -54,14 +56,14 @@ def read_sav(
     spss_file: str,
     row_offset: int = 0,
     row_limit: int = None,
-    usecols: Union[list, tuple, str, callable, None] = None,
+    usecols: list | tuple | str | callable | None = None,
     convert_datetimes: bool = True,
     include_user_missing: bool = True,
     chunksize: int = None,
     locale: str = None,
     string_nan: Any = "",
     data_only: bool = False,
-) -> Union[DataFrame, Tuple[DataFrame, dict], Generator[DataFrame, None, None]]:
+) -> DataFrame | tuple[DataFrame, dict] | Generator[DataFrame, None, None]:
     """Read data and metadata from SPSS file
 
     Parameters
@@ -144,7 +146,6 @@ def read_sav(
             locale=locale,
             string_nan=string_nan,
         ) as sav:
-
             metadata = sav.metadata
             df = sav.read_data(sav.total_rows, convert_datetimes, include_user_missing)
 
@@ -160,7 +161,7 @@ def write_sav(
     metadata: dict = None,
     unicode: bool = True,
     locale: str = None,
-    **kwargs
+    **kwargs,
 ) -> None:
     """Write SPSS file (.sav or .zsav) from DataFrame
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
@@ -13,8 +12,11 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-from .constants import *
-from .constants_map import *
+from .constants_map import (
+    spss_date_formats,
+    spss_datetime_formats,
+    spss_time_formats,
+)
 
 # fmt: off
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
@@ -13,29 +12,30 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-from ctypes import *
-from typing import Union
-from types import SimpleNamespace
-
 import os
 import warnings
-import psutil
+from ctypes import (
+    c_char_p,
+    c_double,
+    c_int,
+)
+from types import SimpleNamespace
+
 import numpy as np
 import pandas as pd
+import psutil
 from pandas import DataFrame
-
 from pandas.api.types import (
-    is_numeric_dtype,
-    is_string_dtype,
-    is_object_dtype,
     is_datetime64_any_dtype,
+    is_object_dtype,
+    is_string_dtype,
     is_timedelta64_dtype,
 )
 
-from .errors import SPSSWarning, SPSSError, warn_or_raise
 from . import config
 from .constants import *
 from .constants_map import *
+from .errors import SPSSError, SPSSWarning, warn_or_raise
 from .header import Header, varformat_to_tuple
 
 
@@ -77,7 +77,9 @@ class Writer(Header):
         retcode = func(self.fh)
         warn_or_raise(retcode, func)
 
-    def write_header(self, df: DataFrame, metadata: Union[dict, SimpleNamespace] = None, **kwargs):
+    def write_header(
+        self, df: DataFrame, metadata: dict | SimpleNamespace = None, **kwargs
+    ):
         """Write metadata properties
 
         Parameters
@@ -91,7 +93,9 @@ class Writer(Header):
             Note that metadata attributes supplied here take precedence.
         """
 
-        compression = {".sav": 1, ".zsav": 2}.get(os.path.splitext(self.filename)[1].lower())
+        compression = {".sav": 1, ".zsav": 2}.get(
+            os.path.splitext(self.filename)[1].lower()
+        )
         self.compression = compression
 
         if metadata is None:
@@ -129,7 +133,11 @@ class Writer(Header):
                 var_type = (
                     df[col]
                     .fillna("")
-                    .apply(lambda x: (x if hasattr(x, "decode") else len(str(x).encode(encoding))))
+                    .apply(
+                        lambda x: (
+                            x if hasattr(x, "decode") else len(str(x).encode(encoding))
+                        )
+                    )
                     .max()
                 )
                 var_type = max(var_type, metadata["var_types"].get(col, 1))
@@ -146,19 +154,25 @@ class Writer(Header):
                 metadata["var_formats"][col] = metadata["var_formats"].get(
                     col, config.default_time_format
                 )
-                metadata["var_measure_levels"][col] = metadata["var_measure_levels"].get(col, 3)
+                metadata["var_measure_levels"][col] = metadata[
+                    "var_measure_levels"
+                ].get(col, 3)
             elif is_datetime64_any_dtype(dtype):
                 var_types[col] = 0
                 metadata["var_formats"][col] = metadata["var_formats"].get(
                     col, config.default_datetime_format
                 )
-                metadata["var_measure_levels"][col] = metadata["var_measure_levels"].get(col, 3)
+                metadata["var_measure_levels"][col] = metadata[
+                    "var_measure_levels"
+                ].get(col, 3)
             else:
                 var_types[col] = 0
                 metadata["var_formats"][col] = metadata["var_formats"].get(
                     col, config.default_numeric_format
                 )
-                metadata["var_measure_levels"][col] = metadata["var_measure_levels"].get(col, 3)
+                metadata["var_measure_levels"][col] = metadata[
+                    "var_measure_levels"
+                ].get(col, 3)
 
         # initiate variables
         for col in df.columns:
@@ -173,7 +187,9 @@ class Writer(Header):
             "var_formats_tuple",
             "var_compat_names",
         ]
-        attrs = [attr for attr in dir(self) if attr[0] != "_" and attr not in attr_to_ignore]
+        attrs = [
+            attr for attr in dir(self) if attr[0] != "_" and attr not in attr_to_ignore
+        ]
 
         # catch Exceptions for non-critical attributes
         failed_to_set = {}
@@ -188,7 +204,9 @@ class Writer(Header):
             warnings.warn(
                 SPSSWarning(
                     "Errors occurred while writing header attributes:\n\n"
-                    + "\n\n".join((f"{attr}: {error}" for attr, error in failed_to_set.items()))
+                    + "\n\n".join(
+                        (f"{attr}: {error}" for attr, error in failed_to_set.items())
+                    )
                     + "\n"
                 ),
                 stacklevel=2,
@@ -229,7 +247,6 @@ class Writer(Header):
             for idx, col in idx_cols.items():
                 value = row[idx]
                 if pd.notna(value):
-
                     # string
                     if var_types[col]:
                         value = value.encode(self.encoding)
@@ -281,7 +298,9 @@ class Writer(Header):
             if var_type
         }
 
-        endianness = {0: "<", 1: ">"}.get(self.release_info.get("big/little-endian code"), "")
+        endianness = {0: "<", 1: ">"}.get(
+            self.release_info.get("big/little-endian code"), ""
+        )
 
         write_types = {}
         for col, var_type in var_types.items():
@@ -297,22 +316,28 @@ class Writer(Header):
             if buffer_size:
                 return col.apply(
                     lambda x: (
-                        x if hasattr(x, "decode") else (b"" if pd.isna(x) else x.encode(encoding))
+                        x
+                        if hasattr(x, "decode")
+                        else (b"" if pd.isna(x) else x.encode(encoding))
                     ).ljust(buffer_size, string_padder)
                 )
             elif is_timedelta64_dtype(dtypes[col.name]):
-                return col.dt.total_seconds().to_numpy(dtype=np.float64, na_value=sysmis)
-            elif is_datetime64_any_dtype(dtypes[col.name]):
-                return ((col - pd_origin).dt.total_seconds() + SPSS_ORIGIN_OFFSET).to_numpy(
+                return col.dt.total_seconds().to_numpy(
                     dtype=np.float64, na_value=sysmis
                 )
+            elif is_datetime64_any_dtype(dtypes[col.name]):
+                return (
+                    (col - pd_origin).dt.total_seconds() + SPSS_ORIGIN_OFFSET
+                ).to_numpy(dtype=np.float64, na_value=sysmis)
             else:
                 return col.to_numpy(dtype=np.float64, na_value=sysmis)
 
         # choose chunksize
         total_records = len(df.index)
         case_size = self.case_size
-        mem_to_use = int(psutil.virtual_memory().available * kwargs.get("memory_allocation", 0.1))
+        mem_to_use = int(
+            psutil.virtual_memory().available * kwargs.get("memory_allocation", 0.1)
+        )
         chunksize = max(1, mem_to_use // case_size)
 
         # write data

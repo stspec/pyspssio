@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
@@ -14,17 +13,19 @@
 # =============================================================================
 
 
-from ctypes import *
-from typing import Union, Any
+from ctypes import c_long, create_string_buffer
+from typing import Any
 
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
-from .errors import warn_or_raise
 from . import config
-from .constants import *
-from .constants_map import *
+from .constants import (
+    S_TO_NS,
+    SPSS_ORIGIN_OFFSET,
+)
+from .errors import warn_or_raise
 from .header import Header
 
 
@@ -36,12 +37,12 @@ class Reader(Header):
         *args,
         row_offset: int = 0,
         row_limit: int = None,
-        usecols: Union[list, tuple, str, callable, None] = None,
+        usecols: list | tuple | str | callable | None = None,
         chunksize: int = None,
         convert_datetimes: bool = True,
         include_user_missing: bool = True,
         string_nan: Any = "",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
@@ -108,7 +109,8 @@ class Reader(Header):
                     include_user_missing=self.include_user_missing,
                 )
                 df.index = pd.RangeIndex(
-                    self.row_offset + self.chunk, self.row_offset + self.chunk + row_limit
+                    self.row_offset + self.chunk,
+                    self.row_offset + self.chunk + row_limit,
                 )
                 self.chunk += self.chunksize
                 return df
@@ -180,7 +182,9 @@ class Reader(Header):
         }
 
         for prop in variable_properties:
-            metadata[prop] = {k: v for k, v in getattr(self, prop).items() if k in usecols}
+            metadata[prop] = {
+                k: v for k, v in getattr(self, prop).items() if k in usecols
+            }
 
         return metadata
 
@@ -267,7 +271,9 @@ class Reader(Header):
         dtype_double = np.dtype("d")
 
         # endianness adjustments
-        endianness = {0: "<", 1: ">"}.get(self.release_info.get("big/little-endian code"))
+        endianness = {0: "<", 1: ">"}.get(
+            self.release_info.get("big/little-endian code")
+        )
 
         if endianness:
             dtype_double = dtype_double.newbyteorder(endianness)
@@ -347,15 +353,23 @@ class Reader(Header):
             return np.where(arr == self.sysmis, np.nan, arr)
 
         def convert_datetime(arr):
-            return ((arr - SPSS_ORIGIN_OFFSET) * S_TO_NS).astype("datetime64[ns]", copy=False)
+            return ((arr - SPSS_ORIGIN_OFFSET) * S_TO_NS).astype(
+                "datetime64[ns]", copy=False
+            )
 
         def convert_time(arr):
             return (arr * S_TO_NS).astype("timedelta64[ns]", copy=False)
 
         # create empty arrays
-        n_arr = np.empty(shape=(row_limit, len(self.numeric_names)), dtype=self.dtype_double)
-        t_arr = np.empty(shape=(row_limit, len(self.time_names)), dtype=self.dtype_double)
-        d_arr = np.empty(shape=(row_limit, len(self.datetime_names)), dtype=self.dtype_double)
+        n_arr = np.empty(
+            shape=(row_limit, len(self.numeric_names)), dtype=self.dtype_double
+        )
+        t_arr = np.empty(
+            shape=(row_limit, len(self.time_names)), dtype=self.dtype_double
+        )
+        d_arr = np.empty(
+            shape=(row_limit, len(self.datetime_names)), dtype=self.dtype_double
+        )
         s_arr = np.empty(shape=(row_limit, len(self.string_names)), dtype="O")
 
         # load cases into arrays
@@ -408,7 +422,9 @@ class Reader(Header):
                     high = missing.get("hi")
                     low = missing.get("lo")
                     if high is not None and low is not None:
-                        df.loc[df[col].between(low, high, inclusive="both"), col] = np.nan
+                        df.loc[df[col].between(low, high, inclusive="both"), col] = (
+                            np.nan
+                        )
 
         # use user-defined string nan value
         if self.string_nan != "":
