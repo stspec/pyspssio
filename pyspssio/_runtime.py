@@ -116,15 +116,8 @@ class RuntimeState:
 
             # load libraries into the current process
             library_handles = self.load_libraries()
-
-            try:
-                self._spssio_runtime = library_handles[self._spssio_module.name]
-            except KeyError as e:
-                raise OSError(
-                    f"Unable to load SPSS I/O module: {config.spssio_module}"
-                ) from e
-
             self._library_handles = library_handles
+            self._spssio_runtime = library_handles[self._spssio_module.name]
             self._initialized = True
 
         return self._initialized
@@ -145,6 +138,12 @@ class RuntimeState:
 
         libs = [self._spssio_dir / lib for lib in self._spssio_dir.glob(lib_pat)]
 
+        if self._spssio_module not in libs:
+            raise MissingSPSSIOModuleError(
+                f"Could not find specified I/O Module '{self._spssio_module}' "
+                f"among parsed libraries: {libs}"
+            )
+
         loaded = {}
         failed = {}
 
@@ -162,6 +161,9 @@ class RuntimeState:
                     failed[lib.name] = e
 
             try_num += 1
+
+        if self._spssio_module.name in failed:
+            raise failed[self._spssio_module.name]
 
         if failed:
             failed_details = "\n".join(

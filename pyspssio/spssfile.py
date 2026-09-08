@@ -15,6 +15,7 @@
 
 import locale as lc
 import os
+import threading
 import warnings
 from ctypes import (
     POINTER,
@@ -35,7 +36,8 @@ from .errors import warn_or_raise
 class SPSSFile:
     """Base class for opening and closing SPSS files"""
 
-    _runtime_state = RuntimeState()
+    _runtime_state = None
+    _runtime_state_lock = threading.Lock()
 
     def __init__(
         self,
@@ -44,6 +46,13 @@ class SPSSFile:
         unicode: bool = True,
         locale: Optional[str] = None,
     ):
+
+        # create shared runtime state on first use
+        # to avoid initializing eagerly on module import
+        if SPSSFile._runtime_state is None:
+            with SPSSFile._runtime_state_lock:
+                if SPSSFile._runtime_state is None:
+                    SPSSFile._runtime_state = RuntimeState()
 
         # initialize SPSS I/O binaries
         SPSSFile._runtime_state.initialize()
