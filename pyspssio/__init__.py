@@ -14,6 +14,7 @@
 
 import os
 import platform
+import threading
 import warnings
 
 from . import config
@@ -39,30 +40,3 @@ try:
     __version__ = version("pyspssio")
 except ImportError:
     __version__ = "unknown"
-
-module_path = os.path.dirname(__file__)
-source_root = os.path.dirname(module_path)
-
-pf_system = platform.system().lower()
-
-# Windows 64
-if pf_system.startswith("win"):
-    spssio_folder = "win64"
-    spssio_module = "spssio64.dll"
-
-# MacOS
-elif pf_system.startswith("darwin"):
-    spssio_folder = "macos"
-    spssio_module = "libspssdio.dylib"
-
-# Linux
-elif pf_system.startswith("lin"):
-    spssio_folder = "lin64"
-    spssio_module = "libspssdio.so.1"
-
-try:
-    config.spssio_module = os.path.join(
-        module_path, "spssio", spssio_folder, spssio_module
-    )
-except Exception as err:
-    warnings.warn(err, stacklevel=2)
