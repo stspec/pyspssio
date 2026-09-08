@@ -14,7 +14,7 @@
 
 
 from ctypes import c_long, create_string_buffer
-from typing import Any
+from typing import Any, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -37,12 +37,12 @@ class Reader(Header):
         spss_file: str,
         mode: str = "rb",
         unicode: bool = True,
-        locale: str | None = None,
+        locale: Optional[str] = None,
         *,
         row_offset: int = 0,
-        row_limit: int | None = None,
-        usecols: list | tuple | str | callable | None = None,
-        chunksize: int | None = None,
+        row_limit: Optional[int] = None,
+        usecols: Optional[Union[list, tuple, str, callable]] = None,
+        chunksize: Optional[int] = None,
         convert_datetimes: bool = True,
         include_user_missing: bool = True,
         string_nan: Any = "",

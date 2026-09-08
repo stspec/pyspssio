@@ -12,8 +12,8 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-from collections.abc import Generator
-from typing import Any
+
+from typing import Any, Generator, Optional, Tuple, Union
 
 from pandas import DataFrame
 
@@ -23,8 +23,8 @@ from .writer import Writer
 
 def read_metadata(
     spss_file: str,
-    usecols: list | tuple | str | callable | None = None,
-    locale: str | None = None,
+    usecols: Optional[Union[list, tuple, str, callable]] = None,
+    locale: Optional[str] = None,
 ) -> dict:
     """Reads metadata attributes from SPSS file
 
@@ -56,14 +56,14 @@ def read_sav(
     spss_file: str,
     row_offset: int = 0,
     row_limit: int = None,
-    usecols: list | tuple | str | callable | None = None,
+    usecols: Optional[Union[list, tuple, str, callable]] = None,
     convert_datetimes: bool = True,
     include_user_missing: bool = True,
     chunksize: int = None,
     locale: str = None,
     string_nan: Any = "",
     data_only: bool = False,
-) -> DataFrame | tuple[DataFrame, dict] | Generator[DataFrame, None, None]:
+) -> Union[DataFrame, Tuple[DataFrame, dict], Generator[DataFrame, None, None]]:
     """Read data and metadata from SPSS file
 
     Parameters

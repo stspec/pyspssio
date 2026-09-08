@@ -43,3 +43,13 @@ pyspssio = [
     "spssio/macos/*.*",
     "spssio/lin64/*.*",
 ]
+
+[tool.ruff.lint]
+ignore = [
+    "F811",
+    "T001",
+    "UP006",
+    "UP007",
+    "UP035",
+    "UP045",
+]

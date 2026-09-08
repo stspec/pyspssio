@@ -25,6 +25,7 @@ from ctypes import (
     c_long,
     create_string_buffer,
 )
+from typing import Optional
 
 from ._runtime import RuntimeState
 from .constants import SPSS_MAX_ENCODING
@@ -41,7 +42,7 @@ class SPSSFile:
         spss_file: str,
         mode: str = "rb",
         unicode: bool = True,
-        locale: str | None = None,
+        locale: Optional[str] = None,
     ):
 
         # initialize SPSS I/O binaries

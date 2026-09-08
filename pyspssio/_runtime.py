@@ -18,6 +18,7 @@ import sys
 import threading
 import warnings
 from pathlib import Path
+from typing import Union
 
 from . import config
 
@@ -175,7 +176,7 @@ class RuntimeState:
         return loaded
 
     def create_library_symlinks(
-        self, library_dir: str | Path, library_pat: str = "*"
+        self, library_dir: Union[str, Path], library_pat: str = "*"
     ) -> list:
         """Generate symbolic links in the Python executable to the SPSS I/O dynamic libraries.
 

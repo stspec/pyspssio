@@ -20,6 +20,7 @@ from ctypes import (
     c_int,
 )
 from types import SimpleNamespace
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -52,7 +53,7 @@ class Writer(Header):
         spss_file: str,
         mode: str = "wb",
         unicode: bool = True,
-        locale: str | None = None,
+        locale: Optional[str] = None,
         **kwargs,
     ):
         # force write mode
@@ -92,7 +93,10 @@ class Writer(Header):
         warn_or_raise(retcode, func)
 
     def write_header(
-        self, df: DataFrame, metadata: dict | SimpleNamespace = None, **kwargs
+        self,
+        df: DataFrame,
+        metadata: Optional[Union[dict, SimpleNamespace]] = None,
+        **kwargs,
     ):
         """Write metadata properties
 
