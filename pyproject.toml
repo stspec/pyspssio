@@ -12,6 +12,9 @@ requires-python = ">=3.6"
 dependencies = ["pandas", "psutil"]
 dynamic = ["version"]
 
+[dependency-groups]
+dev = ["pytest", "wheel", "cibuildwheel"]
+
 [project.readme]
 file = "README.md"
 content-type = "text/markdown"
@@ -25,17 +28,22 @@ pyspssio = "pyspssio.command_line:main"
 
 [tool.setuptools]
 packages = ["pyspssio"]
-include-package-data = true
 
-[tool.setuptools.package-data]
-pyspssio = [
-    "spssio/document/*",
-    "spssio/include/*",
-    "spssio/license/*",
-    "spssio/win64/*.*",
-    "spssio/macos/*.*",
-    "spssio/lin64/*.*",
-]
+[tool.cibuildwheel]
+build = "cp314-*"
+skip = "cp314t-*"
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+environment = "SPSSIO_PLATFORM_DIR=win64"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64"]
+environment = "SPSSIO_PLATFORM_DIR=macos"
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+environment = "SPSSIO_PLATFORM_DIR=lin64"
 
 [tool.ruff.lint]
 ignore = ["F811", "T001", "UP006", "UP007", "UP035", "UP045"]
