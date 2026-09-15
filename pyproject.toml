@@ -1,21 +1,15 @@
 [build-system]
-requires = [
-    "setuptools>=80",
-    "setuptools-scm[simple]>=9.2",
-    "wheel"
-]
+requires = ["setuptools>=80", "setuptools-scm[simple]>=9.2", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyspssio"
 description = "Read and write SPSS (.sav and .zsav) files to/from pandas dataframes"
-authors = [{name = "Steven Spector", email = "stspec.dev@gmail.com"}]
-license = {text = "MIT"}
+authors = [{ name = "Steven Spector", email = "stspec.dev@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE.txt"]
 requires-python = ">=3.6"
-dependencies = [
-    "pandas",
-    "psutil",
-]
+dependencies = ["pandas", "psutil"]
 dynamic = ["version"]
 
 [project.readme]
@@ -32,7 +26,6 @@ pyspssio = "pyspssio.command_line:main"
 [tool.setuptools]
 packages = ["pyspssio"]
 include-package-data = true
-license-files = ["LICENSE.txt"]
 
 [tool.setuptools.package-data]
 pyspssio = [
@@ -45,11 +38,4 @@ pyspssio = [
 ]
 
 [tool.ruff.lint]
-ignore = [
-    "F811",
-    "T001",
-    "UP006",
-    "UP007",
-    "UP035",
-    "UP045",
-]
+ignore = ["F811", "T001", "UP006", "UP007", "UP035", "UP045"]
