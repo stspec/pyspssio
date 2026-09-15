@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
 #
-# Copyright (c) 2022 Steven Spector
+# Copyright (c) 2026 Steven Spector
 #
 # The pyspssio python package is distributed under the MIT license,
 # EXCLUDING files from the IBM I/O Modules for SPSS Statistics
@@ -13,7 +12,23 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-from .constants import *
+from .constants import (
+    SPSS_FMT_A,
+    SPSS_FMT_ADATE,
+    SPSS_FMT_AHEX,
+    SPSS_FMT_DATE,
+    SPSS_FMT_DATETIME,
+    SPSS_FMT_DTIME,
+    SPSS_FMT_EDATE,
+    SPSS_FMT_JDATE,
+    SPSS_FMT_MOYR,
+    SPSS_FMT_MTIME,
+    SPSS_FMT_QYR,
+    SPSS_FMT_SDATE,
+    SPSS_FMT_TIME,
+    SPSS_FMT_WKYR,
+    SPSS_FMT_YMDHMS,
+)
 
 # fmt: off
 

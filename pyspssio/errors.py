@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
 #
-# Copyright (c) 2022 Steven Spector
+# Copyright (c) 2026 Steven Spector
 #
 # The pyspssio python package is distributed under the MIT license,
 # EXCLUDING files from the IBM I/O Modules for SPSS Statistics
@@ -14,8 +13,85 @@
 # =============================================================================
 
 import warnings
+
 from . import config
-from .constants import *
+from .constants import (
+    SPSS_BAD_EXTENSION,
+    SPSS_BUFFER_SHORT,
+    SPSS_CANNOT_FREE,
+    SPSS_DEW_NOFIRST,
+    SPSS_DICT_COMMIT,
+    SPSS_DICT_EMPTY,
+    SPSS_DICT_NOTCOMMIT,
+    SPSS_DUP_MRSETNAME,
+    SPSS_DUP_VALUE,
+    SPSS_DUP_VAR,
+    SPSS_EMPTY_DEW,
+    SPSS_EMPTY_MULTRESP,
+    SPSS_EMPTY_VARSETS,
+    SPSS_EXC_LEN60,
+    SPSS_EXC_LEN64,
+    SPSS_EXC_LEN120,
+    SPSS_EXC_STRVALUE,
+    SPSS_EXC_VALLABEL,
+    SPSS_EXC_VARLABEL,
+    SPSS_FILE_BADTEMP,
+    SPSS_FILE_END,
+    SPSS_FILE_OERROR,
+    SPSS_FILE_RERROR,
+    SPSS_FILE_WERROR,
+    SPSS_FILES_OPEN,
+    SPSS_FITAB_FULL,
+    SPSS_INCOMPAT_APPEND,
+    SPSS_INCOMPATIBLE_DICT,
+    SPSS_INTERNAL_D_A,
+    SPSS_INTERNAL_VLABS,
+    SPSS_INVALID_7SUBTYPE,
+    SPSS_INVALID_ATTRDEF,
+    SPSS_INVALID_ATTRNAME,
+    SPSS_INVALID_CASE,
+    SPSS_INVALID_CASEWGT,
+    SPSS_INVALID_COMPSW,
+    SPSS_INVALID_DATE,
+    SPSS_INVALID_DATEINFO,
+    SPSS_INVALID_ENCODING,
+    SPSS_INVALID_EXTENDEDSTRING,
+    SPSS_INVALID_FILE,
+    SPSS_INVALID_HANDLE,
+    SPSS_INVALID_MEASURELEVEL,
+    SPSS_INVALID_MISSFOR,
+    SPSS_INVALID_MRSETDEF,
+    SPSS_INVALID_MRSETINDEX,
+    SPSS_INVALID_MRSETNAME,
+    SPSS_INVALID_PRFOR,
+    SPSS_INVALID_ROLE,
+    SPSS_INVALID_TIME,
+    SPSS_INVALID_VARHANDLE,
+    SPSS_INVALID_VARNAME,
+    SPSS_INVALID_VARSETDEF,
+    SPSS_INVALID_VARTYPE,
+    SPSS_INVALID_WRFOR,
+    SPSS_MIXED_TYPES,
+    SPSS_NO_CASEWGT,
+    SPSS_NO_DATEINFO,
+    SPSS_NO_DEW,
+    SPSS_NO_LABEL,
+    SPSS_NO_LABELS,
+    SPSS_NO_MEMORY,
+    SPSS_NO_MULTRESP,
+    SPSS_NO_TYPE2,
+    SPSS_NO_TYPE73,
+    SPSS_NO_TYPE999,
+    SPSS_NO_VARIABLES,
+    SPSS_NO_VARSETS,
+    SPSS_NUME_EXP,
+    SPSS_OK,
+    SPSS_OPEN_RDMODE,
+    SPSS_OPEN_WRMODE,
+    SPSS_SHORTSTR_EXP,
+    SPSS_STR_EXP,
+    SPSS_VAR_NOTFOUND,
+)
 
 # fmt: off
 

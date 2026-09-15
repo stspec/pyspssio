@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
 #
-# Copyright (c) 2022 Steven Spector
+# Copyright (c) 2026 Steven Spector
 #
 # The pyspssio python package is distributed under the MIT license,
 # EXCLUDING files from the IBM I/O Modules for SPSS Statistics
@@ -14,12 +13,43 @@
 # =============================================================================
 
 import re
+from ctypes import (
+    POINTER,
+    Structure,
+    byref,
+    c_char,
+    c_char_p,
+    c_double,
+    c_int,
+    c_long,
+    create_string_buffer,
+    pointer,
+)
 
-from ctypes import *
-
+from .constants import (
+    SPSS_EMPTY_VARSETS,
+    SPSS_MAX_SHORTVARNAME,
+    SPSS_MAX_VARLABEL,
+    SPSS_MAX_VARNAME,
+    SPSS_MISS_RANGE,
+    SPSS_MISS_RANGEANDVAL,
+    SPSS_NO_MISSVAL,
+    SPSS_NO_VARSETS,
+    SPSS_ONE_MISSVAL,
+    SPSS_THREE_MISSVAL,
+    SPSS_TWO_MISSVAL,
+)
+from .constants_map import (
+    alignments,
+    alignments_str,
+    measure_levels,
+    measure_levels_str,
+    roles,
+    roles_str,
+    spss_formats_simple,
+    spss_formats_simple_rev,
+)
 from .errors import warn_or_raise
-from .constants import *
-from .constants_map import *
 from .spssfile import SPSSFile
 
 
@@ -40,9 +70,6 @@ def varformat_to_tuple(varformat):
 
 class Header(SPSSFile):
     """Class for getting and setting metadata attributes"""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
     @property
     def file_attributes(self) -> dict:
@@ -168,7 +195,8 @@ class Header(SPSSFile):
         retcode = func(self.fh, _num_vars, var_names, var_types)
         warn_or_raise(retcode, func)
         var_types_dict = {
-            var_names[0][i].decode(self.encoding): var_types[0][i] for i in range(num_vars)
+            var_names[0][i].decode(self.encoding): var_types[0][i]
+            for i in range(num_vars)
         }
         self.spssio.spssFreeVarNames(var_names, var_types, _num_vars)
         return var_types_dict
@@ -215,7 +243,13 @@ class Header(SPSSFile):
 
     def _get_var_format(self, var_name):
         func = self.spssio.spssGetVarPrintFormat
-        func.argtypes = [c_int, c_char_p, POINTER(c_int), POINTER(c_int), POINTER(c_int)]
+        func.argtypes = [
+            c_int,
+            c_char_p,
+            POINTER(c_int),
+            POINTER(c_int),
+            POINTER(c_int),
+        ]
 
         f_type = c_int()
         f_dec = c_int()
@@ -259,13 +293,15 @@ class Header(SPSSFile):
 
         for var_name, var_format in var_formats.items():
             if var_name in var_names:
-
                 # convert to tuple in case string type is supplied
                 var_format = varformat_to_tuple(var_format)
 
                 f_type, f_width, f_dec = var_format
 
-                for func in (self.spssio.spssSetVarPrintFormat, self.spssio.spssSetVarWriteFormat):
+                for func in (
+                    self.spssio.spssSetVarPrintFormat,
+                    self.spssio.spssSetVarWriteFormat,
+                ):
                     func.argtypes = [c_int, c_char_p, c_int, c_int, c_int]
 
                     retcode = func(
@@ -310,9 +346,13 @@ class Header(SPSSFile):
         func.argtypes = [c_int, c_char_p, c_int]
 
         for var_name, measure_level in var_measure_levels.items():
-            measure_level = measure_levels.get(str(measure_level).lower(), measure_level)
+            measure_level = measure_levels.get(
+                str(measure_level).lower(), measure_level
+            )
             if var_name in var_names:
-                retcode = func(self.fh, var_name.encode(self.encoding), c_int(measure_level))
+                retcode = func(
+                    self.fh, var_name.encode(self.encoding), c_int(measure_level)
+                )
                 warn_or_raise(retcode, func, var_name, measure_level)
 
     @property
@@ -394,7 +434,9 @@ class Header(SPSSFile):
         var_labels = {}
         for var_name in self.var_names:
             len_label = c_int()
-            retcode = func(self.fh, var_name.encode(self.encoding), buffer, len_buff, len_label)
+            retcode = func(
+                self.fh, var_name.encode(self.encoding), buffer, len_buff, len_label
+            )
             warn_or_raise(retcode, func, var_name)
             var_labels[var_name] = buffer.value.decode(self.encoding)
         return var_labels
@@ -408,9 +450,10 @@ class Header(SPSSFile):
 
         for var_name, var_label in labels.items():
             if var_name in var_names:
-
                 retcode = func(
-                    self.fh, var_name.encode(self.encoding), var_label.encode(self.encoding)
+                    self.fh,
+                    var_name.encode(self.encoding),
+                    var_label.encode(self.encoding),
                 )
 
                 warn_or_raise(retcode, func, var_name, var_label)
@@ -468,15 +511,17 @@ class Header(SPSSFile):
                 POINTER(c_int),
             ]
 
-            values_arr = POINTER((c_double * size))()
-            labels_arr = POINTER((c_char_p * size))()
+            values_arr = POINTER(c_double * size)()
+            labels_arr = POINTER(c_char_p * size)()
             num_labels = c_int()
             return argtypes, var_name, values_arr, labels_arr, num_labels
 
         # initial function call to get number of labels
         argtypes, var_name, values_arr, labels_arr, num_labels = func_config(var_name)
         func.argtypes = argtypes
-        retcode = func(self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels)
+        retcode = func(
+            self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels
+        )
         if retcode > 0:
             self.spssio.spssFreeVarNValueLabels(values_arr, labels_arr, num_labels)
             warn_or_raise(retcode, func, var_name)
@@ -487,7 +532,11 @@ class Header(SPSSFile):
             )
             func.argtypes = argtypes
             retcode = func(
-                self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels
+                self.fh,
+                var_name.encode(self.encoding),
+                values_arr,
+                labels_arr,
+                num_labels,
             )
             warn_or_raise(retcode, func, var_name)
             value_labels = {
@@ -511,15 +560,17 @@ class Header(SPSSFile):
                 POINTER(c_int),
             ]
 
-            values_arr = POINTER((c_char_p * size))()
-            labels_arr = POINTER((c_char_p * size))()
+            values_arr = POINTER(c_char_p * size)()
+            labels_arr = POINTER(c_char_p * size)()
             num_labels = c_int()
             return argtypes, var_name, values_arr, labels_arr, num_labels
 
         # initial function call to get number of labels
         argtypes, var_name, values_arr, labels_arr, num_labels = func_config(var_name)
         func.argtypes = argtypes
-        retcode = func(self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels)
+        retcode = func(
+            self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels
+        )
         if retcode > 0:
             self.spssio.spssFreeVarCValueLabels(values_arr, labels_arr, num_labels)
             warn_or_raise(retcode, func, var_name)
@@ -530,14 +581,17 @@ class Header(SPSSFile):
             )
             func.argtypes = argtypes
             retcode = func(
-                self.fh, var_name.encode(self.encoding), values_arr, labels_arr, num_labels
+                self.fh,
+                var_name.encode(self.encoding),
+                values_arr,
+                labels_arr,
+                num_labels,
             )
             warn_or_raise(retcode, func, var_name)
             value_labels = {
-                values_arr[0][i]
-                .decode(self.encoding)
-                .rstrip(): labels_arr[0][i]
-                .decode(self.encoding)
+                values_arr[0][i].decode(self.encoding).rstrip(): labels_arr[0][
+                    i
+                ].decode(self.encoding)
                 for i in range(num_labels.value)
             }
             self.spssio.spssFreeVarCValueLabels(values_arr, labels_arr, num_labels)
@@ -566,7 +620,10 @@ class Header(SPSSFile):
         func = self.spssio.spssSetVarNValueLabel
         func.argtypes = [c_int, c_char_p, c_double, c_char_p]
         retcode = func(
-            self.fh, var_name.encode(self.encoding), c_double(value), label.encode(self.encoding)
+            self.fh,
+            var_name.encode(self.encoding),
+            c_double(value),
+            label.encode(self.encoding),
         )
         warn_or_raise(retcode, func, var_name, value, label)
 
@@ -620,7 +677,7 @@ class Header(SPSSFile):
         d["value_length"], d["counted_value"] = None, None
         label_length = int(info[1].decode(self.encoding))
         d["label"] = info[2][:label_length].decode(self.encoding)
-        d["variable_list"] = info[2][label_length + 1:].decode(self.encoding).split()
+        d["variable_list"] = info[2][label_length + 1 :].decode(self.encoding).split()
         return d
 
     def _parse_mrset_d(self, attr: str) -> dict:
@@ -631,7 +688,7 @@ class Header(SPSSFile):
         d["counted_value"] = info[1].decode(self.encoding)
         label_length = int(info[2].decode(self.encoding))
         d["label"] = info[3][:label_length].decode(self.encoding)
-        d["variable_list"] = info[3][label_length + 1:].decode(self.encoding).split()
+        d["variable_list"] = info[3][label_length + 1 :].decode(self.encoding).split()
         return d
 
     def _parse_mrset_e(self, attr: str) -> dict:
@@ -644,7 +701,7 @@ class Header(SPSSFile):
         d["counted_value"] = info[3].decode(self.encoding)
         label_length = int(info[4].decode(self.encoding))
         d["label"] = info[5][:label_length].decode(self.encoding)
-        d["variable_list"] = info[5][label_length + 1:].decode(self.encoding).split()
+        d["variable_list"] = info[5][label_length + 1 :].decode(self.encoding).split()
         return d
 
     @property
@@ -739,7 +796,10 @@ class Header(SPSSFile):
         if len(mrsets_dict):
             var_types = self.var_types
             for mrset, d in mrsets_dict.items():
-                if d["counted_value"] is not None and var_types[d["variable_list"][0]] == 0:
+                if (
+                    d["counted_value"] is not None
+                    and var_types[d["variable_list"][0]] == 0
+                ):
                     d["counted_value"] = int(d["counted_value"])
 
         return mrsets_dict
@@ -774,8 +834,8 @@ class Header(SPSSFile):
             pass
 
         MRSetStruct._fields_ = [
-            ("szMrSetName", c_char * int((SPSS_MAX_VARNAME + 1))),
-            ("szMrSetLabel", c_char * int((SPSS_MAX_VARLABEL + 1))),
+            ("szMrSetName", c_char * int(SPSS_MAX_VARNAME + 1)),
+            ("szMrSetLabel", c_char * int(SPSS_MAX_VARLABEL + 1)),
             ("qIsDichotomy", c_int),
             ("qIsNumeric", c_int),
             ("qUseCategoryLabels", c_int),
@@ -795,15 +855,19 @@ class Header(SPSSFile):
 
         is_dichotomy = int(is_dichotomy)
         is_numeric = int(is_numeric)
-        use_category_labels = int(is_dichotomy and mrset_attr.get("use_category_labels", False))
+        use_category_labels = int(
+            is_dichotomy and mrset_attr.get("use_category_labels", False)
+        )
         use_first_var_label = int(
-            is_dichotomy and use_category_labels and mrset_attr.get("use_first_var_label", False)
+            is_dichotomy
+            and use_category_labels
+            and mrset_attr.get("use_first_var_label", False)
         )
         reserved = (c_int * 14)(0)
         n_counted_value = 0 if not is_numeric else int(counted_value)
-        c_counted_value = ("" if (is_numeric or not is_dichotomy) else counted_value).encode(
-            self.encoding
-        )
+        c_counted_value = (
+            "" if (is_numeric or not is_dichotomy) else counted_value
+        ).encode(self.encoding)
         var_names = (c_char_p * num_vars)(*encoded_vars)
 
         args = (
@@ -930,16 +994,25 @@ class Header(SPSSFile):
 
         var_missing_values = {}
         for var_name, var_type in self.var_types.items():
-
             if var_type:
-                missing_format, missing_values = self._get_var_c_missing_values(var_name, var_type)
+                missing_format, missing_values = self._get_var_c_missing_values(
+                    var_name, var_type
+                )
             else:
-                missing_format, missing_values = self._get_var_n_missing_values(var_name)
+                missing_format, missing_values = self._get_var_n_missing_values(
+                    var_name
+                )
 
             if missing_format == SPSS_NO_MISSVAL:
                 var_missing_values[var_name] = None
-            elif missing_format in [SPSS_ONE_MISSVAL, SPSS_TWO_MISSVAL, SPSS_THREE_MISSVAL]:
-                var_missing_values[var_name] = {"values": missing_values[:missing_format]}
+            elif missing_format in [
+                SPSS_ONE_MISSVAL,
+                SPSS_TWO_MISSVAL,
+                SPSS_THREE_MISSVAL,
+            ]:
+                var_missing_values[var_name] = {
+                    "values": missing_values[:missing_format]
+                }
             elif missing_format in [SPSS_MISS_RANGE, SPSS_MISS_RANGEANDVAL]:
                 low, high = missing_values[:2]
                 low = float("-inf") if low <= self.low_value else low
@@ -964,7 +1037,9 @@ class Header(SPSSFile):
                 missing_format = min(3, len(discrete_values))
                 val_1 = "" if missing_format < SPSS_ONE_MISSVAL else discrete_values[0]
                 val_2 = "" if missing_format < SPSS_TWO_MISSVAL else discrete_values[1]
-                val_3 = "" if missing_format < SPSS_THREE_MISSVAL else discrete_values[2]
+                val_3 = (
+                    "" if missing_format < SPSS_THREE_MISSVAL else discrete_values[2]
+                )
 
                 retcode = func(
                     self.fh,
@@ -987,11 +1062,16 @@ class Header(SPSSFile):
                 discrete_values = missing_values.get("values", [])
 
                 if low is not None and high is not None:
-
-                    if str(low) in ["-inf", "lo", "low", "lowest"] or low <= self.low_value:
+                    if (
+                        str(low) in ["-inf", "lo", "low", "lowest"]
+                        or low <= self.low_value
+                    ):
                         low = self.low_value
 
-                    if str(high) in ["inf", "hi", "high", "highest"] or high >= self.high_value:
+                    if (
+                        str(high) in ["inf", "hi", "high", "highest"]
+                        or high >= self.high_value
+                    ):
                         high = self.high_value
 
                     val_1 = low
@@ -1006,13 +1086,19 @@ class Header(SPSSFile):
                 else:
                     missing_format = min(3, len(discrete_values))
                     val_1 = (
-                        self.sysmis if missing_format < SPSS_ONE_MISSVAL else discrete_values[0]
+                        self.sysmis
+                        if missing_format < SPSS_ONE_MISSVAL
+                        else discrete_values[0]
                     )
                     val_2 = (
-                        self.sysmis if missing_format < SPSS_TWO_MISSVAL else discrete_values[1]
+                        self.sysmis
+                        if missing_format < SPSS_TWO_MISSVAL
+                        else discrete_values[1]
                     )
                     val_3 = (
-                        self.sysmis if missing_format < SPSS_THREE_MISSVAL else discrete_values[2]
+                        self.sysmis
+                        if missing_format < SPSS_THREE_MISSVAL
+                        else discrete_values[2]
                     )
 
                 retcode = func(
@@ -1049,7 +1135,11 @@ class Header(SPSSFile):
         argtypes, attr_names, attr_text, num_attributes = func_config()
         func.argtypes = argtypes
         retcode = func(
-            self.fh, var_name.encode(self.encoding), attr_names, attr_text, num_attributes
+            self.fh,
+            var_name.encode(self.encoding),
+            attr_names,
+            attr_text,
+            num_attributes,
         )
         warn_or_raise(retcode, func)
 
@@ -1066,7 +1156,11 @@ class Header(SPSSFile):
             argtypes, attr_names, attr_text, num_attributes = func_config(array_size)
             func.argtypes = argtypes
             retcode = func(
-                self.fh, var_name.encode(self.encoding), attr_names, attr_text, num_attributes
+                self.fh,
+                var_name.encode(self.encoding),
+                attr_names,
+                attr_text,
+                num_attributes,
             )
             warn_or_raise(retcode, func)
 
@@ -1121,7 +1215,11 @@ class Header(SPSSFile):
             ]
 
             retcode = func(
-                self.fh, var_name.encode(self.encoding), attr_names, attr_text, array_size
+                self.fh,
+                var_name.encode(self.encoding),
+                attr_names,
+                attr_text,
+                array_size,
             )
             warn_or_raise(retcode, func, var_name)
 
@@ -1215,7 +1313,9 @@ class Header(SPSSFile):
         var_set_defs = []
 
         for set_name, var_list in var_sets.items():
-            set_name_fixed = set_name if "=" not in set_name else set_name[: set_name.find("=")]
+            set_name_fixed = (
+                set_name if "=" not in set_name else set_name[: set_name.find("=")]
+            )
             var_list_string = " ".join(var_list)
             var_set_defs.append(f"{set_name_fixed}= {var_list_string}")
 

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
 #
-# Copyright (c) 2022 Steven Spector
+# Copyright (c) 2026 Steven Spector
 #
 # The pyspssio python package is distributed under the MIT license,
 # EXCLUDING files from the IBM I/O Modules for SPSS Statistics
@@ -14,61 +13,69 @@
 # =============================================================================
 
 
-import os
-import re
-import platform
-import warnings
 import locale as lc
+import os
+import threading
+import warnings
+from ctypes import (
+    POINTER,
+    byref,
+    c_char_p,
+    c_double,
+    c_int,
+    c_long,
+    create_string_buffer,
+)
+from typing import Optional
 
-from ctypes import *
-
-from .errors import warn_or_raise
-from . import config
+from ._runtime import RuntimeState
 from .constants import SPSS_MAX_ENCODING
+from .errors import warn_or_raise
 
 
-class SPSSFile(object):
+class SPSSFile:
     """Base class for opening and closing SPSS files"""
 
-    def __init__(self, spss_file: str, mode: str = "rb", unicode: bool = True, locale: str = None):
-        if config.spssio_module is None:
-            raise ValueError(
-                "Missing spssio module. Set location of module by changing pyspssio.config.spssio_module = path/to/module.ext"
-            )
+    _runtime_state = None
+    _runtime_state_lock = threading.Lock()
+
+    def __init__(
+        self,
+        spss_file: str,
+        mode: str = "rb",
+        unicode: bool = True,
+        locale: Optional[str] = None,
+    ):
+
+        # create shared runtime state on first use
+        # to avoid initializing eagerly on module import
+        if SPSSFile._runtime_state is None:
+            with SPSSFile._runtime_state_lock:
+                if SPSSFile._runtime_state is None:
+                    SPSSFile._runtime_state = RuntimeState()
+
+        # initialize SPSS I/O binaries
+        SPSSFile._runtime_state.initialize()
+        self.spssio = SPSSFile._runtime_state._spssio_runtime
 
         # basic settings
         self.filename = spss_file
         self.mode = mode[0] + "b"  # always open/close in byte mode
 
-        # load I/O module
-        pf = platform.system().lower()
-
-        if pf.startswith("win"):
-            loader = WinDLL
-            lib_pat = r".*\.dll.*"
-        elif pf.startswith("darwin"):
-            loader = CDLL
-            lib_pat = r".*\.dylib.*"
-        else:
-            loader = CDLL
-            lib_pat = r".*\.so.*"
-
-        path = os.path.dirname(config.spssio_module)
-        libs = [os.path.join(path, lib) for lib in sorted(os.listdir(path))]
-        libs = [lib for lib in libs if re.fullmatch(lib_pat, lib, re.I)]
-
-        if pf.startswith("win"):
-            self._load_libs(libs, loader)
-            self.spssio = loader(config.spssio_module)
-        else:
-            self._load_libs(libs, loader)
-            self.spssio = loader(config.spssio_module)
-
         # functions for opening and closing (always open with utf-8 encoded filenames)
         self._modes = {
-            "rb": {"open": self.spssio.spssOpenReadU8, "close": self.spssio.spssCloseRead},
-            "wb": {"open": self.spssio.spssOpenWriteU8, "close": self.spssio.spssCloseWrite},
-            "ab": {"open": self.spssio.spssOpenAppendU8, "close": self.spssio.spssCloseAppend},
+            "rb": {
+                "open": self.spssio.spssOpenReadU8,
+                "close": self.spssio.spssCloseRead,
+            },
+            "wb": {
+                "open": self.spssio.spssOpenWriteU8,
+                "close": self.spssio.spssCloseWrite,
+            },
+            "ab": {
+                "open": self.spssio.spssOpenAppendU8,
+                "close": self.spssio.spssCloseAppend,
+            },
         }
 
         # get current locale information and set initial encoding
@@ -110,7 +117,10 @@ class SPSSFile(object):
         # test encoding compatibility
         compatible = self.is_compatible_encoding
         if not compatible:
-            UnicodeWarning("File encoding may not be compatible with SPSS I/O interface encoding")
+            warnings.warn(
+                "File encoding may not be compatible with SPSS I/O interface encoding",
+                UnicodeWarning,
+            )
 
         # system missing value for reference to replace with null types
         self.sysmis = self._host_sysmis_val
@@ -128,32 +138,6 @@ class SPSSFile(object):
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
         self._exit_cleanup()
-
-    def _load_libs(self, libs, loader):
-        lib_status = {}
-        lib_errors = {}
-
-        try_num = 0
-        success = False
-
-        while not success and try_num < len(libs):
-            for lib in libs:
-                status = True
-                try:
-                    loader(lib)
-                except Exception as e:
-                    status = False
-                    lib_errors[lib] = e
-                finally:
-                    lib_status[lib] = status
-
-            success = all(lib_status.values())
-            try_num += 1
-
-        return {
-            os.path.basename(lib): (status if status else lib_errors[lib])
-            for lib, status in lib_status.items()
-        }
 
     @property
     def _low_high_val(self):
@@ -188,7 +172,6 @@ class SPSSFile(object):
         func.argtypes = [c_int]
         retcode = func(c_int(int(unicode)))
         warn_or_raise(retcode, func)
-        return
 
     @property
     def file_encoding(self) -> str:
@@ -211,11 +194,7 @@ class SPSSFile(object):
             return result.decode(self.encoding)
         else:
             warnings.warn(
-                "Failed to set locale to: "
-                + locale
-                + ". "
-                + "Current locale is: "
-                + ".".join(lc.getlocale()),
+                f"Failed to set locale to: {locale}. Current locale is: {'.'.join(lc.getlocale())}",
                 stacklevel=2,
             )
             return ".".join(lc.getlocale())
@@ -318,7 +297,7 @@ class SPSSFile(object):
         func = self.spssio.spssGetReleaseInfo
         retcode = func(self.fh, rel_info_arr)
         warn_or_raise(retcode, func)
-        return dict([(item, rel_info_arr[i]) for i, item in enumerate(fields)])
+        return {item: rel_info_arr[i] for i, item in enumerate(fields)}
 
     @property
     def var_count(self) -> int:

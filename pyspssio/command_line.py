@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # =============================================================================
 # COPYRIGHT NOTICE
 # =============================================================================
 #
-# Copyright (c) 2022 Steven Spector
+# Copyright (c) 2026 Steven Spector
 #
 # The pyspssio python package is distributed under the MIT license,
 # EXCLUDING files from the IBM I/O Modules for SPSS Statistics
@@ -13,15 +12,15 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-import sys
+import argparse
 import ast
 import json
-import argparse
-from inspect import signature, isfunction, Parameter
+import sys
+from inspect import Parameter, isfunction, signature
+
 from pandas import DataFrame
 
 from . import user_functions
-
 
 HELP_MESSAGE = """
 Usage:
@@ -103,7 +102,9 @@ def call_function(func_name):
     func = getattr(user_functions, func_name)
 
     if not isfunction(func):
-        print(f"{HELP_MESSAGE}\nFunction not recognized: {func_name}\n", file=sys.stderr)
+        print(
+            f"{HELP_MESSAGE}\nFunction not recognized: {func_name}\n", file=sys.stderr
+        )
         return None
 
     parser = get_parser(func)
