@@ -73,7 +73,10 @@ class Header(SPSSFile):
 
     @property
     def file_attributes(self) -> dict:
-        """Arbitrary user-defined file attributes"""
+        """Arbitrary user-defined file attributes
+
+        Note: attributes must follow the normal variable naming conventions.
+        """
 
         func = self.spssio.spssGetFileAttributes
 

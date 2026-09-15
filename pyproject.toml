@@ -53,3 +53,8 @@ ignore = [
     "UP035",
     "UP045",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.1",
+]
