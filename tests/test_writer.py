@@ -1,15 +1,22 @@
+from datetime import datetime
 from pathlib import Path
 
 import pytest
 
 import pyspssio
 
-from . import data
+
+@pytest.fixture(scope="module")
+def spss_data():
+    spss_path = Path(__file__).parent / "files" / "test_file.sav"
+    df, meta = pyspssio.read_sav(spss_path, row_limit=10)
+    return df, meta
 
 
 @pytest.fixture(scope="module")
-def spss_writer():
-    spss_path = Path(__file__).parent / "files" / "test_write.sav"
+def spss_writer(tmp_path_factory, spss_data):
+    now = datetime.now().strftime("%Y%m%d-%H%M%S")
+    spss_path = tmp_path_factory.mktemp(f"test_{now}") / "test_write.sav"
     with pyspssio.Writer(spss_path) as writer:
         yield writer
 
@@ -18,9 +25,13 @@ def test_open(spss_writer):
     assert spss_writer.mode == "wb"
 
 
-def test_write_header(spss_writer):
-    spss_writer.write_header(data.df, data.metadata)
+@pytest.mark.dependency(depends=["test_open"])
+def test_write_header(spss_writer, spss_data):
+    df, meta = spss_data
+    spss_writer.write_header(df, meta)
 
 
-def test_write_data(spss_writer):
-    spss_writer.write_data(data.df)
+@pytest.mark.dependency(depends=["test_write_header"])
+def test_write_data(spss_writer, spss_data):
+    df, _ = spss_data
+    spss_writer.write_data(df)

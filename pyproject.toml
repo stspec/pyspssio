@@ -13,7 +13,7 @@ dependencies = ["pandas", "psutil"]
 dynamic = ["version"]
 
 [dependency-groups]
-dev = ["pytest", "wheel", "cibuildwheel"]
+dev = ["pytest", "pytest-order", "wheel", "cibuildwheel"]
 
 [project.readme]
 file = "README.md"
