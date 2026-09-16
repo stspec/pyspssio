@@ -1,4 +1,3 @@
-from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -15,8 +14,7 @@ def spss_data():
 
 @pytest.fixture(scope="module")
 def spss_writer(tmp_path_factory, spss_data):
-    now = datetime.now().strftime("%Y%m%d-%H%M%S")
-    spss_path = tmp_path_factory.mktemp(f"test_{now}") / "test_write.sav"
+    spss_path = tmp_path_factory.mktemp("tmp") / "test_write.sav"
     with pyspssio.Writer(spss_path) as writer:
         yield writer
 

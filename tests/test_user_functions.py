@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import pytest
-
 import pyspssio
 
 test_file = Path(__file__).parent / "files" / "test_file.sav"
