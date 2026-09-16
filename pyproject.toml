@@ -40,10 +40,16 @@ environment = "SPSSIO_PLATFORM_DIR=win64"
 [tool.cibuildwheel.macos]
 archs = ["x86_64"]
 environment = "SPSSIO_PLATFORM_DIR=macos"
+repair-wheel-command = [
+    "delocate-wheel --ignore-missing-dependencies -w {dest_dir} {wheel}",
+]
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
 environment = "SPSSIO_PLATFORM_DIR=lin64"
+repair-wheel-command = [
+    "auditwheel repair --exclude '*.so*' -w {dest_dir} {wheel}",
+]
 
 [tool.ruff.lint]
 ignore = ["F811", "T001", "UP006", "UP007", "UP035", "UP045"]
