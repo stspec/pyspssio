@@ -10,9 +10,17 @@ This package uses the I/O Module for SPSS Statistics v29 available at https://ww
 
 ## Links
 
+#### pyspssio
+
  * [PyPI](https://pypi.org/project/pyspssio/)
  * [GitHub](https://github.com/stspec/pyspssio)
  * [Read the Docs](https://pyspssio.readthedocs.io)
+
+ #### SPSS I/O Modules
+
+ * [v25-v29](https://community.ibm.com/community/user/viewdocument/extensions-tools-and-utilities-for)
+ * [v29](https://community.ibm.com/community/user/viewdocument/the-modules-for-statistics-version-2)
+ * [v30](https://community.ibm.com/community/user/viewdocument/the-modules-for-statistics-version-1)
 
 
 ## Motivation
@@ -31,18 +39,39 @@ Main reason for creating this package is to fill gaps by other similar packages.
 `pyspssio` supports recent versions of python and can read/write most SPSS file metadata properties. The `usecols` argument when reading files also accepts a callable for more flexible variable selection.
 
 
+## Installation
+
+### Recommended: platform wheels
+
+Install from PyPI:
+```
+python -m pip install pyspssio
+```
+
+Supported platforms currently include:
+ * Windows 64-bit (`win_amd64`)
+ * Linux x86_64 (`manylinux`, x86_64)
+ * macOS (`macosx`, x86_64)
+
+Note: On Apple Silicon (ARM), use an x86_64 Python installation under Rosetta 2.
+
+### Source distribution
+
+As of `v0.6.0`, the source distribution does not include the native SPSS I/O libraries. Installing from the source distribution requires separately obtaining and configuring the appropriate SPSS I/O modules. These are available in the above links.
+
+Configure the I/O module before using.
+```python
+import pyspssio
+
+pyspssio.config.spssio_module = "spssio/win64/spssio64.dll"
+```
+
+
 ## Basic Usage
-
-
-Installation
-
-```
-pip install pyspssio
-```
 
 Import
 
-```
+```python
 import pyspssio
 ```
 
@@ -50,19 +79,19 @@ import pyspssio
 
 Read data and metadata
 
-```
+```python
 df, meta = pyspssio.read_sav("spss_file.sav")
 ```
 
 Read metadata only
 
-```
+```python
 meta = pyspssio.read_metadata("spss_file.sav")
 ```
 
 Read data in chunks of `chunksize` (number of rows/records)
 
-```
+```python
 for df in pyspssio.read_sav("spss_file.sav", chunksize=1000):
 #   do something
 ```
@@ -74,7 +103,7 @@ Note: metadata is not returned when reading in chunks
 
 Write dataframe to file.
 
-```
+```python
 pyspssio.write_sav("spss_file.sav", df)
 ```
 
@@ -82,7 +111,7 @@ pyspssio.write_sav("spss_file.sav", df)
 
 Append existing SPSS file with new records.
 
-```
+```python
 pyspssio.write_sav("spss_file.sav", df)
 ```
 

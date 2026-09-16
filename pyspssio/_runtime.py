@@ -30,7 +30,8 @@ class MissingSPSSIOModuleError(FileNotFoundError):
         if message is None:
             message = (
                 "Missing spssio module. Set location of module by changing "
-                "pyspssio.config.spssio_module = path/to/module.ext"
+                "pyspssio.config.spssio_module = path/to/module.ext. "
+                "See the README for more information about SPSS I/O modules."
             )
         super().__init__(message)
 
@@ -242,7 +243,7 @@ class RuntimeState:
     def use_default_config(self) -> None:
         """Use the default configuration for the SPSS I/O module. Updates the config."""
 
-        module_path = Path(__file__).parent
+        root_path = Path(__file__).parent.parent
 
         # Windows 64
         if self._platform.startswith("win"):
@@ -261,8 +262,19 @@ class RuntimeState:
 
         else:
             warnings.warn(
-                f"Unrecognized platform: {self._platform}. SPSS I/O module may not be available."
+                f"Unrecognized platform: {self._platform}. SPSS I/O module may not be available. "
+                "See the README for more information about SPSS I/O modules."
             )
             return
 
-        config.spssio_module = module_path / "spssio" / spssio_folder / spssio_module
+        # library path for installed wheel
+        whl_path = root_path / "pyspssio" / "spssio" / spssio_folder / spssio_module
+        if whl_path.exists():
+            config.spssio_module = whl_path
+            return
+
+        # library path for development environment
+        dev_path = root_path / "spssio" / spssio_folder / spssio_module
+        if dev_path.exists():
+            config.spssio_module = dev_path
+            return

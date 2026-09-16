@@ -1,22 +1,19 @@
 [build-system]
-requires = [
-    "setuptools>=80",
-    "setuptools-scm[simple]>=9.2",
-    "wheel"
-]
+requires = ["setuptools>=80", "setuptools-scm[simple]>=9.2", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyspssio"
 description = "Read and write SPSS (.sav and .zsav) files to/from pandas dataframes"
-authors = [{name = "Steven Spector", email = "stspec.dev@gmail.com"}]
-license = {text = "MIT"}
+authors = [{ name = "Steven Spector", email = "stspec.dev@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE.txt"]
 requires-python = ">=3.6"
-dependencies = [
-    "pandas",
-    "psutil",
-]
+dependencies = ["pandas", "psutil"]
 dynamic = ["version"]
+
+[dependency-groups]
+dev = ["pytest", "wheel", "cibuildwheel"]
 
 [project.readme]
 file = "README.md"
@@ -31,30 +28,28 @@ pyspssio = "pyspssio.command_line:main"
 
 [tool.setuptools]
 packages = ["pyspssio"]
-include-package-data = true
-license-files = ["LICENSE.txt"]
 
-[tool.setuptools.package-data]
-pyspssio = [
-    "spssio/document/*",
-    "spssio/include/*",
-    "spssio/license/*",
-    "spssio/win64/*.*",
-    "spssio/macos/*.*",
-    "spssio/lin64/*.*",
+[tool.cibuildwheel]
+build = "cp314-*"
+skip = "cp314t-*"
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+environment = "SPSSIO_PLATFORM_DIR=win64"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64"]
+environment = "SPSSIO_PLATFORM_DIR=macos"
+repair-wheel-command = [
+    "delocate-wheel --ignore-missing-dependencies -w {dest_dir} {wheel}",
+]
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+environment = "SPSSIO_PLATFORM_DIR=lin64"
+repair-wheel-command = [
+    "auditwheel repair --exclude '*.so*' -w {dest_dir} {wheel}",
 ]
 
 [tool.ruff.lint]
-ignore = [
-    "F811",
-    "T001",
-    "UP006",
-    "UP007",
-    "UP035",
-    "UP045",
-]
-
-[dependency-groups]
-dev = [
-    "pytest>=7.0.1",
-]
+ignore = ["F811", "T001", "UP006", "UP007", "UP035", "UP045"]
