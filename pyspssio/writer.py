@@ -52,7 +52,7 @@ class Writer(Header):
         self,
         spss_file: str,
         mode: str = "wb",
-        unicode: bool = True,
+        unicode: Optional[bool] = None,
         locale: Optional[str] = None,
         **kwargs,
     ):

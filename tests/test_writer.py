@@ -25,13 +25,11 @@ def test_open(spss_writer):
     assert spss_writer.mode == "wb"
 
 
-@pytest.mark.dependency(depends=["test_open"])
 def test_write_header(spss_writer, spss_data):
     df, meta = spss_data
     spss_writer.write_header(df, meta)
 
 
-@pytest.mark.dependency(depends=["test_write_header"])
 def test_write_data(spss_writer, spss_data):
     df, _ = spss_data
     spss_writer.write_data(df)

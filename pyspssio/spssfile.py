@@ -30,7 +30,7 @@ from typing import Optional
 
 from ._runtime import RuntimeState
 from .constants import SPSS_MAX_ENCODING
-from .errors import warn_or_raise
+from .errors import SPSSWarning, warn_or_raise
 
 
 class SPSSFile:
@@ -43,7 +43,7 @@ class SPSSFile:
         self,
         spss_file: str,
         mode: str = "rb",
-        unicode: bool = True,
+        unicode: Optional[bool] = None,
         locale: Optional[str] = None,
     ):
 
@@ -57,69 +57,63 @@ class SPSSFile:
         # initialize SPSS I/O binaries
         SPSSFile._runtime_state.initialize()
         self.spssio = SPSSFile._runtime_state._spssio_runtime
-
-        # basic settings
-        self.filename = spss_file
-        self.mode = mode[0] + "b"  # always open/close in byte mode
-
-        # functions for opening and closing (always open with utf-8 encoded filenames)
-        self._modes = {
-            "rb": {
-                "open": self.spssio.spssOpenReadU8,
-                "close": self.spssio.spssCloseRead,
-            },
-            "wb": {
-                "open": self.spssio.spssOpenWriteU8,
-                "close": self.spssio.spssCloseWrite,
-            },
-            "ab": {
-                "open": self.spssio.spssOpenAppendU8,
-                "close": self.spssio.spssCloseAppend,
-            },
-        }
-
-        # get current locale information and set initial encoding
         self.system_locale = lc.setlocale(lc.LC_ALL, "")
-        language_code, encoding_category = lc.getlocale()
-        self.encoding = "utf-8" if unicode else encoding_category
 
-        # test setting initial locale to obtain encoding
-        if locale:
-            # force unicode off if locale is specified
-            unicode = False
-            # set system locale to get locale encoding information
-            locale = lc.setlocale(lc.LC_ALL, locale)
-            language_code, encoding_category = lc.getlocale()
-            # set encoding
-            self.encoding = encoding_category
-            # reset system locale after getting locale information
-            lc.setlocale(lc.LC_ALL, self.system_locale)
+        # set user inputs
+        self.filename = spss_file
+        self._mode = mode.lower()[0] + "b"
+        self._unicode = unicode
+        self._locale = locale
 
-        # initialize I/O module in unicode or codepage mode
-        self.interface_encoding = unicode
+        # assign user inputs to active state
+        self.mode = self._mode
 
-        # set I/O locale and initial encoding
-        self.locale = self.set_locale(self.system_locale if not locale else locale)
+        if self._locale:
+            self.unicode = False
+        elif self._unicode is None:
+            self.unicode = True
+        else:
+            self.unicode = self._unicode
 
-        # match I/O encoding based on file information for read/append modes
+        self._use_locale = self._locale or self.system_locale
+
+        # set assumed encodings
+        self.interface_encoding = self.unicode
+        if self.unicode:
+            self.encoding = "utf-8"
+            self.locale = None
+        else:
+            self.encoding = self._get_locale_encoding(self._use_locale)
+            self.locale = self.set_locale(self._use_locale)
+
+        # get details about I/O encoding based on file information
+        # for read/append modes then reset active mode
         if self.mode in ["rb", "ab"]:
             self.mode = "rb"
             self.fh = self.open()
-            self.encoding = self.file_encoding
+            _detected_unicode = self.file_encoding.lower() in ("utf-8", "utf8")
             self.close()
-            self.interface_encoding = self.encoding.lower() in ["utf-8", "utf8"]
+            self.mode = self._mode
+
+            # set detected encodings
+            if _detected_unicode:
+                self.unicode = True
+                self.interface_encoding = True
+                self.locale = None
+            else:
+                self.unicode = False
+                self.interface_encoding = False
+                self.locale = self.set_locale(self._use_locale)
 
         # open file with proper interface encoding and specified mode
-        self.mode = mode[0] + "b"
         self.fh = self.open()
         self.encoding = self.file_encoding
 
-        # test encoding compatibility
-        compatible = self.is_compatible_encoding
-        if not compatible:
+        # test encoding compatibility for read/append modes only
+        if self.mode in ("rb", "ab") and not self.is_compatible_encoding:
             warnings.warn(
                 "File encoding may not be compatible with SPSS I/O interface encoding",
-                UnicodeWarning,
+                SPSSWarning,
             )
 
         # system missing value for reference to replace with null types
@@ -138,6 +132,22 @@ class SPSSFile:
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
         self._exit_cleanup()
+
+    def _get_locale_encoding(self, locale: Optional[str] = None) -> str:
+        """Get encoding category of specified locale.
+        Use locale = None or "" to return the system locale encoding.
+        """
+        try:
+            # get specified locale encoding
+            locale = locale or self.system_locale
+            locale = lc.setlocale(lc.LC_ALL, locale)
+            _, encoding_category = lc.getlocale()
+            # return encoding
+            return encoding_category
+
+        finally:
+            # reset system locale after getting locale information
+            lc.setlocale(lc.LC_ALL, self.system_locale)
 
     @property
     def _low_high_val(self):
@@ -193,11 +203,12 @@ class SPSSFile:
         if result:
             return result.decode(self.encoding)
         else:
+            current_locale = ".".join(lc.getlocale())
             warnings.warn(
-                f"Failed to set locale to: {locale}. Current locale is: {'.'.join(lc.getlocale())}",
+                f"Failed to set locale to: {locale}. Current locale is: {current_locale}",
                 stacklevel=2,
             )
-            return ".".join(lc.getlocale())
+            return current_locale
 
     @property
     def is_compatible_encoding(self) -> bool:
@@ -231,11 +242,17 @@ class SPSSFile:
         which uses Chinese (or other special multibyte characters) in its filename.
         """
 
+        if self.mode == "rb":
+            func = self.spssio.spssOpenReadU8
+        elif self.mode == "wb":
+            func = self.spssio.spssOpenWriteU8
+        elif self.mode == "ab":
+            func = self.spssio.spssOpenAppendU8
+
         with open(self.filename, self.mode) as f:
             fh = c_int(f.fileno())
         filename_adjusted = os.path.expanduser(os.path.abspath(self.filename))
         filename_encoded = filename_adjusted.encode("utf-8")
-        func = self._modes[self.mode]["open"]
         retcode = func(filename_encoded, byref(fh))
         warn_or_raise(retcode, func)
         return fh
@@ -243,7 +260,13 @@ class SPSSFile:
     def close(self):
         """Close file"""
 
-        func = self._modes[self.mode]["close"]
+        if self.mode == "rb":
+            func = self.spssio.spssCloseRead
+        elif self.mode == "wb":
+            func = self.spssio.spssCloseWrite
+        elif self.mode == "ab":
+            func = self.spssio.spssCloseAppend
+
         retcode = func(self.fh)
         warn_or_raise(retcode, func)
 

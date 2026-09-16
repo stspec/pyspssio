@@ -36,7 +36,7 @@ class Reader(Header):
         self,
         spss_file: str,
         mode: str = "rb",
-        unicode: bool = True,
+        unicode: Optional[bool] = None,
         locale: Optional[str] = None,
         *,
         row_offset: int = 0,

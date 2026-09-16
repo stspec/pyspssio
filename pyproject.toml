@@ -13,7 +13,7 @@ dependencies = ["pandas", "psutil"]
 dynamic = ["version"]
 
 [dependency-groups]
-dev = ["pytest", "pytest-order", "wheel", "cibuildwheel"]
+dev = ["pytest", "wheel", "cibuildwheel"]
 
 [project.readme]
 file = "README.md"
@@ -32,6 +32,7 @@ packages = ["pyspssio"]
 [tool.cibuildwheel]
 build = "cp314-*"
 skip = "cp314t-*"
+test-command = "pytest {project}/tests"
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
