@@ -57,13 +57,13 @@ Note: On Apple Silicon (ARM), use an x86_64 Python installation under Rosetta 2.
 
 ### Source distribution
 
-As of `v0.6.0`, the source distribution does not include the native SPSS I/O libraries. Installing from the source distribution requires separately obtaining and configuring the appropriate SPSS I/O modules. These are available in the above IBM links or [GitHub](https://github.com/stspec/pyspssio).
+As of `v0.6.0`, the source distribution does not include the native SPSS I/O libraries. Installing from the source distribution requires separately obtaining and configuring the appropriate SPSS I/O modules. These are available in the above links.
 
 Configure the I/O module before using.
 ```python
 import pyspssio
 
-pyspssio.config.spssio_module
+pyspssio.config.spssio_module = "spssio/win64/spssio64.dll"
 ```
 
 
