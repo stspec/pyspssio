@@ -3,7 +3,6 @@
 # =============================================================================
 #
 # Copyright (c) 2026 Steven Spector
-# Copyright (c) 2026 Steven Spector
 #
 # The pyspssio python package is distributed under the MIT license,
 # EXCLUDING files from the IBM I/O Modules for SPSS Statistics
@@ -26,13 +25,6 @@ from .user_functions import (
     write_sav,
 )
 from .writer import Writer
-
-try:
-    from importlib.metadata import version
-
-    __version__ = version("pyspssio")
-except ImportError:
-    __version__ = "unknown"
 
 try:
     from importlib.metadata import version
