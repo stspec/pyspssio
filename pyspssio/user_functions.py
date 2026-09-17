@@ -55,12 +55,12 @@ def read_metadata(
 def read_sav(
     spss_file: str,
     row_offset: int = 0,
-    row_limit: int = None,
+    row_limit: Optional[int] = None,
     usecols: Optional[Union[list, tuple, str, callable]] = None,
     convert_datetimes: bool = True,
     include_user_missing: bool = True,
-    chunksize: int = None,
-    locale: str = None,
+    chunksize: Optional[int] = None,
+    locale: Optional[str] = None,
     string_nan: Any = "",
     data_only: bool = False,
 ) -> Union[DataFrame, Tuple[DataFrame, dict], Generator[DataFrame, None, None]]:
@@ -158,9 +158,9 @@ def read_sav(
 def write_sav(
     spss_file: str,
     df: DataFrame,
-    metadata: dict = None,
-    unicode: bool = True,
-    locale: str = None,
+    metadata: Optional[dict] = None,
+    unicode: Optional[bool] = None,
+    locale: Optional[str] = None,
     **kwargs,
 ) -> None:
     """Write SPSS file (.sav or .zsav) from DataFrame
@@ -192,7 +192,9 @@ def write_sav(
         sav.write_data(df=df, **kwargs)
 
 
-def append_sav(spss_file: str, df: DataFrame, locale: str = None, **kwargs) -> None:
+def append_sav(
+    spss_file: str, df: DataFrame, locale: Optional[str] = None, **kwargs
+) -> None:
     """Append existing SPSS file (.sav or .zsav) with additional records
 
     Parameters

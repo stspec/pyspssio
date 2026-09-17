@@ -298,9 +298,9 @@ class Reader(Header):
 
     def read_data(
         self,
-        row_limit: int = None,
-        convert_datetimes: bool = None,
-        include_user_missing: bool = None,
+        row_limit: Optional[int] = None,
+        convert_datetimes: Optional[bool] = None,
+        include_user_missing: Optional[bool] = None,
     ) -> DataFrame:
         """Read data
 
