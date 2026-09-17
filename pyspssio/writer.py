@@ -52,12 +52,10 @@ class Writer(Header):
         self,
         spss_file: str,
         mode: str = "wb",
-        unicode: bool = True,
+        unicode: Optional[bool] = None,
         locale: Optional[str] = None,
         **kwargs,
     ):
-        # force write mode
-        mode = "wb"
         super().__init__(spss_file, mode, unicode, locale, **kwargs)
 
     def _whole_case_out(self, case_record):

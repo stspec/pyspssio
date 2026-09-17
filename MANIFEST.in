@@ -1,3 +1,4 @@
 include README.*
 include LICENSE.*
 prune spssio
+prune tests

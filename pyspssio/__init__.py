@@ -12,7 +12,7 @@
 # is available in the LICENSE document.
 # =============================================================================
 
-from . import config
+from . import config, constants_map
 from .constants import *
 from .errors import SPSSError, SPSSWarning
 from .header import Header
