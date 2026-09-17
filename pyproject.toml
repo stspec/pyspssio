@@ -32,7 +32,8 @@ packages = ["pyspssio"]
 [tool.cibuildwheel]
 build = "cp314-*"
 skip = "cp314t-*"
-test-command = "pytest {project}/tests"
+test-command = "python -m pytest {project}/tests"
+test-requires = ["pytest", "pandas", "psutil"]
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
