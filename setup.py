@@ -28,15 +28,23 @@ class PlatformBuildPy(build_py):
     def run(self):
         super().run()
 
-        src_lib = Path(__file__).parent / "spssio"
+        platform_dir = os.environ.get("SPSSIO_PLATFORM_DIR")
+        if not platform_dir:
+            return
+
+        # change @executable_path to @loader_path
+        if platform_dir == "darwin":
+            from . import patch_dylibs
+
+            patch_dylibs.main()
+            src_lib = Path(__file__).parent / "spssio-patched"
+        else:
+            src_lib = Path(__file__).parent / "spssio"
+
         pkg_lib = Path(self.build_lib) / "pyspssio" / "spssio"
 
         if pkg_lib.exists():
             shutil.rmtree(pkg_lib)
-
-        platform_dir = os.environ.get("SPSSIO_PLATFORM_DIR")
-        if not platform_dir:
-            return
 
         platform_src = src_lib / platform_dir
         if not platform_src.is_dir():
@@ -45,7 +53,7 @@ class PlatformBuildPy(build_py):
                 f"SPSSIO_PLATFORM_DIR={platform_dir}: {platform_src}"
             )
 
-        platform_dst = pkg_lib / platform_dir
+        platform_dst = pkg_lib / "lib"
 
         if platform_dst.exists():
             shutil.rmtree(platform_dst)

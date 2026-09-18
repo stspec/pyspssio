@@ -14,11 +14,10 @@
 
 import ctypes
 import platform
-import sys
 import threading
 import warnings
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict
 
 from . import config
 
@@ -44,8 +43,6 @@ class RuntimeState:
         self._platform = platform.system().lower()
         self._initialized = False
         self._spssio_runtime = None
-        self._created_links: List[Path] = []
-        self._library_links: List[Path] = []
         self._library_handles: Dict[str, ctypes.CDLL] = {}
 
         if not config.spssio_module:
@@ -83,9 +80,7 @@ class RuntimeState:
 
     def reset(self):
         """Reset the runtime state"""
-        self.delete_library_symlinks()
         self._initialized = False
-        self._library_links = []
         self._library_handles = {}
         self._spssio_runtime = None
 
@@ -111,33 +106,8 @@ class RuntimeState:
             self._spssio_module = Path(config.spssio_module)
             self._spssio_dir = self._spssio_module.parent
 
-            # Load libraries into the current process
-            if self._platform.startswith("darwin"):
-                # For macOS, create symlinks to the SPSS I/O dynamic libraries in the Python executable's lib directory
-                # This is a workaround for the dylibs using @executable_path to reference each other
-                try:
-                    # Attempt to work with symlinks at the typical python executable path
-                    self.create_library_symlinks(
-                        self._spssio_dir, "*.dylib*", framework=False
-                    )
-                    library_handles = self.load_libraries()
-                except OSError as e1:
-                    # If normal path doesn't work, try an alternate framework executable path
-                    try:
-                        self.reset()
-                        self.create_library_symlinks(
-                            self._spssio_dir, "*.dylib*", framework=True
-                        )
-                        library_handles = self.load_libraries()
-                    except OSError as e2:
-                        raise OSError(
-                            f"First attempt library path failed: {e1}\n"
-                            f"Second attempt framework path failed: {e2}"
-                        ) from e2
-            else:
-                # For Windows and Linux, load libraries normally
-                library_handles = self.load_libraries()
-
+            # load libraries
+            library_handles = self.load_libraries()
             self._library_handles = library_handles
             self._spssio_runtime = library_handles[self._spssio_module.name]
             self._initialized = True
@@ -199,81 +169,6 @@ class RuntimeState:
 
         return loaded
 
-    def delete_library_symlinks(self) -> None:
-        for _ in range(len(self._created_links)):
-            link = self._created_links.pop()
-            if link.is_symlink():
-                link.unlink()
-
-    def create_library_symlinks(
-        self,
-        library_dir: Union[str, Path],
-        library_pat: str = "*",
-        framework: bool = False,
-    ) -> None:
-        """Generate symbolic links in the Python executable to the SPSS I/O dynamic libraries.
-
-        The dynamic libraries for macOS sometimes reference each other using `@executable_path`,
-        which can cause issues in virtual environments. Ideally, the libraries should probably be using
-        `@loader_path` instead. To avoid patching the binaries directly with external scripts, this workaround
-        simply creates symbolic links under the active Python installation/environment.
-
-        Note that this workaround is only required for macOS.
-        Linux and Windows both seems to find the libraries just fine as is.
-        """
-
-        library_dir = Path(library_dir).resolve(strict=True)
-        target_root = Path(sys.prefix)
-
-        if framework:
-            target_dir = target_root / "Resources" / "Python.app" / "Contents" / "lib"
-        else:
-            target_dir = target_root / "lib"
-
-        if not target_dir.parent.is_dir():
-            raise OSError(
-                f"Cannot create symlinks because target directory's parent doesn't exist: {target_dir.parent}"
-            )
-
-        target_dir.mkdir(parents=False, exist_ok=True)
-
-        if not self._library_links:
-            print(
-                f"Creating symbolic links for SPSS I/O libraries in: {target_dir}",
-                file=sys.stderr,
-            )
-
-        # symlink local files into python's expected directory
-        for lib_path in library_dir.glob(library_pat):
-            lib_path = lib_path.resolve(strict=True)
-            lib_link = target_dir / lib_path.name
-
-            # check existing symlink
-            if lib_link.is_symlink():
-                # keep current valid symlink
-                if lib_link.resolve(strict=True) == lib_path:
-                    self._library_links.append(lib_link)
-                    continue
-                # remove stale or invalid symlink
-                else:
-                    lib_link.unlink()
-
-            # for non-symlink path, do not overwrite
-            elif lib_link.exists():
-                warnings.warn(
-                    f"Cannot create symlink for the following library because conflicting file exists at same path: {lib_link}"
-                )
-
-            # create symlink
-            try:
-                lib_link.symlink_to(lib_path)
-                self._library_links.append(lib_link)
-                self._created_links.append(lib_link)
-            except OSError:
-                warnings.warn(
-                    f"Failed to create symlink for the following library: {lib_path.name}"
-                )
-
     def use_default_config(self) -> None:
         """Use the default configuration for the SPSS I/O module. Updates the config."""
 
@@ -302,9 +197,15 @@ class RuntimeState:
             return
 
         # library path for installed wheel
-        whl_path = root_path / "pyspssio" / "spssio" / spssio_folder / spssio_module
+        whl_path = root_path / "pyspssio" / "spssio" / "lib" / spssio_module
         if whl_path.exists():
             config.spssio_module = whl_path
+            return
+
+        # library path for development environment (patched)
+        patched_path = root_path / "spssio-patched" / spssio_folder / spssio_module
+        if patched_path.exists():
+            config.spssio_module = patched_path
             return
 
         # library path for development environment
