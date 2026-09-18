@@ -18,7 +18,7 @@ import sys
 import threading
 import warnings
 from pathlib import Path
-from typing import Union
+from typing import Dict, List, Union
 
 from . import config
 
@@ -44,8 +44,9 @@ class RuntimeState:
         self._platform = platform.system().lower()
         self._initialized = False
         self._spssio_runtime = None
-        self._library_links = []
-        self._library_handles = {}
+        self._created_links: List[Path] = []
+        self._library_links: List[Path] = []
+        self._library_handles: Dict[str, ctypes.CDLL] = {}
 
         if not config.spssio_module:
             self.use_default_config()
@@ -82,6 +83,7 @@ class RuntimeState:
 
     def reset(self):
         """Reset the runtime state"""
+        self.delete_library_symlinks()
         self._initialized = False
         self._library_links = []
         self._library_handles = {}
@@ -109,14 +111,33 @@ class RuntimeState:
             self._spssio_module = Path(config.spssio_module)
             self._spssio_dir = self._spssio_module.parent
 
-            # For MacOS, create symlinks to the SPSS I/O dynamic libraries in the Python executable's lib directory
+            # Load libraries into the current process
             if self._platform.startswith("darwin"):
-                self._library_links = self.create_library_symlinks(
-                    self._spssio_dir, "*.dylib*"
-                )
+                # For macOS, create symlinks to the SPSS I/O dynamic libraries in the Python executable's lib directory
+                # This is a workaround for the dylibs using @executable_path to reference each other
+                try:
+                    # Attempt to work with symlinks at the typical python executable path
+                    self.create_library_symlinks(
+                        self._spssio_dir, "*.dylib*", framework=False
+                    )
+                    library_handles = self.load_libraries()
+                except OSError as e1:
+                    # If normal path doesn't work, try an alternate framework executable path
+                    try:
+                        self.reset()
+                        self.create_library_symlinks(
+                            self._spssio_dir, "*.dylib*", framework=True
+                        )
+                        library_handles = self.load_libraries()
+                    except OSError as e2:
+                        raise OSError(
+                            f"First attempt library path failed: {e1}\n"
+                            f"Second attempt framework path failed: {e2}"
+                        ) from e2
+            else:
+                # For Windows and Linux, load libraries normally
+                library_handles = self.load_libraries()
 
-            # load libraries into the current process
-            library_handles = self.load_libraries()
             self._library_handles = library_handles
             self._spssio_runtime = library_handles[self._spssio_module.name]
             self._initialized = True
@@ -178,27 +199,43 @@ class RuntimeState:
 
         return loaded
 
+    def delete_library_symlinks(self) -> None:
+        for _ in range(len(self._created_links)):
+            link = self._created_links.pop()
+            if link.is_symlink():
+                link.unlink()
+
     def create_library_symlinks(
-        self, library_dir: Union[str, Path], library_pat: str = "*"
-    ) -> list:
+        self,
+        library_dir: Union[str, Path],
+        library_pat: str = "*",
+        framework: bool = False,
+    ) -> None:
         """Generate symbolic links in the Python executable to the SPSS I/O dynamic libraries.
 
-        The dynamic libraries for MacOS sometimes reference each other using `@executable_path`,
-        which can cause issues in vitural environments. Ideally, the libraries should probably be using
+        The dynamic libraries for macOS sometimes reference each other using `@executable_path`,
+        which can cause issues in virtual environments. Ideally, the libraries should probably be using
         `@loader_path` instead. To avoid patching the binaries directly with external scripts, this workaround
-        simply creates symbolic links near the real Python executable.
+        simply creates symbolic links under the active Python installation/environment.
 
-        Note that this workaround is only required for MacOS. Linux and Windows both seems to find the libraries just fine as is.
+        Note that this workaround is only required for macOS.
+        Linux and Windows both seems to find the libraries just fine as is.
         """
 
         library_dir = Path(library_dir).resolve(strict=True)
+        target_root = Path(sys.prefix)
 
-        # locate python interpreter's directory
-        real_python_binary = Path(sys.executable).resolve(strict=True)
+        if framework:
+            target_dir = target_root / "Resources" / "Python.app" / "Contents" / "lib"
+        else:
+            target_dir = target_root / "lib"
 
-        # create a "lib" directory relative to python executable if it doesn't exist
-        target_dir = real_python_binary.parent.parent / "lib"
-        target_dir.mkdir(parents=True, exist_ok=True)
+        if not target_dir.parent.is_dir():
+            raise OSError(
+                f"Cannot create symlinks because target directory's parent doesn't exist: {target_dir.parent}"
+            )
+
+        target_dir.mkdir(parents=False, exist_ok=True)
 
         if not self._library_links:
             print(
@@ -207,8 +244,6 @@ class RuntimeState:
             )
 
         # symlink local files into python's expected directory
-        links = []
-
         for lib_path in library_dir.glob(library_pat):
             lib_path = lib_path.resolve(strict=True)
             lib_link = target_dir / lib_path.name
@@ -217,7 +252,7 @@ class RuntimeState:
             if lib_link.is_symlink():
                 # keep current valid symlink
                 if lib_link.resolve(strict=True) == lib_path:
-                    links.append(lib_link)
+                    self._library_links.append(lib_link)
                     continue
                 # remove stale or invalid symlink
                 else:
@@ -232,13 +267,12 @@ class RuntimeState:
             # create symlink
             try:
                 lib_link.symlink_to(lib_path)
-                links.append(lib_link)
+                self._library_links.append(lib_link)
+                self._created_links.append(lib_link)
             except OSError:
                 warnings.warn(
                     f"Failed to create symlink for the following library: {lib_path.name}"
                 )
-
-        return links
 
     def use_default_config(self) -> None:
         """Use the default configuration for the SPSS I/O module. Updates the config."""
@@ -250,7 +284,7 @@ class RuntimeState:
             spssio_folder = "win64"
             spssio_module = "spssio64.dll"
 
-        # MacOS
+        # macOS
         elif self._platform.startswith("darwin"):
             spssio_folder = "macos"
             spssio_module = "libspssdio.dylib"
