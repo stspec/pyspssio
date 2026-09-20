@@ -138,7 +138,7 @@ dmypy.json
 uv.lock
 
 # SPSS I/O copies
-/pyspssio.spssio
+/pyspssio/spssio
 spssio-patched
 
 # Other
