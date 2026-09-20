@@ -139,8 +139,17 @@ class RuntimeState:
         loaded = {}
         failed = {}
 
-        try_num = 0
+        # fast path
+        # only directly load main i/o library and let OS load dependencies
+        try:
+            loaded[self._spssio_module.name] = loader(self._spssio_module)
+            return loaded
+        except OSError:
+            pass
 
+        # slow path
+        # try loading dependency libraries in case OS can't resolve them
+        try_num = 0
         while try_num < len(libs) and (failed or not loaded):
             for lib in libs:
                 if lib.name in loaded:
