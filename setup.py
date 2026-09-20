@@ -33,7 +33,7 @@ class PlatformBuildPy(build_py):
             return
 
         # change @executable_path to @loader_path
-        if platform_dir == "darwin":
+        if platform_dir == "macos":
             from . import patch_dylibs
 
             patch_dylibs.main()
