@@ -4,9 +4,18 @@ import shutil
 import subprocess
 from pathlib import Path
 
-is_translated = int(
-    subprocess.check_output(["sysctl", "-n", "sysctl.proc_translated"]).decode().strip()
-)
+# Python needs to be x86_64 to run pyspssio tests
+# Shell commands should be expected to run in actual hardware architecture
+
+try:
+    is_translated = int(
+        subprocess.check_output(["sysctl", "-n", "sysctl.proc_translated"])
+        .decode()
+        .strip()
+    )
+except subprocess.CalledProcessError:
+    is_translated = False
+
 arch = "arm64" if is_translated else "x86_64"
 
 
