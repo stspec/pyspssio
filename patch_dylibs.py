@@ -4,39 +4,26 @@ import shutil
 import subprocess
 from pathlib import Path
 
-
-def get_run_cmd():
-
-    arch = subprocess.run(["/usr/bin/arch"], check=True)
-
-    try:
-        subprocess.run(["/usr/bin/otool"], check=True)
-    except subprocess.CalledProcessError as e:
-        if "architecture" not in str(e):
-            pass
-        arch = "arm64"
-
-    def run_cmd(
-        cmd: list[str], *, check: bool = True
-    ) -> subprocess.CompletedProcess[str]:
-        """Run a native command and return its completed process."""
-
-        if not isinstance(cmd, list):
-            cmd = [cmd]
-
-        cmd = ["/usr/bin/arch", f"-{arch}", *cmd]
-
-        return subprocess.run(
-            cmd,
-            text=True,
-            capture_output=True,
-            check=check,
-        )
-
-    return run_cmd
+is_translated = int(
+    subprocess.check_output(["sysctl", "-n", "sysctl.proc_translated"]).decode().strip()
+)
+arch = "arm64" if is_translated else "x86_64"
 
 
-run_cmd = get_run_cmd()
+def run_cmd(cmd: list[str], *, check: bool = True) -> subprocess.CompletedProcess[str]:
+    """Run a native command and return its completed process."""
+
+    if not isinstance(cmd, list):
+        cmd = [cmd]
+
+    cmd = ["/usr/bin/arch", f"-{arch}", *cmd]
+
+    return subprocess.run(
+        cmd,
+        text=True,
+        capture_output=True,
+        check=check,
+    )
 
 
 def otool_dependencies(path: Path) -> list[str]:
