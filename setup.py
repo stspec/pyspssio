@@ -35,19 +35,35 @@ class PlatformBuildPy(build_py):
         if not platform_dir:
             return
 
-        # change @executable_path to @loader_path
-        if platform_dir == "macos":
-            import patch_dylibs
-
-            patch_dylibs.main([])
-            src_lib = Path(__file__).parent / "spssio-patched"
-        else:
-            src_lib = Path(__file__).parent / "spssio"
-
+        src_lib = Path(__file__).parent / "spssio"
         pkg_lib = Path(self.build_lib) / "pyspssio" / "spssio"
 
         if pkg_lib.exists():
             shutil.rmtree(pkg_lib)
+
+        # copy platform-independent documentation and resources
+        for folder_name in ("document", "include", "license"):
+            folder_src = src_lib / folder_name
+            folder_dst = pkg_lib / folder_name
+
+            if not folder_src.is_dir():
+                raise RuntimeError(
+                    f"Required SPSS I/O directory does not exist: {folder_src}"
+                )
+
+            if folder_dst.exists():
+                shutil.rmtree(folder_dst)
+
+            shutil.copytree(folder_src, folder_dst)
+
+        # copy platform-specific dynamic libraries into /lib
+        # for macos, patch the dylibs first
+        if platform_dir == "macos":
+            # change @executable_path to @loader_path
+            import patch_dylibs
+
+            patch_dylibs.main([])
+            src_lib = Path(__file__).parent / "spssio-patched"
 
         platform_src = src_lib / platform_dir
         if not platform_src.is_dir():
@@ -62,20 +78,6 @@ class PlatformBuildPy(build_py):
             shutil.rmtree(platform_dst)
 
         shutil.copytree(platform_src, platform_dst)
-
-        for folder_name in ("document", "include", "license"):
-            folder_src = src_lib / folder_name
-            folder_dst = pkg_lib / folder_name
-
-            if not folder_src.is_dir():
-                raise RuntimeError(
-                    f"Required SPSS I/O directory does not exist: {folder_src}"
-                )
-
-            if folder_dst.exists():
-                shutil.rmtree(folder_dst)
-
-            shutil.copytree(folder_src, folder_dst)
 
 
 setup(
