@@ -32,8 +32,16 @@ class PlatformBuildPy(build_py):
         super().run()
 
         platform_dir = os.environ.get("SPSSIO_PLATFORM_DIR")
+
         if not platform_dir:
-            return
+            if sys.platform.startswith("win"):
+                platform_dir = "win64"
+            elif sys.platform.startswith("darwin"):
+                platform_dir = "macos"
+            elif sys.platform.startswith("lin"):
+                platform_dir = "lin64"
+            else:
+                return
 
         src_lib = Path(__file__).parent / "spssio"
         pkg_lib = Path(self.build_lib) / "pyspssio" / "spssio"
