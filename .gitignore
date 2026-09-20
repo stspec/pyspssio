@@ -137,6 +137,10 @@ dmypy.json
 .uv/
 uv.lock
 
+# SPSS I/O copies
+/pyspssio/spssio
+spssio-patched
+
 # Other
 *.DS_Store
 .ruff_cache
