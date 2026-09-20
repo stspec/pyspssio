@@ -34,7 +34,7 @@ class PlatformBuildPy(build_py):
 
         # change @executable_path to @loader_path
         if platform_dir == "macos":
-            from . import patch_dylibs
+            import patch_dylibs
 
             patch_dylibs.main()
             src_lib = Path(__file__).parent / "spssio-patched"
