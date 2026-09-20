@@ -148,7 +148,7 @@ def add_rpath(path: Path, rpath: str) -> None:
     )
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
 
     source_directory = Path(__file__).parent / "spssio" / "macos"
 
@@ -177,7 +177,7 @@ def main() -> int:
         help="Show what would be changed without modifying files.",
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # find dylibs
 
