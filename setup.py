@@ -1,10 +1,13 @@
 import os
 import shutil
+import sys
 from pathlib import Path
 
 from setuptools import Distribution, setup
 from setuptools.command.bdist_wheel import bdist_wheel
 from setuptools.command.build_py import build_py
+
+sys.path.insert(0, str(Path(__file__).parent))
 
 
 class BinaryDistribution(Distribution):
